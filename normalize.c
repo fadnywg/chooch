@@ -50,8 +50,10 @@ int  normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doub
   } else {
      SetConst(nDataPoints, fYraw[0], fYfitb);
   }
+  /*
   if(plotX)
      addline(nDataPoints, fXraw, fYfitb, BLUE);
+  */
   /* ABOVE EDGE */
   if((fE4-fEdge) > 30.0) {
      if(verbose>1)printf("Using linear fit to above edge region\n");
@@ -61,8 +63,10 @@ int  normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doub
   } else {
      SetConst(nDataPoints, fYraw[nDataPoints-1], fYfita);
   }
+  /*
   if(plotX)
      addline(nDataPoints, fXraw, fYfita, BLUE);
+  */
   /* DO THE NORMALISATION */
   for (i = 0; i < nDataPoints; i++) {
      fYnorm[i] = (fYraw[i] - fYfitb[i]) / (fYfita[i] - fYfitb[i]);
@@ -125,7 +129,7 @@ int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double 
     */
   }
   nFit = i-2;
-  err = quad(nFit, fXtemp, fYtemp, C);
+  err = quadfit(nFit, fXtemp, fYtemp, C);
   if(verbose>1)printf("# best qaud fit: Y = %g + %g X + %g X^2\n", C[0], C[1], C[2]);
   for (i = 0; i < nDataPoints; i++) {
     fYfitb[i] = C[0] + C[1] * fXraw[i] + C[2] * fXraw[i] * fXraw[i];
@@ -139,7 +143,7 @@ int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double 
      fYtemp[i] = get_fpp(sElement, fXtemp[i]/1000.0);
   }
   nFit = i-2;
-  err = quad(nFit, fXtemp, fYtemp, C);
+  err = quadfit(nFit, fXtemp, fYtemp, C);
   if(verbose>1)printf("# best quad fit: Y = %g + %g X + %g X^2\n", C[0], C[1], C[2]);
   for (i = 0; i < nDataPoints; i++) {
     fYfita[i] = C[0] + C[1] * fXraw[i] + C[2] * fXraw[i] * fXraw[i];

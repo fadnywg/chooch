@@ -65,8 +65,6 @@
 #define NOHEADER 0
 #define HEADER 1
 
-#define PI 3.14159
-
 typedef double real; // could be double.
 typedef struct {real x; real y;} point;
 /*
@@ -101,7 +99,7 @@ char *get_Edge(char *, double, double *);
  * fits
  */
 int linear_fit(int , real *, real *, real *, real *);
-int quad (int , real *, real *, real *);
+int quadfit (int , real *, real *, real *);
 
 /*
  * normalize
