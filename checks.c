@@ -25,24 +25,27 @@
 
 int checks (int nDataPoints, real *fXraw, real *fYraw, real *dStep)
 {
-  int i, j, err;
+  int i, j, err=0;
   real Steps[MAXREG];
-  real tmp;
+  real tmp, conv=1.0;
 
   *dStep=100000;
   j = 0;
+  if(fXraw[0] < 1000.0) {
+     conv=1000.0;
+     printf("Warning: Input data automatically converted from keV to eV\n");
+  }
   for (i = 0; i < nDataPoints; i++) {
-    if(fXraw[i] < 1000.0)
-      fXraw[i] *= 1000.0; // Convert from KeV to eV
-    if(i != 0) {
-      tmp = fXraw[i] - fXraw[i-1];
-      if (tmp < 0.0) {
-	err = 1;
-	printf("Error in input data: energy does not increase monotonically");
-	exit(0);
-      }
-      *dStep = (tmp < *dStep) ? tmp : *dStep;
-    }
+     fXraw[i] *= conv; // Convert from KeV to eV if required
+     if(i != 0) {
+	tmp = fXraw[i] - fXraw[i-1];
+	if (tmp < 0.0) {
+	   err = 1;
+	   printf("Error in input data: energy does not increase monotonically");
+	   exit(0);
+	}
+	*dStep = (tmp < *dStep) ? tmp : *dStep;
+     }
   }
   return err;
 }
