@@ -106,7 +106,7 @@ int quad (int , real *, real *, real *);
 /*
  * normalize
  */
-int normalize(int, double, real *, real *, real *, int);
+int normalize(int, double, real *, real *, real *, int, real *, real *);
 int impose(int, double, real *, real *, real *);
 
 /*
@@ -148,9 +148,11 @@ double Singularity(double, double, double, double, double, double, double, doubl
 /*
  *
  */
+void psplt(int, double *, double *, double *, char *);
 
 /*
  *
  */
+int selwavel(int, double *, double *, double *);
 
 
