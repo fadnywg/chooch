@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
   //
   verbose=silent=0;
   optarg = NULL;
-  while((opt = getopt(argc, argv, "she:a:r:xo:p:v:1:2:3:4:d")) != (char)(-1))
+  while((opt = getopt(argc, argv, "she:a:r:xo:p:v:1:2:3:4:dwcl")) != (char)(-1))
      switch( opt ) {
      case 's' :
 	silent = 1;
@@ -127,6 +127,18 @@ int main(int argc, char *argv[])
 	display = 1;
 	if(!silent)printf("-d: Dump data file for pooch\n", fE4);
 	break;
+     case 'w' :
+	(void)nowarranty();
+	exit(EXIT_SUCCESS);
+	break;
+     case 'c' :
+	(void)distribution();
+	exit(EXIT_SUCCESS);
+	break;
+     case 'l' :
+	(void)license();
+	exit(EXIT_SUCCESS);
+	break;
      }  
   if(argc < 2){
     printf("Usage: chooch -e <element> -a <edge>\n");
@@ -134,6 +146,7 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
   }
   copyright();
+  license();
   sFilename = argv[optind];
   if(!silent)printf("Fluorescence scan filename: %s\n", sFilename);
   //
@@ -158,6 +171,12 @@ int main(int argc, char *argv[])
    */ 
   fMonoRes = fEres * fEdge;
   nSavWin = 2 * (int) fMonoRes / dE;
+  if(nSavWin > 29){ 
+     nSavWin=29;
+  }
+  if(nSavWin < 2){ 
+     nSavWin=2;
+  }
   if(verbose>0)printf("dE = %f Resol = %f\n", dE, fMonoRes);
   if(verbose>0)printf("Savitsky-Golay window value = %d\n", nSavWin);
   /*
@@ -205,7 +224,7 @@ int main(int argc, char *argv[])
      addline(nDataPoints, fXraw, fYDeriv2, BLUE);
   }
 #endif
-  err = smooth(nDataPoints, fYfpp, fYDeriv3, nSavWin, nSavWin, 4, 2);
+  err = smooth(nDataPoints, fYfpp, fYDeriv3, nSavWin, nSavWin, 4, 3);
 #if defined(PGPLOT)
   if(plotX){
      cpgsci(BLUE);
