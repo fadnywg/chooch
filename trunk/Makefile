@@ -2,17 +2,15 @@
 # Created on Oct 30 1999 by Gwyndaf Evans
 #
 # Edit the three first directory definitions to specify
-# a)  the directory where GSL (Gnu Scientific Library) is held
-# c)  the directory where the X11 library is (LIBX11);
-# d)  and the directory where you would like you executables to go (BINDIR).
+# a)  the directory where GSL (Gnu Scientific Library) is kept
+# b)  the directory where Cgraph (PS plotting library) is kept
+# c)  and the directory where you would like you executables to go (BINDIR).
 #
 GSLDIR = /home/gwyndaf/chooch/alpha/lib
 CGRAPHDIR = /home/gwyndaf/chooch/alpha/lib
-#X11LIBDIR = /usr/X11R6/lib
 BINDIR    = /home/gwyndaf/bin/linux_exe
 INCLUDE   = /home/gwyndaf/chooch/alpha/include
 #GSLDIR = /users/opd14/Gwyndaf/lib
-#X11LIBDIR = /usr/X/lib
 #BINDIR    = /users/opd14/Gwyndaf/bin
 #INCLUDE   = /users/opd14/Gwyndaf/include
 ######################################
@@ -39,7 +37,7 @@ CP    = /bin/cp
 OBJECTS = main.o fluread.o printbanner.o minmax.o spline.o \
         mucal-C/mucal.o fdprime.o savgol.o lubksb.o ludcmp.o nrutil.o\
         smooth.o fits.o normalize.o checks.o usage.o integrate.o \
-	psplot.o selwavel.o
+	psplot.o selwavel.o copyright.o
 #toplot.o
 #
 #
