@@ -122,7 +122,7 @@ void pad(int , int , int , real *, float *);
 void toplot(int , real *, real *, char *, int);
 void spacebar();
 void addline(int, real *, real *, int);
-void efsplot(int, double *, double *, double *);
+void efsplot(int, double *, double *, double *, int, char *);
 
 /*
  * usage

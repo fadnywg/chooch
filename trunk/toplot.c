@@ -89,14 +89,16 @@ void addline(int nDataPoints, double *dX, double *dY, int nColor)
   */
 }
 
-void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2)
+void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2, int psplot, char *psfile)
 {
   int i;
+  extern int id1, id2;
   float fXplot[nDataPoints], fY1plot[nDataPoints], fY2plot[nDataPoints];
   float fXref, fYref, fXcur, fYcur;
   float fMinX, fMaxX, fMinY, fMaxY, fDum;
   char  ch[1];
   char  label[10];
+  char  *psinit;
   //
   for (i = 0 ; i < nDataPoints; i++)
     {
@@ -109,6 +111,12 @@ void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2)
   minmax(nDataPoints, fY2plot, &fMinY, &fDum);
   fMinY = (fMinY >= 0.0)? (fMinY - fMaxY * 0.1) : (fMinY * 1.15);
   fMaxY = (fMaxY >= 0.0)? (fMaxY * 1.15) : (fMaxY - fMinY * 0.1);
+  if(psplot){
+     psinit=strcat(psfile,"/cps");
+     id2=cpgopen(psinit);
+     if(id2 < 0) exit (EXIT_FAILURE);
+     cpgslct(id2);
+  }
   cpgpage();
   cpgpap(9.0,0.7);
   cpgask(0);
@@ -125,4 +133,6 @@ void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2)
   cpgsci(RED);
   cpgline(nDataPoints, fXplot, fY1plot);
   cpgline(nDataPoints, fXplot, fY2plot);
+  if(psplot)cpgpage();
+  if(id1 != 0)cpgslct(id1);
 }

@@ -33,6 +33,7 @@
 #include "chooch.h"
 int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
+int id1=0, id2=0;
 //typedef struct{double d1; double d2; double d3;} deriv; 
 //
 //
@@ -42,11 +43,12 @@ int main(int argc, char *argv[])
   float fXref, fYref, fXcur, fYcur;
   char *sFilename;
   char label[10];
+  char *psfile;
   char  ch[1];
   char  *sEdge="K";           // Letter symbol for absorption edge K, L1, L2, L3, M
   char opt;
   //
-  int nDataPoints, nFit, nPoints, verbose, plotX=0;
+  int nDataPoints, nFit, nPoints, verbose, plotX=0, psplot=0;
   double dE, tmp, fE1, fE2, fE3, fE4, fEdge;
   double fXraw[MAXSIZE], fYraw[MAXSIZE];
   double fYspline[MAXSIZE], fXfpp[MAXSIZE];
@@ -59,7 +61,7 @@ int main(int argc, char *argv[])
   double fC, fM;
   //
   optarg = NULL;
-  while( ( opt = getopt( argc, argv, "he:a:xl:v:" ) ) != (char)(-1) )
+  while( ( opt = getopt( argc, argv, "he:a:xp:l:v:" ) ) != (char)(-1) )
      switch( opt ) {
      case 'h' :
 	(void)usage();
@@ -72,8 +74,13 @@ int main(int argc, char *argv[])
 	sEdge = optarg;
 	break;
      case 'x' :	
-	printf("-X: X windows plotting requested\n");
+	printf("-x: X windows plotting requested\n");
 	plotX = 1;
+	break;
+     case 'p' :	
+	printf("-p: PostScript output requested\n");
+	psplot = 1;
+	psfile = optarg;
 	break;
      case 'l' :
 	fE1 = atof(optarg);
@@ -91,11 +98,13 @@ int main(int argc, char *argv[])
   sFilename = argv[optind];
   printf("Fluorescence scan filename: %s\n", sFilename);
   //
-  if(plotX) 
-     cpgbeg(0, "/xw", 1, 1);
-  //
+  if(plotX){
+     id1=cpgopen("/xw");
+     if(id1 < 0)exit (EXIT_FAILURE);
+     cpgslct(id1);
+     //     cpgbeg(0, "/xw", 1, 1);
+  }
   printbanner();
-  //
   /*
    * Read in raw spectrum and plot
    */
@@ -160,18 +169,10 @@ int main(int argc, char *argv[])
    */
   err=efswrite("out.efs", fXfpp, fYspline, fYfp, nPoints);
   if(plotX){
-     efsplot(nPoints, fXfpp, fYspline, fYfp);
+     efsplot(nPoints, fXfpp, fYspline, fYfp, 0, NULL);
      spacebar();
   }
+  if(psplot){
+     efsplot(nPoints, fXfpp, fYspline, fYfp, 1, psfile);
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
