@@ -20,6 +20,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 //
 #include "chooch.h"
 //
@@ -48,16 +49,33 @@ int fluread(char *filename, double *x, double *y, int *nDataPoints)
 	y[i] = (double) fYread[i];
        	if(verbose>1)printf("%10.3f  %10.3f\n", x[i], y[i]);
 	i++;
-     } else if ((n=sscanf(line, "%d", nDataPoints)) == 1) {
-	if(!silent)printf("Number of data points expected = %d\n", *nDataPoints);
+	/* Read header lines if present
+	 * Will always try and read two lines if the first is a title
+	 */
      } else if (sscanf(line, "%80c", cScanTitle) > 0) {
-	if(!silent)printf("Input file title: %s", cScanTitle);
+	if(i != 0){
+	   printf("ERROR in input format: Title is not on first line\n");
+	   exit(EXIT_FAILURE);
+	}
+	if(!silent)printf("Input file title: %s\n", cScanTitle);
+	if(fgets(line, sizeof(line), ff) != NULL){
+	   if ((n=sscanf(line, "%d", nDataPoints)) == 1) {
+	      if(!silent)printf("Number of data points expected = %d\n", *nDataPoints);
+	   }
+	}
      }
   }
   if(!silent)printf("Number of data points read = %d\n", i);
   if (*nDataPoints != i) {
+     printf("Warning: No. data points expected from header does not equal number\n");
+     printf("         present in file or has not been specified in header\n");
      *nDataPoints=i;
-     if(!silent)printf("Number of data points is %d\n", *nDataPoints);
+     if(!silent)printf("Number of actual data points is %d\n", *nDataPoints);
+  }
+  if (strlen(cScanTitle) == 0){
+     if(!silent)printf("Warning: No title supplied so using data filename instead\n");
+     strcpy(cScanTitle,filename);
+     if(!silent)printf("Input file title: %s\n", cScanTitle);
   }
   fclose(ff);
   return EXIT_SUCCESS;
