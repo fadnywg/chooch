@@ -49,5 +49,30 @@ int fluread(char *filename, double *x, double *y, int *nDataPoints)
   return EXIT_SUCCESS;
 }
 
+int efswrite(char *filename, double *x, double *y1, double *y2, int n)
+{
+  int    i;
+  int    len;
+  char   cScanTitle[TITLE];
+  FILE   *ff;
+  //
+  printf("Opening %s for write\n", filename);
+  ff = fopen(filename, "w");
+  // Read in header of raw fluorescence data file
+/*    len = getline(cScanTitle, 80); */
+//  fputs(cScanTitle, ff);
+  //  fscanf(ff, "%d", nDataPoints);
+  //  printf("Title: %s\nNo. data points: %d\n", cScanTitle, *nDataPoints);
+  //
+  printf("Writing results\n");
+  for (i = 0; i < n; i++) {
+     fprintf(ff, "%10.4f  %7.2f  %7.2f\n", x[i], y1[i], y2[i]);
+     printf("%10.4f  %7.2f  %7.2f\n", x[i], y1[i], y2[i]);
+     //    printf("%10.3f  %10.3f\n", x[i], y[i]);
+  }
+  fclose(ff);
+  return EXIT_SUCCESS;
+}
+
 
 

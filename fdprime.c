@@ -54,13 +54,13 @@ char *edge_name(int n)
    return (n < 0 || n > 4) ? name[5] : name[n];
 }
 
-char *get_Edge(char *sElement, double fMidE)
+char *get_Edge(char *sElement, double fMidE, double *fE)
 {
    /*
     * Given the mid point of recorded spectrum and element, guess the edge energy
     */
   double dEnergy[9], dXsec[11], dFluo[4];
-  double diff, mindiff=1e10;
+  double diff, mindiff=1e10, E;
   int    i, iE, iZZ = 0, iPflag=0;
   int    err;
   char   sUnit='a', sErrmsg[80];
@@ -75,6 +75,7 @@ char *get_Edge(char *sElement, double fMidE)
      if(diff < mindiff){
 	mindiff=diff;
 	iE=i;
+	*fE=dEnergy[i]*1000.0;
      }
      printf(" %8.4f       %8.4f\n", dEnergy[i], diff);
   }

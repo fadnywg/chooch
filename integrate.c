@@ -30,13 +30,16 @@ extern char *sElement;
 gsl_interp_accel *acc;
 gsl_spline *spline;
 
-void Integrate(int nDataPoints, int *nPoints, double *fXraw, double *fXfpp, 
+void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, double *fXfpp, 
                double *fYspline, double *fYfpp, double *fD1, double *fD2, 
                double *fD3, double *fYfp)
 {
   int i;
   double fp, error, E0, dE;
-  double fElo=1000.0, fEhi=60000.0;
+  double fElo, fEhi;
+
+  fElo=fEdge/1000.0;
+  fEhi=fEdge*50.0;
 
   acc=gsl_interp_accel_alloc();
   spline=gsl_spline_alloc(gsl_interp_akima, nDataPoints);
@@ -222,7 +225,7 @@ double Singularity(double E0, double a, double b, double fppE0, double fppa, dou
   term4 = -0.25*fD2*(d2*d2-d1*d1);
   term5= -1.0*fD3*(d2*d2*d2-d1*d1*d1)/18.0;
   result = (term1+term2+term3+term4+term5)/PI;
-  printf("%f + %f + %f + %f + %f / PI = %f\n", term1, term2, term3, term4, term5, result);
+  //  printf("%f + %f + %f + %f + %f / PI = %f\n", term1, term2, term3, term4, term5, result);
   return result;
 }
 
