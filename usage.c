@@ -33,6 +33,7 @@ void usage()
   (void)fprintf( stderr, "-p <PS file>          output to PostScript file\n");
   (void)fprintf( stderr, "-o <efs file>         filename for efs output (default output.efs\n");
   (void)fprintf( stderr, "-x                    plot to Xwindows\n");
+  (void)fprintf( stderr, "-d                    dump intermediate data for use with pUI\n");
   (void)fprintf( stderr, "-v <level>            verbosity level (0 -- 3) (default 0)\n");
   exit( EXIT_FAILURE );
 }
