@@ -16,8 +16,6 @@
  ***************************************************************************/
 #include <stdio.h>
 #include "chooch.h"
-//[-e <element>] [-c \"<cell dimensions>\"] [-I <beam intensity>] [-n <number heavy atoms>] [-v <sample volume>] 
-//[-t <sample thickness>] [-E <X-ray energy>] [-m <heavy atom conc.>] [-O <crystal ang. velocity>] [-D <detector distance>]
 void copyright()
 {
   (void)fprintf( stderr, "==================================================\n" );
