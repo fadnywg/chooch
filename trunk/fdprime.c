@@ -24,7 +24,7 @@
 #include <float.h>
 #include <math.h>
 #include "chooch.h"
-#include "mucal.h"     
+#include "mucal-C/mucal.h"     
 
 double get_CrossSection(char *sElement, double dEnergyKeV)
 {

@@ -42,7 +42,7 @@ CP    = /bin/cp
 # 
 # 
 OBJECTS = main.o fluread.o printbanner.o toplot.o minmax.o spline.o \
-fft.o gaussian.o tools.o mucal.o fdprime.o savgol.o lubksb.o ludcmp.o nrutil.o\
+fft.o gaussian.o tools.o mucal-C/mucal.o fdprime.o savgol.o lubksb.o ludcmp.o nrutil.o\
 smooth.o convlv.o twofft.o realft.o four1.o fits.o normalize.o checks.o usage.o\
 integrate.c
 #
@@ -54,7 +54,7 @@ install :
 	$(MV) $(EXE) $(BINDIR)
 #
 clean :
-	${RM} *.o
+	${RM} *.o mucal-C/*.o
 # 
 # End
 #
