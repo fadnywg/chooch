@@ -43,16 +43,42 @@ double get_CrossSection(char *sElement, double dEnergyKeV)
   return dXsection;
 }
 
-double get_Edge(char *sElement, char *sEdge)
+/*
+ * Return the name of absorption edge given the array index of dEnergy
+ */
+char *edge_name(int n)
 {
+   static char *name[] = {
+      "K", "L1", "L2", "L3", "M", "Bad edge"
+   };
+   return (n < 0 || n > 4) ? name[5] : name[n];
+}
+
+char *get_Edge(char *sElement, double fMidE)
+{
+   /*
+    * Given the mid point of recorded spectrum and element, guess the edge energy
+    */
   double dEnergy[9], dXsec[11], dFluo[4];
-  int    iZZ = 0, iPflag=0;
+  double diff, mindiff=1e10;
+  int    i, iE, iZZ = 0, iPflag=0;
   int    err;
   char   sUnit='a', sErrmsg[80];
+  fMidE/=1000.0;
   if((err=mucal(sElement, iZZ, 0.0, sUnit, iPflag, dEnergy, dXsec, dFluo, &sErrmsg[0])) != 0) {
     printf("WARNING: Problem  getting edge energy from mucal");
   }
-  return;
+  printf(" Mid point of spectrum = %f\n", fMidE);
+  printf(" E edge      E diff\n");
+  for(i=0; i<5; i++){
+     diff=fabs(fMidE-dEnergy[i]);
+     if(diff < mindiff){
+	mindiff=diff;
+	iE=i;
+     }
+     printf(" %8.4f       %8.4f\n", dEnergy[i], diff);
+  }
+  return edge_name(iE);
 }
 
 double get_fpp (char *sElement, double dEnergyKeV)
