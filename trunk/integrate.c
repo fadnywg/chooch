@@ -59,15 +59,19 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
       if(verbose>2)printf("Integration 1  E0=%f     a=%f   b=%f \n", E0, fElo, fXraw[i-1]);
       fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fElo, fXraw[0], error);
       if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
+
       if(verbose>2)printf("Integration 2  E0=%f     a=%f   b=%f \n", E0, fXraw[nDataPoints-1], fEhi);
       fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fXraw[nDataPoints-1], fEhi, error);
       if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
+
       if(verbose>2)printf("Integration 3  E0=%f     a=%f   b=%f \n", E0, fXraw[0], fXraw[nDataPoints-1]);
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, fXraw[0], E0-dE);
       if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
+
       if(verbose>2)printf("Integration 4  E0=%f     a=%f   b=%f \n", E0, fXraw[i+1], fXraw[nDataPoints-1]);
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, E0+dE, fXraw[nDataPoints-1]);
       if(verbose>2)printf(" Sum of fp so far  = %f \n",fYfp[i]);
+
       if(verbose>2)printf("Singularity\n");
       fYfp[i]+=Singularity(E0, E0-dE, E0+dE, fYfpp[i], fYfpp[i-1], fYfpp[i+1], fD1[i], fD2[i], fD3[i]);
       if(verbose>2)printf(" Final SUM of fp so far  = %f \n", fYfp[i]);
@@ -160,7 +164,7 @@ double IntegrateCurve(int N, double E0, double a, double b){
   gsl_function F;
   F.function = &fc;
   F.params = &E0;
-  gsl_integration_qag (&F, a, b, 1e-4, 1e-6, 500, 5, w, &result, &error); 
+  gsl_integration_qag (&F, a, b, 1e-3, 1e-5, 500, 5, w, &result, &error); 
   if(verbose>2){
      printf("result          = % .18f\n", result);
      printf("estimated error = % .18f\n", error);
