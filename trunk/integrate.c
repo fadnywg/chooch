@@ -37,7 +37,7 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   extern int verbose;
   extern double fEres;
   int i;
-  double fp, error, E0, dE;
+  double fp, error=0.0, E0, dE;
   double fElo, fEhi;
 
   fElo=fEdge/1000.0;

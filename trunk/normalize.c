@@ -71,6 +71,7 @@ int  normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doub
   for (i = 0; i < nDataPoints; i++) {
      fYnorm[i] = (fYraw[i] - fYfitb[i]) / (fYfita[i] - fYfitb[i]);
   }
+  return 0;
 }
 
 void SetConst(int n, double f, double *Array)
@@ -157,6 +158,7 @@ int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double 
   for (i = 0; i < nDataPoints; i++) {
     fYfpp[i] = (fYnorm[i] * (fYfita[i] - fYfitb[i])) + fYfitb[i];
   }
+  return 0;
 }
 
 

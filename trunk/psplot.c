@@ -76,13 +76,13 @@ void psplt(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
     *
     */
 
-   cg_linax_style(3, numoff, 5, 3, 8);
-
    /* X-AXIS */
+   cg_linax_style(3, 0, 5, 3, 8);
    cg_xaxis(6.5, fMinX, fMaxX, 0.0, fLenX/5, 1);
    cg_xlabel("X-ray energy (eV)");
    /* Y-AXIS */ 
    numoff = (((int)fMinY)%2 == 0) ? 0 : 1;
+   cg_linax_style(3, numoff, 5, 3, 8);
    ticsep=((int)fLenY)/10;
    cg_yaxis(5.0, fMinY, fMaxY, 0.0, ticsep, 2);
    cg_ylabel("f\' and f\'\' (e)");
