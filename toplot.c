@@ -54,7 +54,7 @@ void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
   cpgsci(BLACK);
   cpgsvp(0.2,0.90,0.15,0.9);
   cpgswin(fMinX,fMaxX,fMinY,fMaxY);
-  cpgbox("bncts",0.0,0,"bncts",0.0,0);
+  cpgbox("bncts1",0.0,0,"bncts",0.0,0);
   cpgsci(BLACK);
   cpgmtxt("b",2.5,0.5,0.5,"X-ray Energy (eV)");
   cpgmtxt("l",4.0,0.5,0.5,label);
