@@ -44,8 +44,6 @@ int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
   return 0;
 }
 
-
-
 int apply_response(int np, double *f, double *g, double *respns, int mm) {
   int p=1, i;
   unsigned long n, m;
