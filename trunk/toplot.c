@@ -60,6 +60,11 @@ void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
   cpgmtxt("l",4.0,0.5,0.5,label);
   cpgsci(nColor);
   cpgline(nDataPoints, fXplot, fYplot);
+}
+
+void spacebar(){
+  float fXref, fYref, fXcur, fYcur;
+  char  ch[1];
   printf("Press <SPACE> to continue\n");
   cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
 }
@@ -78,9 +83,10 @@ void addline(int nDataPoints, double *dX, double *dY, int nColor)
 
   cpgsci(nColor);
   cpgline(nDataPoints, fXplot, fYplot);
+  /*
   printf("Press <SPACE> to continue\n");
   cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
-
+  */
 }
 
 void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2)
@@ -115,10 +121,8 @@ void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2)
   cpgbox("bncts1",0.0,0,"bncts",0.0,0);
   cpgsci(BLACK);
   cpgmtxt("b",2.5,0.5,0.5,"X-ray Energy (eV)");
-  cpgmtxt("l",4.0,0.5,0.5,"Anomalous scattering factors (e)");
+  cpgmtxt("l",4.0,0.5,0.5,"f' and f'' (e)");
   cpgsci(RED);
   cpgline(nDataPoints, fXplot, fY1plot);
   cpgline(nDataPoints, fXplot, fY2plot);
-  printf("Press <SPACE> to continue\n");
-  cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
 }
