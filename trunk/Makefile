@@ -13,7 +13,7 @@ GSLDIR = /usr/local/lib
 X11LIBDIR = /usr/X11R6/lib
 BINDIR    = /home/gwyndaf/bin/linux_exe
 INCLUDE   = /usr/local/include
-NR        = /home/cvs/recipes/C/SOURCES
+#NR        = /home/cvs/recipes/C/SOURCES
 ######################################
 #
 # N.B. -ldl required to link successfully and avoid dynamic loading errors
@@ -27,7 +27,7 @@ EXE       = chooch
 #
 FC     = g77
 CC     = gcc
-#FOPTIM = -O2
+FOPTIM = -O2
 FFLAGS = $(FOPTIM)
 LDFLAGS = -static -I $(INCLUDE) -L$(PGPLOTDIR) -L$(X11LIBDIR) -L$(GSLDIR) $(LIBS)
 F      = f
