@@ -28,19 +28,20 @@
 
 int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
   // 
+  extern int verbose;
   int i, n, err;
   float fpad[MAXSIZE];
   float cn[MAXCOEF];
   // Required by savgol
   float c[MAXSIZE];
   //
-  printf("nl = %d     nr = %d     ld = %d     m = %d\n", nl, nr, ld, m);
+  if(verbose>1)printf("nl = %d     nr = %d     ld = %d     m = %d\n", nl, nr, ld, m);
   pad(np, nl, nr, f, fpad);
   savgol(c, np, nl, nr, ld, m);
   //  apply_response(np, f, g, c, (nl+nr+1));
   unwrap(c, cn, np, nl, nr);
   apply_coeffs(fpad, g, cn, nl, nr, np);
-  printf("Done smoothing\n");
+  if(verbose>0)printf("Done smoothing\n");
   return 0;
 }
 
@@ -67,11 +68,28 @@ int apply_response(int np, double *f, double *g, double *respns, int mm) {
   return 0;
 }
 
-
+void pad(int np, int nl, int nr, double *fin, float *fout) {
+  extern int verbose;
+  int i;
+  if(verbose>0)printf("Padding input spectrum\n");
+  for (i = 0; i < nl; i++) {
+    fout[i] = (float) fin[0];
+  }
+  for (i = nl; i < (np+nl); i++) {
+    fout[i] = (float) fin[i-nl];
+  }
+  for (i = (np+nl); i < (nl+np+nr); i++) {
+    fout[i] = (float) fin[np-1];
+  }
+/*    for (i = 0; i < (nl+np+nr); i++) { */
+/*      printf("%d  %10.3f\n", i, fout[i]); */
+/*    } */
+}
 
 int apply_coeffs(float *fpad, double *g, float *cn, int nl, int nr, int np) {
+  extern int verbose;
   int i, n;
-  printf("Applying SavGol coeffs\n");
+  if(verbose>0)printf("Applying SavGol coeffs\n");
   for (i = 0; i < np; i++) {
     g[i] = 0.0;
     for (n = 0; n < (nl+nr+1); n++) {
@@ -80,8 +98,6 @@ int apply_coeffs(float *fpad, double *g, float *cn, int nl, int nr, int np) {
   }
   return 0;
 }
-
-
 
 int unwrap(float *cin, float *cout, int np, int nl, int nr) {
   int i, k = 0;
@@ -119,20 +135,4 @@ int unwrap(float *cin, float *cout, int np, int nl, int nr) {
 
 
 
-void pad(int np, int nl, int nr, double *fin, float *fout) {
-  int i;
-  printf("Padding input spectrum\n");
-  for (i = 0; i < nl; i++) {
-    fout[i] = (float) fin[0];
-  }
-  for (i = nl; i < (np+nl); i++) {
-    fout[i] = (float) fin[i-nl];
-  }
-  for (i = (np+nl); i < (nl+np+nr); i++) {
-    fout[i] = (float) fin[np-1];
-  }
-/*    for (i = 0; i < (nl+np+nr); i++) { */
-/*      printf("%d  %10.3f\n", i, fout[i]); */
-/*    } */
-}
 

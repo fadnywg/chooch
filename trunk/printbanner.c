@@ -24,11 +24,9 @@
 
 void printbanner()
 {
-  printf("******************************************\n");
-  printf("                                          \n");
-  printf("                  chooch                  \n");
-  printf("                                          \n");
-  printf("               Gwyndaf Evans              \n");
-  printf("         gwyndaf@gwyndafevans.co.uk       \n");
-  printf("******************************************\n");
+  printf("==========================\n");
+  printf("chooch                  \n");
+  printf("Gwyndaf Evans              \n");
+  printf("gwyndaf@gwyndafevans.co.uk       \n");
+  printf("==========================\n");
 }

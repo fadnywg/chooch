@@ -24,50 +24,63 @@
 //
 #include "chooch.h"
 //
+
 int fluread(char *filename, double *x, double *y, int *nDataPoints)
 {
-  int    i;
+  extern int verbose;
+  int    i,n;
   int    len;
   float  fXread[MAXSIZE], fYread[MAXSIZE];
-  char   cScanTitle[TITLE];
+  char   cScanTitle[TITLE], line[TITLE];
   FILE   *ff;
   //
-  ff = fopen(filename, "r");
-  // Read in header of raw fluorescence data file
-/*    len = getline(cScanTitle, 80); */
-  fgets(cScanTitle, 80, ff);
-  fscanf(ff, "%d", nDataPoints);
-  printf("Title: %s\nNo. data points: %d\n", cScanTitle, *nDataPoints);
-  //
-  for (i = 0; i < *nDataPoints; i++) {
-    fscanf(ff, "%f%f\n", &fXread[i], &fYread[i]);
-    x[i] = (double) fXread[i];
-    y[i] = (double) fYread[i];
-    //    printf("%10.3f  %10.3f\n", x[i], y[i]);
-    }
+  if ((ff = fopen(filename, "r")) == NULL) {
+     printf("Error: File %s doesn't exist.\n", filename);
+     exit(EXIT_FAILURE);
+  }
+  /*
+   * Read in header of raw fluorescence data file
+   */ 
+  i=0;
+  while (fgets(line, sizeof(line), ff) != NULL) {
+     if ((n=sscanf(line, "%f%f\n", &fXread[i], &fYread[i])) == 2) {
+	x[i] = (double) fXread[i];
+	y[i] = (double) fYread[i];
+       	if(verbose>1)printf("%10.3f  %10.3f\n", x[i], y[i]);
+	i++;
+     } else if ((n=sscanf(line, "%d", nDataPoints)) == 1) {
+	printf("Number of data points expected = %d\n", *nDataPoints);
+     } else if (sscanf(line, "%80c", cScanTitle) > 0) {
+	printf("Input file title: %s", cScanTitle);
+     }
+  }
+  printf("Number of data points read = %d\n", i);
+  if (*nDataPoints != i) {
+     *nDataPoints=i;
+     printf("Number of data points is %d\n", *nDataPoints);
+  }
   fclose(ff);
   return EXIT_SUCCESS;
 }
 
 int efswrite(char *filename, double *x, double *y1, double *y2, int n)
 {
+  extern int verbose;
   int    i;
   int    len;
   char   cScanTitle[TITLE];
   FILE   *ff;
   //
-  printf("Opening %s for write\n", filename);
-  ff = fopen(filename, "w");
-  // Read in header of raw fluorescence data file
-/*    len = getline(cScanTitle, 80); */
-//  fputs(cScanTitle, ff);
-  //  fscanf(ff, "%d", nDataPoints);
+  if ((ff = fopen(filename, "w")) == NULL) {
+     printf("Cannot open %s for write\n", filename);
+     exit(EXIT_FAILURE);
+  }
+
   //  printf("Title: %s\nNo. data points: %d\n", cScanTitle, *nDataPoints);
-  //
-  printf("Writing results\n");
+  printf("Writing anomalous scattering factors to %s\n", filename);
   for (i = 0; i < n; i++) {
      fprintf(ff, "%10.4f  %7.2f  %7.2f\n", x[i], y1[i], y2[i]);
-     printf("%10.4f  %7.2f  %7.2f\n", x[i], y1[i], y2[i]);
+     if(verbose>0)printf("%10.4f  %7.2f  %7.2f\n", x[i], y1[i], y2[i]);
      //    printf("%10.3f  %10.3f\n", x[i], y[i]);
   }
   fclose(ff);

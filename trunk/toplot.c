@@ -83,10 +83,6 @@ void addline(int nDataPoints, double *dX, double *dY, int nColor)
 
   cpgsci(nColor);
   cpgline(nDataPoints, fXplot, fYplot);
-  /*
-  printf("Press <SPACE> to continue\n");
-  cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
-  */
 }
 
 void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2, int psplot, char *psfile)

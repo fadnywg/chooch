@@ -34,6 +34,7 @@
 int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
 int id1=0, id2=0;
+int verbose;
 //typedef struct{double d1; double d2; double d3;} deriv; 
 //
 //
@@ -42,13 +43,12 @@ int main(int argc, char *argv[])
   int i, j, err;
   float fXref, fYref, fXcur, fYcur;
   char *sFilename;
-  char label[10];
   char *psfile, *outfile="output.efs";
   char  ch[1];
   char  *sEdge="K";           // Letter symbol for absorption edge K, L1, L2, L3, M
   char opt;
   //
-  int nDataPoints, nFit, nPoints, verbose, plotX=0, psplot=0;
+  int nDataPoints, nFit, nPoints, plotX=0, psplot=0;
   double dE, tmp, fE1, fE2, fE3, fE4, fEdge;
   double fXraw[MAXSIZE], fYraw[MAXSIZE];
   double fYspline[MAXSIZE], fXfpp[MAXSIZE];
@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
   double SeK = 12665.0;
   double fC, fM;
   //
+  verbose = 0;
   optarg = NULL;
   while( ( opt = getopt( argc, argv, "he:a:xo:p:l:v:" ) ) != (char)(-1) )
      switch( opt ) {
@@ -77,26 +78,28 @@ int main(int argc, char *argv[])
 	printf("-x: X windows plotting requested\n");
 	plotX = 1;
 	break;
+     case 'o' :	
+	printf("-o: output file name\n");
+	outfile = optarg;
+	break;
      case 'p' :	
 	printf("-p: PostScript output requested\n");
 	psplot = 1;
 	psfile = optarg;
-	break;
-     case 'o' :	
-	printf("-o: output file name\n");
-	outfile = optarg;
 	break;
      case 'l' :
 	fE1 = atof(optarg);
 	printf("Fit below edge from %f\n", fE1);
 	break;
      case 'v' :
-	verbose = 1;
+	verbose = atoi(optarg);
+	printf("Verbosity level %d", verbose);
 	break;
      }
   
   if(argc < 2){
-    printf("\nUsage: chooch <filename>\n");
+    printf("Usage: chooch -e <element> -a <edge>\n");
+    printf("Try chooch -h to show all options\n");
     exit(EXIT_FAILURE);
   }
   sFilename = argv[optind];
@@ -106,25 +109,20 @@ int main(int argc, char *argv[])
      id1=cpgopen("/xw");
      if(id1 < 0)exit (EXIT_FAILURE);
      cpgslct(id1);
-     //     cpgbeg(0, "/xw", 1, 1);
   }
-  printbanner();
+  //printbanner();
   /*
    * Read in raw spectrum and plot
    */
   fluread(sFilename, fXraw, fYraw, &nDataPoints);
   err=checks(nDataPoints, fXraw, fYraw, &dE);
   fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
-  printf("Mid point of spectrum = %f\n", fMid);
   sEdge=get_Edge(sElement, fMid, &fEdge);
-  printf("\nSpectrum over %s %s edge at theoretocal energy of %8.2f eV\n", sElement, sEdge, fEdge);
-  //  for (i = 0; i < nDataPoints; i++)
-  //    fXpoint[i] = (double) i;
+  printf("\nSpectrum over %s %s edge at theoretical energy of %8.2f eV\n", sElement, sEdge, fEdge);
   /*
    * Smooth with Savitzky-Golay filter
    */ 
   err = smooth(nDataPoints, fYraw, fYsmooth, 8, 8, 4, 0);
-  //  strcpy(label,"Result");  
   //  cpgsci(RED);
   if(plotX){
      toplot(nDataPoints, fXraw, fYraw, "Raw and smoothed data", YELLOW);
@@ -134,12 +132,12 @@ int main(int argc, char *argv[])
    * Normalise data
    */
   err=normalize(nDataPoints, fEdge, fXraw, fYraw, fYnorm, plotX);
-  spacebar();
+  if(plotX)spacebar();
   /*
    * Impose on theoretical spectrum of f'' to obtain 
    * experimental equivalent
    */
-  printf(" Converting spectrum to f''\n");
+  if(verbose>0)printf(" Converting spectrum to f''\n");
   err=impose(nDataPoints, fEdge, fXraw, fYnorm, fYfpp);
   /*
    * Determine first and second derivatives of smoothed data

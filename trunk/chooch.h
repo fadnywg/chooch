@@ -62,6 +62,8 @@
 #define REVERSE 2
 #define ODD  1
 #define EVEN 0
+#define NOHEADER 0
+#define HEADER 1
 
 #define PI 3.14159
 

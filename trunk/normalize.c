@@ -25,15 +25,16 @@
 extern char *sElement;
 int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, double *fYnorm, int plotX)
 {
+  extern int verbose;
   int i, j, nFit, err;
   double fXtemp[MAXSIZE], fYtemp[MAXSIZE];
   double fYfita[MAXSIZE], fYfitb[MAXSIZE];
   double fC, fM;
   char label[10];
-  printf(" Plot switch:   %d\n", plotX);
+  if(verbose>0)printf(" Plot switch:   %d\n", plotX);
   i = 0;
   if((fEdge-fXraw[i]) > 30.0) {
-     printf("Using linear fit to below edge region\n");
+     if(verbose>1)printf("Using linear fit to below edge region\n");
      while (fXraw[i] < fEdge-20) {
 	fXtemp[i] = fXraw[i];
 	fYtemp[i] = fYraw[i];
@@ -48,37 +49,48 @@ int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doubl
 	addline(nDataPoints, fXraw, fYfitb, BLUE);
   } else {
      fC=fYraw[0];
-     printf("Assuming below edge constant value of %f in normalisation\n", fC);
+     printf("Warning: Insufficient data - assuming below edge \n         constant value of %f in normalisation\n", fC);
      for (i = 0; i < nDataPoints; i++) {
 	fYfitb[i] = fC;
      }
   }
   j = 0;
+  if((fXraw[nDataPoints-1]-fEdge) > 30.0) {
+     if(verbose>1)printf("Using linear fit to above edge region\n");
+     for (i = 0; i < nDataPoints; i++) {
+	if (fXraw[i] > fEdge+25) {
+	   fXtemp[j] = fXraw[i];
+	   fYtemp[j] = fYraw[i];
+	   j++;
+	}
+     }
+     nFit = j-2;
+     err = linear_fit(nFit, fXtemp, fYtemp, &fC, &fM);
+     for (i = 0; i < nDataPoints; i++) {
+	fYfita[i] = fC + fM * fXraw[i];
+     }
+     if(plotX)
+	addline(nDataPoints, fXraw, fYfita, BLUE);
+  } else {
+     fC=fYraw[nDataPoints-1];
+     printf("Warning: Insufficient data - assuming above edge \n         constant value of %f in normalisation\n", fC);
+     for (i = 0; i < nDataPoints; i++) {
+	fYfitb[i] = fC;
+     }     
+  }
   for (i = 0; i < nDataPoints; i++) {
-    if (fXraw[i] > fEdge+20) {
-      fXtemp[j] = fXraw[i];
-      fYtemp[j] = fYraw[i];
-      j++;
-    }
+     fYnorm[i] = (fYraw[i] - fYfitb[i]) / (fYfita[i] - fYfitb[i]);
   }
-  nFit = j-2;
-  err = linear_fit(nFit, fXtemp, fYtemp, &fC, &fM);
-  for (i = 0; i < nDataPoints; i++) {
-    fYfita[i] = fC + fM * fXraw[i];
-  }
-  if(plotX){
-     addline(nDataPoints, fXraw, fYfita, BLUE);
-  }
-  for (i = 0; i < nDataPoints; i++) {
-    fYnorm[i] = (fYraw[i] - fYfitb[i]) / (fYfita[i] - fYfitb[i]);
-  }
-  
-  //  strcpy(label,"Normalized data");
-  //  toplot(nDataPoints, fXraw, fYnorm, label, GREEN);
+  /*
+  strcpy(label,"Normalized data");
+  toplot(nDataPoints, fXraw, fYnorm, label, GREEN);
+  */
 }
 
 
-int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double *fYfpp) {
+int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double *fYfpp)
+{
+  extern int verbose;
   int i, nFit, err;
   double fXtemp[MAXSIZE], fYtemp[MAXSIZE];
   double fYfita[MAXSIZE], fYfitb[MAXSIZE];
@@ -89,16 +101,19 @@ int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double 
   for(i=0; i<50; i++){
     fXtemp[i] = fEdge-60+(float)i;
     fYtemp[i] = get_fpp(sElement, fXtemp[i]/1000.0);
-    //    printf("%10.3f %10.3f\n", fXtemp[i], fYtemp[i]);
+    /*
+    printf("%10.3f %10.3f\n", fXtemp[i], fYtemp[i]);
+    */
   }
   nFit = i-2;
   err = quad(nFit, fXtemp, fYtemp, C);
-  printf("# best qaud fit: Y = %g + %g X + %g X^2\n", C[0], C[1], C[2]);
+  if(verbose>1)printf("# best qaud fit: Y = %g + %g X + %g X^2\n", C[0], C[1], C[2]);
   for (i = 0; i < nDataPoints; i++) {
     fYfitb[i] = C[0] + C[1] * fXraw[i] + C[2] * fXraw[i] * fXraw[i];
   }
-  //  addline(nDataPoints, fXraw, fYfitb, YELLOW);
-
+  /*
+  addline(nDataPoints, fXraw, fYfitb, YELLOW);
+  */
   /* ABOVE EDGE */
   for (i = 0; i < 50; i++) {
      fXtemp[i] = fEdge+10+(float)i;
@@ -106,11 +121,13 @@ int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double 
   }
   nFit = i-2;
   err = quad(nFit, fXtemp, fYtemp, C);
-  printf("# best quad fit: Y = %g + %g X + %g X^2\n", C[0], C[1], C[2]);
+  if(verbose>1)printf("# best quad fit: Y = %g + %g X + %g X^2\n", C[0], C[1], C[2]);
   for (i = 0; i < nDataPoints; i++) {
     fYfita[i] = C[0] + C[1] * fXraw[i] + C[2] * fXraw[i] * fXraw[i];
   }
-  //  addline(nDataPoints, fXraw, fYfita, GREEN);
+  /*
+  addline(nDataPoints, fXraw, fYfita, GREEN);
+  */
   /*
    * Apply fits to normalized data to produce f''
    */

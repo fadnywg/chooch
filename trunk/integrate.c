@@ -34,6 +34,7 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
                double *fYspline, double *fYfpp, double *fD1, double *fD2, 
                double *fD3, double *fYfp)
 {
+  extern int verbose;
   int i;
   double fp, error, E0, dE;
   double fElo, fEhi;
@@ -46,26 +47,26 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   gsl_spline_init(spline, fXraw, fYfpp, nDataPoints);
 
   dE=(fXraw[nDataPoints-1]-fXraw[0])/(nDataPoints-1);
-  printf("Energy interval = %f\n", dE);
+  if(verbose>0)printf("Energy interval = %f\n", dE);
   for (i=0, E0=fXraw[1]; E0<fXraw[nDataPoints-1]; E0+=dE, i++)
     {
-      //      printf("\n\n=====\nPoint No. i=%d     x=%f   y=%f\n", i, E0, fYfpp[i]);
+      if(verbose>2)printf("\n\n=====\nPoint No. i=%d     x=%f   y=%f\n", i, E0, fYfpp[i]);
       fYfp[i]=0.0;
-      //      printf("Integration 1  E0=%f     a=%f   b=%f \n", E0, fElo, fXraw[i-1]);
+      if(verbose>2)printf("Integration 1  E0=%f     a=%f   b=%f \n", E0, fElo, fXraw[i-1]);
       fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fElo, fXraw[0], error);
-      //      printf("tmp  %f    Sum of fp so far  = %f \n", tmp, fYfp[i]);
-      //      printf("Integration 2  E0=%f     a=%f   b=%f \n", E0, fXraw[nDataPoints-1], fEhi);
+      if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
+      if(verbose>2)printf("Integration 2  E0=%f     a=%f   b=%f \n", E0, fXraw[nDataPoints-1], fEhi);
       fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fXraw[nDataPoints-1], fEhi, error);
-      //      printf("tmp  %f    Sum of fp so far  = %f \n", tmp, fYfp[i]);
-      //      printf("Integration 3  E0=%f     a=%f   b=%f \n", E0, fXraw[0], fXraw[nDataPoints-1]);
+      if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
+      if(verbose>2)printf("Integration 3  E0=%f     a=%f   b=%f \n", E0, fXraw[0], fXraw[nDataPoints-1]);
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, fXraw[0], E0-dE);
-      //      printf("tmp  %f    Sum of fp so far  = %f \n", tmp, fYfp[i]);
-      //      printf("Integration 4  E0=%f     a=%f   b=%f \n", E0, fXraw[i+1], fXraw[nDataPoints-1]);
+      if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
+      if(verbose>2)printf("Integration 4  E0=%f     a=%f   b=%f \n", E0, fXraw[i+1], fXraw[nDataPoints-1]);
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, E0+dE, fXraw[nDataPoints-1]);
-      //      printf("tmp  %f    Sum of fp so far  = %f \n", tmp,fYfp[i]);
-      //      printf("Singularity\n");
+      if(verbose>2)printf(" Sum of fp so far  = %f \n",fYfp[i]);
+      if(verbose>2)printf("Singularity\n");
       fYfp[i]+=Singularity(E0, E0-dE, E0+dE, fYfpp[i], fYfpp[i-1], fYfpp[i+1], fD1[i], fD2[i], fD3[i]);
-      //      printf("tmp  %f    Final SUM of fp so far  = %f \n", tmp, fYfp[i]);
+      if(verbose>2)printf(" Final SUM of fp so far  = %f \n", fYfp[i]);
       fXfpp[i]=E0;
       fYspline[i]=gsl_spline_eval(spline, E0, acc);
     }
@@ -112,6 +113,7 @@ double fs(double E, void * params) {
 
 double IntegrateExtrap(int N, double E0, double a, double b, double error)
 {
+  extern int verbose;
   double result;
   gsl_integration_workspace * w=gsl_integration_workspace_alloc(1000);
   gsl_function F;
@@ -119,16 +121,17 @@ double IntegrateExtrap(int N, double E0, double a, double b, double error)
   F.params = &E0;
 
   gsl_integration_qag(&F, a, b, 0.0, 1e-7, 1000, 3, w, &result, &error); 
-  /*
-  printf("result          = % .18f\n", result);
-  printf("estimated error = % .18f\n", error);
-  printf("intervals =  %d\n", w->size);
-  */
+  if(verbose>2){
+     printf("result          = % .18f\n", result);
+     printf("estimated error = % .18f\n", error);
+     printf("intervals =  %d\n", w->size);
+  }
   gsl_integration_workspace_free(w);
   return 2.0*result/PI;
 }
 
 double CauchyCurve(int N, double E0, double a, double b){
+  extern int verbose;
   double result, error;
   gsl_integration_workspace * w 
     = gsl_integration_workspace_alloc(500);
@@ -137,15 +140,16 @@ double CauchyCurve(int N, double E0, double a, double b){
   F.params = &E0;
   gsl_integration_qawc (&F, a, b, E0, 0.0, 1e-3, 500, w, &result, &error); 
   printf("result          = % .18f\n", result);
-  /*
-  printf("estimated error = % .18f\n", error);
-  printf("intervals =  %d\n", w->size);
-  */
+  if(verbose>2){
+     printf("estimated error = % .18f\n", error);
+     printf("intervals =  %d\n", w->size);
+  }
   gsl_integration_workspace_free(w);
   return result;
 }
 
 double IntegrateCurve(int N, double E0, double a, double b){
+  extern int verbose;
   double result, error;
   gsl_integration_workspace * w 
     = gsl_integration_workspace_alloc(500);
@@ -153,11 +157,11 @@ double IntegrateCurve(int N, double E0, double a, double b){
   F.function = &fc;
   F.params = &E0;
   gsl_integration_qag (&F, a, b, 1e-4, 1e-6, 500, 5, w, &result, &error); 
-  /*
-  printf("result          = % .18f\n", result);
-  printf("estimated error = % .18f\n", error);
-  printf("intervals =  %d\n", w->size);
-  */
+  if(verbose>2){
+     printf("result          = % .18f\n", result);
+     printf("estimated error = % .18f\n", error);
+     printf("intervals =  %d\n", w->size);
+  }
   gsl_integration_workspace_free(w);
   return 2.0*result/PI;
 }
@@ -165,6 +169,7 @@ double IntegrateCurve(int N, double E0, double a, double b){
 double Singularity(double E0, double a, double b, 
                    double fppE0, double fppa, double fppb, 
                    double fD1, double fD2, double fD3){
+  extern int verbose;
   double result, error;
   gsl_integration_workspace * w 
     = gsl_integration_workspace_alloc(50);
@@ -182,7 +187,7 @@ double Singularity(double E0, double a, double b,
   term4 = -0.25*fD2*(d2*d2-d1*d1);
   term5= -1.0*fD3*(d2*d2*d2-d1*d1*d1)/18.0;
   result = (term1+term2+term3+term4+term5)/PI;
-  //  printf("%f + %f + %f + %f + %f / PI = %f\n", term1, term2, term3, term4, term5, result);
+  if(verbose>2)printf("%f + %f + %f + %f + %f / PI = %f\n", term1, term2, term3, term4, term5, result);
   return result;
 }
 
