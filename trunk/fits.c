@@ -120,11 +120,3 @@ int quadfit (int n, double *fX, double *fY, double *fCoef)
   }
   return 0;
 }
-
-
-
-
-
-
-
-
