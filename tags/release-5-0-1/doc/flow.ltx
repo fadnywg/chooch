@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage{pstricks,pst-node}
+\usepackage{graphics}
+\pagestyle{myheadings}
+\markright{Gwyndaf Evans}
+\title{CHOOCH}
+\author{Gwyndaf Evans}
+\begin{document}
+\maketitle
+%
+%
+%
+\section{Data analysis}
+
+\psset{framearc=0.2}
+\begin{psmatrix}[rowsep=4mm, colsep=0mm]
+&[name=A]\psframebox{Input data}&\\
+&[name=B]\psframebox{Validate data}&\\
+&[name=C]\psframebox{Detect Element and Edge}&\\
+&[name=D]\psframebox{Normalize}&\\
+&[name=E]\psframebox{Smooth and calculate derivatives}&\\
+&[name=F]\psframebox{Convert to $f''$}&\\
+&[name=G]\psframebox{Extrapolate $f''$ to high and low E}&\\
+&[name=H]\psframebox{KK ransformation}&
+\psset{arrows=->}
+\ncline{A}{B}
+\ncline{B}{C}
+\ncline{C}{D}
+\ncline{D}{E}
+\ncline{E}{F}
+\ncline{F}{G}
+\ncline{G}{H}
+\end{psmatrix}
+
+
+\end{document}
