@@ -62,7 +62,6 @@ int main(int argc, char *argv[])
   double fYDeriv1[MAXSIZE], fYDeriv2[MAXSIZE], fYDeriv3[MAXSIZE];
   double C[3], result, error, fMid;
   //
-  double SeK = 12665.0;
   double fC, fM;
   FILE *ff;
   //
