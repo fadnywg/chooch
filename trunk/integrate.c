@@ -128,7 +128,7 @@ double IntegrateExtrap(int N, double E0, double a, double b, double error)
   F.function = &f;
   F.params = &E0;
 
-  gsl_integration_qag(&F, a, b, 0.0, 1e-7, 1000, 3, w, &result, &error); 
+  gsl_integration_qag(&F, a, b, 1e-3, 1e-3, 1000, 3, w, &result, &error); 
   if(verbose>2){
      printf("result          = % .18f\n", result);
      printf("estimated error = % .18f\n", error);
@@ -164,7 +164,7 @@ double IntegrateCurve(int N, double E0, double a, double b){
   gsl_function F;
   F.function = &fc;
   F.params = &E0;
-  gsl_integration_qag (&F, a, b, 1e-3, 1e-5, 500, 5, w, &result, &error); 
+  gsl_integration_qag (&F, a, b, 1e-3, 1e-3, 500, 5, w, &result, &error); 
   if(verbose>2){
      printf("result          = % .18f\n", result);
      printf("estimated error = % .18f\n", error);
@@ -186,7 +186,7 @@ double Singularity(double E0, double a, double b,
   gsl_function F;
   F.function = &fs;
   F.params = &E0;
-  gsl_integration_qag (&F, a, b, 0.0, 1e-6, 50, 6, w, &term1, &error); 
+  gsl_integration_qag (&F, a, b, 1.0e-3, 1.0e-3, 50, 6, w, &term1, &error); 
   
   d1 = a-E0;
   d2 = b-E0;
