@@ -54,7 +54,7 @@ install :
 	$(MV) $(EXE) $(BINDIR)
 #
 clean :
-	${RM} *.o *~
+	${RM} *.o
 # 
 # End
 #
