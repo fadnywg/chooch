@@ -26,11 +26,12 @@
 
 int fluread(char *filename, double *x, double *y, int *nDataPoints)
 {
-  extern int verbose;
+  extern int verbose, silent;
+  extern char cScanTitle[TITLE];
   int    i,n;
   int    len;
   float  fXread[MAXSIZE], fYread[MAXSIZE];
-  char   cScanTitle[TITLE], line[TITLE];
+  char   line[TITLE];
   FILE   *ff;
   //
   if ((ff = fopen(filename, "r")) == NULL) {
@@ -48,15 +49,15 @@ int fluread(char *filename, double *x, double *y, int *nDataPoints)
        	if(verbose>1)printf("%10.3f  %10.3f\n", x[i], y[i]);
 	i++;
      } else if ((n=sscanf(line, "%d", nDataPoints)) == 1) {
-	printf("Number of data points expected = %d\n", *nDataPoints);
+	if(!silent)printf("Number of data points expected = %d\n", *nDataPoints);
      } else if (sscanf(line, "%80c", cScanTitle) > 0) {
-	printf("Input file title: %s", cScanTitle);
+	if(!silent)printf("Input file title: %s", cScanTitle);
      }
   }
-  printf("Number of data points read = %d\n", i);
+  if(!silent)printf("Number of data points read = %d\n", i);
   if (*nDataPoints != i) {
      *nDataPoints=i;
-     printf("Number of data points is %d\n", *nDataPoints);
+     if(!silent)printf("Number of data points is %d\n", *nDataPoints);
   }
   fclose(ff);
   return EXIT_SUCCESS;
@@ -64,10 +65,10 @@ int fluread(char *filename, double *x, double *y, int *nDataPoints)
 
 int efswrite(char *filename, double *x, double *y1, double *y2, int n)
 {
-  extern int verbose;
+  extern int verbose, silent;
+  extern char cScanTitle[TITLE];
   int    i;
   int    len;
-  char   cScanTitle[TITLE];
   FILE   *ff;
   //
   if ((ff = fopen(filename, "w")) == NULL) {
@@ -76,7 +77,7 @@ int efswrite(char *filename, double *x, double *y1, double *y2, int n)
   }
 
   //  printf("Title: %s\nNo. data points: %d\n", cScanTitle, *nDataPoints);
-  printf("Writing anomalous scattering factors to %s\n", filename);
+  if(!silent)printf("Writing anomalous scattering factors to %s\n", filename);
   for (i = 0; i < n; i++) {
      fprintf(ff, "%10.4f  %7.2f  %7.2f\n", x[i], y1[i], y2[i]);
      if(verbose>0)printf("%10.4f  %7.2f  %7.2f\n", x[i], y1[i], y2[i]);
