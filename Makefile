@@ -16,7 +16,7 @@ INCLUDE   = /usr/local/include
 #
 # N.B. -ldl required to link successfully and avoid dynamic loading errors
 #
-PGLIBS = -lcpgplot -lpgplot
+PGLIBS = -lcpgplot -lpgplot -lcgraph
 LIBS =  -lm -lgsl -lgslcblas -lX11 -ldl
 #
 EXE    = chooch
@@ -42,7 +42,7 @@ CP    = /bin/cp
 OBJECTS = main.o fluread.o printbanner.o toplot.o minmax.o spline.o \
 	mucal-C/mucal.o fdprime.o savgol.o lubksb.o ludcmp.o nrutil.o\
 	smooth.o convlv.o twofft.o realft.o four1.o fits.o normalize.o \
-	checks.o usage.o integrate.c
+	checks.o usage.o integrate.c psplot.o selwavel.o
 #
 #
 chooch : ${OBJECTS}
