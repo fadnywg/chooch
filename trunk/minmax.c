@@ -24,12 +24,14 @@
 
 int minmax(int n, float *fArray, float *fMin, float *fMax)
 {
-  int i;
-  *fMin = 10000000;
-  *fMax = -10000000;
-  for (i = 0; i < n; i++) {
-    *fMin = (fArray[i] < *fMin) ? fArray[i] : *fMin;
-    *fMax = (fArray[i] > *fMax) ? fArray[i] : *fMax;
-  }
-  return EXIT_SUCCESS;
+   extern int verbose;
+   int i;
+   *fMin = 10000000;
+   *fMax = -10000000;
+   for (i = 0; i < n; i++) {
+      *fMin = (fArray[i] < *fMin) ? fArray[i] : *fMin;
+      *fMax = (fArray[i] > *fMax) ? fArray[i] : *fMax;
+   }
+   if(verbose>2)printf("In minmax:  %f %f\n", *fMin, *fMax);
+   return EXIT_SUCCESS;
 }
