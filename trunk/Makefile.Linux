@@ -1,0 +1,6 @@
+FOPTIM = -O2
+FFLAGS = $(FOPTIM)
+LDFLAGS = -static -L$(PGPLOTDIR) -L$(X11LIBDIR) -L$(GSLDIR) $(PGLIBS) $(CGRAPH) $(LIBS)
+CFLAGS = -I$(INCLUDE)
+FC     = g77
+CC     = gcc
