@@ -72,7 +72,7 @@ typedef struct {real x; real y;} point;
  */
 
 #if defined(PGPLOT)
-#include "/usr/local/pgplot/cpgplot.h"
+#include <cpgplot.h>
 #endif
 
 #include "mucal.h"
