@@ -104,7 +104,7 @@ int quad (int , real *, real *, real *);
 /*
  * normalize
  */
-int normalize(int, double, real *, real *, real *);
+int normalize(int, double, real *, real *, real *, int);
 int impose(int, double, real *, real *, real *);
 
 /*
@@ -120,7 +120,9 @@ void pad(int , int , int , real *, float *);
  * toplot
  */
 void toplot(int , real *, real *, char *, int);
+void spacebar();
 void addline(int, real *, real *, int);
+void efsplot(int, double *, double *, double *);
 
 /*
  * usage
@@ -135,7 +137,6 @@ double f(double, void *);
 double fc(double, void *);
 double fcp(double, void *);
 double fs(double, void *);
-double ft(double, void *);
 double IntegrateExtrap(int, double, double, double, double);
 double CauchyCurve(int, double, double, double);
 double IntegrateCurve(int, double, double, double);

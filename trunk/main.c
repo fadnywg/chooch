@@ -43,10 +43,10 @@ int main(int argc, char *argv[])
   char *sFilename;
   char label[10];
   char  ch[1];
-  char  *sEdge="L";           // Letter symbol for absorption edge K, L1, L2, L3, M
+  char  *sEdge="K";           // Letter symbol for absorption edge K, L1, L2, L3, M
   char opt;
   //
-  int nDataPoints, nFit, nPoints, verbose;
+  int nDataPoints, nFit, nPoints, verbose, plotX=0;
   double dE, tmp, fE1, fE2, fE3, fE4, fEdge;
   double fXraw[MAXSIZE], fYraw[MAXSIZE];
   double fYspline[MAXSIZE], fXfpp[MAXSIZE];
@@ -59,9 +59,7 @@ int main(int argc, char *argv[])
   double fC, fM;
   //
   optarg = NULL;
-  while( ( opt = getopt( argc, argv, "h:e:a:o:l:v:" ) ) != (char)(-1) )
-/*   while (--argc > 0 && (*++argv)[0] == '-') */
-/*      while (c = *++argv[0]) */
+  while( ( opt = getopt( argc, argv, "he:a:xl:v:" ) ) != (char)(-1) )
      switch( opt ) {
      case 'h' :
 	(void)usage();
@@ -70,15 +68,19 @@ int main(int argc, char *argv[])
      case 'e' :
 	sElement = optarg;
 	break;
-     case 'v' :
-	verbose = 1;
-	break;
      case 'a' :
 	sEdge = optarg;
+	break;
+     case 'x' :	
+	printf("-X: X windows plotting requested\n");
+	plotX = 1;
 	break;
      case 'l' :
 	fE1 = atof(optarg);
 	printf("Fit below edge from %f\n", fE1);
+	break;
+     case 'v' :
+	verbose = 1;
 	break;
      }
   
@@ -89,7 +91,8 @@ int main(int argc, char *argv[])
   sFilename = argv[optind];
   printf("Fluorescence scan filename: %s\n", sFilename);
   //
-  cpgbeg(0, "/xw", 1, 1);
+  if(plotX) 
+     cpgbeg(0, "/xw", 1, 1);
   //
   printbanner();
   //
@@ -97,13 +100,11 @@ int main(int argc, char *argv[])
    * Read in raw spectrum and plot
    */
   fluread(sFilename, fXraw, fYraw, &nDataPoints);
-  err = checks(nDataPoints, fXraw, fYraw, &dE);
-  strcpy(label,"Raw data");
+  err=checks(nDataPoints, fXraw, fYraw, &dE);
   fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
   printf("Mid point of spectrum = %f\n", fMid);
   sEdge=get_Edge(sElement, fMid, &fEdge);
   printf("\nSpectrum over %s %s edge at theoretocal energy of %8.2f eV\n", sElement, sEdge, fEdge);
-  toplot(nDataPoints, fXraw, fYraw, label, YELLOW);
   //  for (i = 0; i < nDataPoints; i++)
   //    fXpoint[i] = (double) i;
   /*
@@ -112,16 +113,15 @@ int main(int argc, char *argv[])
   err = smooth(nDataPoints, fYraw, fYsmooth, 8, 8, 4, 0);
   //  strcpy(label,"Result");  
   //  cpgsci(RED);
-  //  addline(nDataPoints, fXraw, fYsmooth, RED);
+  if(plotX){
+     toplot(nDataPoints, fXraw, fYraw, "Raw and smoothed data", YELLOW);
+     addline(nDataPoints, fXraw, fYsmooth, RED);
+  }
   /*
    * Normalise data
    */
-  err=normalize(nDataPoints, fEdge, fXraw, fYraw, fYnorm);
-  /*
-  strcpy(label,"Normalized spectrum");
-  toplot(nDataPoints, fXraw, fYnorm, label, RED);
-  */
-      
+  err=normalize(nDataPoints, fEdge, fXraw, fYraw, fYnorm, plotX);
+  spacebar();
   /*
    * Impose on theoretical spectrum of f'' to obtain 
    * experimental equivalent
@@ -132,42 +132,37 @@ int main(int argc, char *argv[])
    * Determine first and second derivatives of smoothed data
    * and plot them on top of one another.
    */
-  strcpy(label,"Fit and derivatives");
   err = smooth(nDataPoints, fYfpp, fYfpps, 8, 8, 4, 0); 
-  strcpy(label,"f''");
-  printf("Press <SPACE> to continue\n");
-  cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
-  toplot(nDataPoints, fXraw, fYfpps, label, RED);
-  //  toplot(nDataPoints, fXraw, fYfpp, label, RED);
+  if(plotX)
+     toplot(nDataPoints, fXraw, fYfpps, "f'' and derivatives", RED);
   err = smooth(nDataPoints, fYfpp, fYDeriv1, 8, 8, 4, 1);
-  strcpy(label,"1st and 2nd derivative");  
-  addline(nDataPoints, fXraw, fYDeriv1, YELLOW);
+  if(plotX)
+     addline(nDataPoints, fXraw, fYDeriv1, YELLOW);
   err = smooth(nDataPoints, fYfpp, fYDeriv2, 8, 8, 4, 2);
-  cpgsci(BLUE);
-  addline(nDataPoints, fXraw, fYDeriv2, BLUE);
+  if(plotX){
+     cpgsci(BLUE);
+     addline(nDataPoints, fXraw, fYDeriv2, BLUE);
+  }
   err = smooth(nDataPoints, fYfpp, fYDeriv3, 8, 8, 4, 2);
-  cpgsci(BLUE);
-  addline(nDataPoints, fXraw, fYDeriv3, BLUE);
+  if(plotX){
+     cpgsci(BLUE);
+     addline(nDataPoints, fXraw, fYDeriv3, BLUE);
+     spacebar();
+  }
   /*
    * Perform Kramer-Kronig transform
    */
-  printf("Press <SPACE> to continue\n");
-  cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
   Integrate(nDataPoints, &nPoints, fEdge, fXraw, fXfpp, fYspline, fYfpps, fYDeriv1, fYDeriv2, fYDeriv3, fYfp);
-  addline(nPoints, fXfpp, fYspline, BLUE);
-
-  /*
-  for(i=0; i<nPoints; i++){
-    printf("%f %f %f\n", fXfpp[i], fYspline[i], fYfp[i]);
-  }
-  */
-
+  if(plotX)
+     addline(nPoints, fXfpp, fYspline, BLUE);
   /*
    * Plot resulting f' and f'' spectra
    */
   err=efswrite("out.efs", fXfpp, fYspline, fYfp, nPoints);
-  efsplot(nPoints, fXfpp, fYspline, fYfp);
-
+  if(plotX){
+     efsplot(nPoints, fXfpp, fYspline, fYfp);
+     spacebar();
+  }
 }
 
 
