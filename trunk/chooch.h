@@ -92,7 +92,8 @@ int checks (int , real *, real *, real *);
  */
 real get_CrossSection(char *, real);
 real get_fpp (char *, real);
-
+char *edge_name(int);
+char *get_Edge(char *, double);
 /*
  * fits
  */

@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   char *sFilename;
   char label[10];
   char  ch[1];
-  char  *sEdge="K";           // Letter symbol for absorption edge K, L1, L2, L3, M
+  char  *sEdge="L";           // Letter symbol for absorption edge K, L1, L2, L3, M
   char opt;
   //
   int nDataPoints, nFit, nPoints;
@@ -52,7 +52,7 @@ int main(int argc, char *argv[])
   double fYspline[MAXSIZE], fXfpp[MAXSIZE];
   double fYsmooth[MAXSIZE], fYnorm[MAXSIZE], fYfpp[MAXSIZE], fYfp[MAXSIZE];
   double fYDeriv1[MAXSIZE], fYDeriv2[MAXSIZE], fYDeriv3[MAXSIZE];
-  double C[3], result, error;
+  double C[3], result, error, fMid;
   //
   double SeK = 12665.0;
   double fC, fM;
@@ -75,12 +75,11 @@ int main(int argc, char *argv[])
     }
 
   if(argc < 2){
-    printf("\nUsage: gexen <filename>\n");
+    printf("\nUsage: chooch <filename>\n");
     exit(EXIT_FAILURE);
   }
   sFilename = argv[optind];
   printf("Fluorescence scan filename: %s\n", sFilename);
-  printf("Element: %s    Absorption Edge: %s\n", sElement, sEdge);
   //
   cpgbeg(0, "/xw", 1, 1);
   //
@@ -92,8 +91,11 @@ int main(int argc, char *argv[])
   fluread(sFilename, fXraw, fYraw, &nDataPoints);
   err = checks(nDataPoints, fXraw, fYraw, &dE);
   strcpy(label,"Raw data");
+  fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
+  printf("Mid point of spectrum = %f\n", fMid);
+  sEdge=get_Edge(sElement, fMid);
+  printf("\nElement: %s    Absorption Edge: %s\n", sElement, sEdge);
   toplot(nDataPoints, fXraw, fYraw, label, YELLOW);
-
   //  for (i = 0; i < nDataPoints; i++)
   //    fXpoint[i] = (double) i;
   /*

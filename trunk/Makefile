@@ -21,7 +21,7 @@ NR        = /home/cvs/recipes/C/SOURCES
 LIBS =  -lcpgplot  -lpgplot -lm -lgsl -lgslcblas -lrfftw -lfftw -lX11 -ldl
 
 #
-EXE       = gexen
+EXE       = chooch
 #
 # How to compile and link
 #
@@ -41,14 +41,14 @@ MV    = /bin/mv
 CP    = /bin/cp
 # 
 # 
-GEXENOB = main.o fluread.o printbanner.o toplot.o minmax.o spline.o \
+OBJECTS = main.o fluread.o printbanner.o toplot.o minmax.o spline.o \
 fft.o gaussian.o tools.o mucal.o fdprime.o savgol.o lubksb.o ludcmp.o nrutil.o\
 smooth.o convlv.o twofft.o realft.o four1.o fits.o normalize.o checks.o usage.o\
 integrate.c
 #
 #
-gexen : ${GEXENOB}
-	$(FC) -o ${EXE} ${GEXENOB} $(FFLAGS) $(LDFLAGS)
+chooch : ${OBJECTS}
+	$(FC) -o ${EXE} ${OBJECTS} $(FFLAGS) $(LDFLAGS)
 #
 install :
 	$(MV) $(EXE) $(BINDIR)
