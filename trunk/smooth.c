@@ -33,7 +33,6 @@ int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
   float fpad[MAXSIZE];
   float cn[MAXCOEF];
   // Required by savgol
-  float c[MAXCOEF];
   float cdata[]={ 
   0.00, -0.00,  1.00, -0.00,  0.00, // 2 2 0 4
   0.08, -0.67,  0.00,  0.67, -0.08, // 2 2 1 4
@@ -364,10 +363,11 @@ int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
  -0.00, -0.00, -0.00, -0.00, -0.00, -0.00, -0.00, -0.00, -0.00, -0.00, -0.00, -0.00, -0.00,
   0.00,  0.00,  0.00,  0.00,  0.00,  0.00,  0.00, // nl=29 nr=29 ld=3 m=4
   };
-  //
+
   if(verbose>1)printf("nl = %d     nr = %d     ld = %d     m = %d\n", nl, nr, ld, m);
-  nc=nl+nr+1;
+
   pad(np, nl, nr, f, fpad);
+
   /* Find array index at which to read SavGol coefficients */
   index=0;
   for(i=2;i<nr;++i){
@@ -376,6 +376,7 @@ int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
   index+=ld*(i+i+1); // Choose coefficients for correct derivative
 
   printf("nl=%d nr=%d ld=%d m=%d\n", nl, nr, ld, m);
+  nc=nl+nr+1;
   for(i=0;i<nc;++i,++index){
      cn[i]=cdata[index];
      printf(" %5.2f ",cn[i]);
@@ -411,43 +412,6 @@ int apply_coeffs(float *fpad, double *g, float *cn, int nl, int nr, int np) {
       g[i] += (double) (cn[n] * fpad[i+n]);
     }
   }
-  return 0;
-}
-
-int unwrap(float *cin, float *cout, int np, int nl, int nr) {
-  int i, k = 0;
-  int nc;
-  /*
-  float totc=0.0; 
-  */
-  /*
-   * e.g. for nl=4 and nr=4 
-   * out k: c[0]  c[1]  c[2]  c[3]  c[4]  c[5]  c[6]    c[7]    c[8]
-   * co     c-4   c-3   c-2   c-1   c0    c1    c2      c3      c4
-   * in  i: c[5]  c[4]  c[3]  c[2]  c[1]  c[np] c[np-1] c[np-2] c[n-3]
-   */
-  nc = nl+nr+1;
-  /*  for (i = 1; i <= np; i++) {
-   *    printf("%s %7.3f %s ", (i==0)?"cin: ":"", cin[i], (i==(np))?"\n":"");
-   *  } 
-   */
-  cout[k] = cin[nl+1];
-  for (k = 1, i = (nl); i > 0; i--, k++) {
-    cout[k] = cin[i];
-  }
-  for (k = (nl+1), i = np; i >= (np-nr+1); i--, k++) {
-    cout[k] = cin[i];
-  }
-  /*
-  for (k = 0; k < nc; k++) {
-     printf("%s %7.3f %s ", (k==0)?"cout: ":"", cout[k], (k==(nc-1))?"\n":"");
-     totc += cout[k];
-  }
-  if (!(totc == 1.000)) {
-  printf("ERROR: Sum of cout should = 1.0;  actual value = %10.8f\n", totc);
-	exit (EXIT_FAILURE);
-  }
-  */
   return 0;
 }
 

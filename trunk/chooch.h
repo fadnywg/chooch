@@ -116,8 +116,6 @@ int impose(int, double, real *, real *, real *);
  */
 int smooth(int , real *, real *, int, int, int, int);
 int apply_coeffs(float *, double *, float *, int , int , int );
-int apply_response(int , real *, real *, real *, int );
-int unwrap(float *, float *, int , int , int );
 void pad(int , int , int , real *, float *);
 
 /*
