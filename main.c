@@ -35,6 +35,8 @@ int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
 int id1=0, id2=0;
 int verbose;
+double fE1=0.0, fE2=0.0, fE3=0.0, fE4=0.0;
+double fEres=0.00014;
 //typedef struct{double d1; double d2; double d3;} deriv; 
 //
 //
@@ -49,7 +51,7 @@ int main(int argc, char *argv[])
   char opt;
   //
   int nDataPoints, nFit, nPoints, plotX=0, psplot=0;
-  double dE, tmp, fE1, fE2, fE3, fE4, fEdge;
+  double dE, tmp, fEdge;
   double fXraw[MAXSIZE], fYraw[MAXSIZE];
   double fYspline[MAXSIZE], fXfpp[MAXSIZE];
   double fYsmooth[MAXSIZE], fYnorm[MAXSIZE];
@@ -62,7 +64,7 @@ int main(int argc, char *argv[])
   //
   verbose = 0;
   optarg = NULL;
-  while( ( opt = getopt( argc, argv, "he:a:xo:p:l:v:" ) ) != (char)(-1) )
+  while( ( opt = getopt( argc, argv, "he:a:r:xo:p:v:1:2:3:4:" ) ) != (char)(-1) )
      switch( opt ) {
      case 'h' :
 	(void)usage();
@@ -70,33 +72,50 @@ int main(int argc, char *argv[])
 	break;
      case 'e' :
 	sElement = optarg;
+	printf("-e     Atomic element = %s\n", sElement);
 	break;
      case 'a' :
 	sEdge = optarg;
+	printf("-a:   Absorption edge = %s\n", sEdge);
 	break;
+     case 'r' :
+	fEres = atof(optarg);
+	printf("-r: Energy resolution = %f\n", fEres);
+	break;	
      case 'x' :	
-	printf("-x: X windows plotting requested\n");
 	plotX = 1;
+	printf("-x: with X plotting \n");
 	break;
      case 'o' :	
-	printf("-o: output file name\n");
 	outfile = optarg;
+	printf("-o:  Output file name = %s\n", outfile);
 	break;
      case 'p' :	
-	printf("-p: PostScript output requested\n");
 	psplot = 1;
 	psfile = optarg;
-	break;
-     case 'l' :
-	fE1 = atof(optarg);
-	printf("Fit below edge from %f\n", fE1);
+	printf("-p:    PS output file = %s\n", psfile);
 	break;
      case 'v' :
 	verbose = atoi(optarg);
 	printf("Verbosity level %d", verbose);
 	break;
-     }
-  
+     case '1' :
+	fE1 = atof(optarg);
+	printf("Below edge fit lower limit = %f\n", fE1);
+	break;
+     case '2' :
+	fE2 = atof(optarg);
+	printf("Below edge fit upper limit = %f\n", fE2);
+	break;
+     case '3' :
+	fE3 = atof(optarg);
+	printf("Above edge fit lower limit = %f\n", fE3);
+	break;
+     case '4' :
+	fE4 = atof(optarg);
+	printf("Above edge fit upper limit = %f\n", fE4);
+	break;
+     }  
   if(argc < 2){
     printf("Usage: chooch -e <element> -a <edge>\n");
     printf("Try chooch -h to show all options\n");
