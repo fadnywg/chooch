@@ -159,6 +159,7 @@ int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double 
    */
   for (i = 0; i < nDataPoints; i++) {
     fYfpp[i] = (fYnorm[i] * (fYfita[i] - fYfitb[i])) + fYfitb[i];
+    if(verbose>1) printf("%d %10.4f %10.4f %10.4f %10.4f \n", i, fYfpp[i], fYnorm[i], fYfita[i], fYfitb[i]);
   }
   return 0;
 }
