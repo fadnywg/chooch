@@ -23,15 +23,17 @@
 #include <stdlib.h>
 #include "chooch.h"
 void SetConst(int , double , double *);
-int DoFit(int, double *, double*, double*, double, double);
+int  DoFit(int, double *, double*, double*, double, double);
 extern char *sElement;
 extern double fE1, fE2, fE3, fE4;
-int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, double *fYnorm, int plotX)
+/* 
+ *
+ */
+int  normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, double *fYnorm, int plotX, double *fYfita, double *fYfitb)
 {
   extern int verbose;
   int i, j, nFit, err;
   double fXtemp[MAXSIZE], fYtemp[MAXSIZE];
-  double fYfita[MAXSIZE], fYfitb[MAXSIZE];
   double fC, fM;
   char label[10];
   if(verbose>0)printf(" Plot switch:   %d\n", plotX);
