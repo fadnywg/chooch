@@ -1,3 +1,19 @@
+/***************************************************************************
+                             usage.c  -  prints usage opions
+                             -------------------
+    begin                : Sat July  6 12:01:02 GMT 2002
+    copyright            : (C) 2002 by Gwyndaf Evans
+    email                : gwyndaf@gwyndafevans.co.uk
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 #include <stdio.h>
 #include "chooch.h"
 //[-e <element>] [-c \"<cell dimensions>\"] [-I <beam intensity>] [-n <number heavy atoms>] [-v <sample volume>] 

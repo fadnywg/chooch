@@ -1,5 +1,6 @@
 /***************************************************************************
-                            tools.c  -  description
+                            tools.c  -  a few routines for use with fft's
+                                        (not used)
                              -------------------
     begin                : Sat July  6 12:01:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans

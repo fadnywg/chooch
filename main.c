@@ -1,5 +1,5 @@
 /***************************************************************************
-                          main.c  -  description
+                          main.c  -  chooch main source file
                              -------------------
     begin                : Sat Mar  9 09:51:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans
@@ -142,7 +142,6 @@ int main(int argc, char *argv[])
    * Smooth with Savitzky-Golay filter
    */ 
   err = smooth(nDataPoints, fYraw, fYsmooth, 8, 8, 4, 0);
-  //  cpgsci(RED);
   if(plotX){
      toplot(nDataPoints, fXraw, fYraw, "Raw and smoothed data", YELLOW);
      addline(nDataPoints, fXraw, fYsmooth, RED);
