@@ -76,6 +76,7 @@ typedef struct {real x; real y;} point;
 
 void printbanner();
 int  fluread(char *, real *, real *, int *);
+int  efswrite(char *, real *, real *, real *, int);
 //void toplot(int , real *, real *, char *);
 void normfit(int, float *, float *);
 int DoSpline(int, real *, real *, real *, real *);
@@ -93,7 +94,7 @@ int checks (int , real *, real *, real *);
 real get_CrossSection(char *, real);
 real get_fpp (char *, real);
 char *edge_name(int);
-char *get_Edge(char *, double);
+char *get_Edge(char *, double, double *);
 /*
  * fits
  */
@@ -103,8 +104,8 @@ int quad (int , real *, real *, real *);
 /*
  * normalize
  */
-int normalize(int , real *, real *, real *);
-int impose(int , real *, real *, real *);
+int normalize(int, double, real *, real *, real *);
+int impose(int, double, real *, real *, real *);
 
 /*
  * smooth
@@ -129,7 +130,7 @@ void usage();
 /*
  * integrate
  */
-void Integrate(int, int *, double *, double *, double *, double *, double *, double *, double *, double *);
+void Integrate(int, int *, double, double *, double *, double *, double *, double *, double *, double *, double *);
 double f(double, void *);
 double fc(double, void *);
 double fcp(double, void *);

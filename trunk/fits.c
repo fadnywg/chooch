@@ -75,7 +75,7 @@ int quad (int n, double *fX, double *fY, double *fCoef)
       yi = fY[i];
       ei = 1.0;
 
-      printf("%g %g +/- %g\n", xi, yi, ei);
+      //      printf("%g %g +/- %g\n", xi, yi, ei);
       
       gsl_matrix_set (X, i, 0, 1.0);
       gsl_matrix_set (X, i, 1, xi);

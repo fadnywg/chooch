@@ -40,6 +40,7 @@ int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
   //  apply_response(np, f, g, c, (nl+nr+1));
   unwrap(c, cn, np, nl, nr);
   apply_coeffs(fpad, g, cn, nl, nr, np);
+  printf("Done smoothing\n");
   return 0;
 }
 
@@ -72,6 +73,7 @@ int apply_response(int np, double *f, double *g, double *respns, int mm) {
 
 int apply_coeffs(float *fpad, double *g, float *cn, int nl, int nr, int np) {
   int i, n;
+  printf("Applying SavGol coeffs\n");
   for (i = 0; i < np; i++) {
     g[i] = 0.0;
     for (n = 0; n < (nl+nr+1); n++) {
@@ -108,7 +110,12 @@ int unwrap(float *cin, float *cout, int np, int nl, int nr) {
     //    printf("%s %7.3f %s ", (k==0)?"cout: ":"", cout[k], (k==(nc-1))?"\n":"");
     totc += cout[k];
   }
-  printf("Sum of cout = %10.3f\n", totc);
+  /*
+  if (!(totc == 1.000)) {
+     printf("ERROR: Sum of cout should = 1.0;  actual value = %10.8f\n", totc);
+     exit (EXIT_FAILURE);
+  }
+  */
   return 0;
 }
 
