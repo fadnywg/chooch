@@ -133,6 +133,9 @@
  *c     correct AK(1,57) coefficient (for La)                            |
  *c----------------------------------------------------------------------+
  *c     $Log: not supported by cvs2svn $
+ *c     Revision 1.2  2003/06/07 12:46:49  gwyndaf
+ *c     Spelling error for Hg
+ *c
  *c     Revision 1.1.1.1  2003/01/16 21:02:25  gwyndaf
  *c     Imported sources
  *c
