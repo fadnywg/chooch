@@ -35,7 +35,7 @@ int linear_fit(int n, double *x, double *y, double *c, double *m)
   for (i = 0; i < n; i++) {
     w[i] = 1.0;
   }
-  
+  if(verbose>1)printf("Fitting ....\n");
   gsl_fit_wlinear (x, 1, w, 1, y, 1, n, 
                    &c0, &c1, &cov00, &cov01, &cov11, 
                    &chisq);
