@@ -51,8 +51,9 @@ int  normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doub
      SetConst(nDataPoints, fYraw[0], fYfitb);
   }
 #if defined(PGPLOT)
-  if(plotX)
+  if(plotX){
      addline(nDataPoints, fXraw, fYfitb, BLUE);
+  }
 #endif
   /* ABOVE EDGE */
   if((fE4-fEdge) > 30.0) {
@@ -64,8 +65,9 @@ int  normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doub
      SetConst(nDataPoints, fYraw[nDataPoints-1], fYfita);
   }
 #if defined(PGPLOT)
-  if(plotX)
+  if(plotX) {
      addline(nDataPoints, fXraw, fYfita, BLUE);
+  }
 #endif
   /* DO THE NORMALISATION */
   for (i = 0; i < nDataPoints; i++) {
