@@ -22,6 +22,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "chooch.h"
+void SetConst(int , double , double *);
+int DoFit(int, double *, double*, double*, double, double);
 extern char *sElement;
 extern double fE1, fE2, fE3, fE4;
 int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, double *fYnorm, int plotX)
@@ -37,64 +39,71 @@ int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doubl
   if(fE2==0.0)fE2=fEdge-20.0;
   if(fE3==0.0)fE3=fEdge+25.0;
   if(fE4==0.0)fE4=fXraw[nDataPoints-1];
-  j = 0;
+  /* BELOW EDGE */
   if((fEdge-fE1) > 30.0) {
      if(verbose>1)printf("Using linear fit to below edge region\n");
-     for (i = 0; i < nDataPoints; i++) {
-	if(fXraw[i] > fE1 && fXraw[i] < fE2) {
-	   fXtemp[j] = fXraw[i];
-	   fYtemp[j] = fYraw[i];
-	   j++;
-	}
+     if(DoFit(nDataPoints, fXraw, fYraw, fYfitb, fE1, fE2) == 1){
+	SetConst(nDataPoints, fYraw[0], fYfitb);
      }
-     nFit = j-2;
-     if(verbose>1)printf("Fitting ....\n");
-     err = linear_fit(nFit, fXtemp, fYtemp, &fC, &fM);
-     for (i = 0; i < nDataPoints; i++) {
-	fYfitb[i] = fC + fM * fXraw[i];
-     }
-     if(plotX)
-	addline(nDataPoints, fXraw, fYfitb, BLUE);
   } else {
-     fC=fYraw[0];
-     printf("Warning: Insufficient data - assuming below edge \n         constant value of %f in normalisation\n", fC);
-     for (i = 0; i < nDataPoints; i++) {
-	fYfitb[i] = fC;
-     }
+     SetConst(nDataPoints, fYraw[0], fYfitb);
   }
-  j = 0;
+  if(plotX)
+     addline(nDataPoints, fXraw, fYfitb, BLUE);
+  /* ABOVE EDGE */
   if((fE4-fEdge) > 30.0) {
      if(verbose>1)printf("Using linear fit to above edge region\n");
-     for (i = 0; i < nDataPoints; i++) {
-	if (fXraw[i] > fE3 && fXraw[i] < fE4) {
-	   fXtemp[j] = fXraw[i];
-	   fYtemp[j] = fYraw[i];
-	   j++;
-	}
+     if(DoFit(nDataPoints, fXraw, fYraw, fYfita, fE3, fE4) == 1){
+	SetConst(nDataPoints, fYraw[nDataPoints-1], fYfita);
      }
-     nFit = j-2;
-     err = linear_fit(nFit, fXtemp, fYtemp, &fC, &fM);
-     for (i = 0; i < nDataPoints; i++) {
-	fYfita[i] = fC + fM * fXraw[i];
-     }
-     if(plotX)
-	addline(nDataPoints, fXraw, fYfita, BLUE);
   } else {
-     fC=fYraw[nDataPoints-1];
-     printf("Warning: Insufficient data - assuming above edge \n         constant value of %f in normalisation\n", fC);
-     for (i = 0; i < nDataPoints; i++) {
-	fYfitb[i] = fC;
-     }     
+     SetConst(nDataPoints, fYraw[nDataPoints-1], fYfita);
   }
+  if(plotX)
+     addline(nDataPoints, fXraw, fYfita, BLUE);
+  /* DO THE NORMALISATION */
   for (i = 0; i < nDataPoints; i++) {
      fYnorm[i] = (fYraw[i] - fYfitb[i]) / (fYfita[i] - fYfitb[i]);
   }
-  /*
-  strcpy(label,"Normalized data");
-  toplot(nDataPoints, fXraw, fYnorm, label, GREEN);
-  */
 }
 
+void SetConst(int n, double f, double *Array)
+{
+   int i;
+   printf("Warning: Insufficient data - assuming constant value of %f in normalisation\n", f);
+   for (i = 0; i < n; i++) {
+      Array[i] = f;
+   }
+}
+
+/*
+ * Function to do linear regression to a set of data points {X,Y} using only data
+ * between limits x1 and x2 on X.
+ * Returns array fFit with linear fit over whole range of data
+ */
+int DoFit(int nDataPoints, double *fX, double *fY, double *fFit, double x1, double x2 )
+{
+  double fXtemp[MAXSIZE], fYtemp[MAXSIZE];
+  double fC, fM;
+  int err, i, j = 0;
+  for (i = 0; i < nDataPoints; i++) {
+     if(fX[i] > x1 && fX[i] < x2) {
+	fXtemp[j] = fX[i];
+	fYtemp[j] = fY[i];
+	 j++;
+     }
+  }
+  if(j < 3){
+     return 1;
+  }
+  if(linear_fit(j, fXtemp, fYtemp, &fC, &fM) != 0){
+     printf("Error in linear regression routine\n");
+  }
+  for (i = 0; i < nDataPoints; i++) {
+     fFit[i] = fC + fM * fX[i];
+  }
+  return 0;
+}
 
 int impose(int nDataPoints, double fEdge, double *fXraw, double *fYnorm, double *fYfpp)
 {
