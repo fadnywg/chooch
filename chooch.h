@@ -72,12 +72,10 @@ typedef struct {real x; real y;} point;
  */
 #include "/usr/local/pgplot/cpgplot.h"
 #include "mucal-C/mucal.h"
-#include "symbolics.h"
 
 void printbanner();
 int  fluread(char *, real *, real *, int *);
 int  efswrite(char *, real *, real *, real *, int);
-//void toplot(int , real *, real *, char *);
 void normfit(int, float *, float *);
 int DoSpline(int, real *, real *, real *, real *);
 int dofft(int , real *, real *, int);
