@@ -33,7 +33,7 @@
 #include "chooch.h"
 int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
-char cScanTitle[TITLE];
+char cScanTitle[TITLE]="";
 int id1=0, id2=0;
 int verbose, silent;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
@@ -220,16 +220,17 @@ int main(int argc, char *argv[])
   err=selwavel(nPoints, fXfpp, fYspline, fYfp);
 
 #if defined(PGPLOT)
-  if(plotX)
+  if(plotX) {
      addline(nPoints, fXfpp, fYspline, GREEN);
      spacebar();
+  }
 #endif
   /*
    * Plot resulting f' and f'' spectra
    */
   err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
 #if defined(PGPLOT)
-  if(plotX){
+  if(plotX) {
      efsplot(nPoints, fXfpp, fYspline, fYfp, 0, NULL);
      spacebar();
   }
