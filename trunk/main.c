@@ -133,9 +133,13 @@ int main(int argc, char *argv[])
     printf("Try chooch -h to show all options\n");
     exit(EXIT_FAILURE);
   }
+  /*
+   */
+  if(!silent)copyright();
+  /*
+   */
   sFilename = argv[optind];
   if(!silent)printf("Fluorescence scan filename: %s\n", sFilename);
-  //printbanner();
   /*
    * Read in raw spectrum and plot
    */
@@ -149,8 +153,8 @@ int main(int argc, char *argv[])
    */ 
   fMonoRes = fEres * fEdge;
   nSavWin = (int) fMonoRes / dE;
-  printf("dE = %f Resol = %f\n", dE, fMonoRes);
-  printf("Savitsky-Golay window value = %d\n", nSavWin);
+  if(verbose>1)printf("dE = %f Resol = %f\n", dE, fMonoRes);
+  if(verbose>1)printf("Savitsky-Golay window value = %d\n", nSavWin);
   err = smooth(nDataPoints, fYraw, fYsmooth, nSavWin, nSavWin, 4, 0);
   /*
    * Normalise data
@@ -197,10 +201,12 @@ int main(int argc, char *argv[])
      }
      fclose(ff);
   }
-  printf("\n Table of results\n");
-  printf("------------------------------------\n");
-  printf("|      |  energy  |    f\'\' |   f\'  |\n");
-  printf("| peak | %8.2f |  %5.2f | %5.2f |\n", EPeak, fppPeak, fpPeak);
-  printf("| infl | %8.2f |  %5.2f | %5.2f |\n", EInfl, fppInfl, fpInfl);
-  printf("------------------------------------\n");
+  if(!silent){
+     printf("\n Table of results\n");
+     printf("------------------------------------\n");
+     printf("|      |  energy  |    f\'\' |   f\'  |\n");
+     printf("| peak | %8.2f |  %5.2f | %5.2f |\n", EPeak, fppPeak, fpPeak);
+     printf("| infl | %8.2f |  %5.2f | %5.2f |\n", EInfl, fppInfl, fpInfl);
+     printf("------------------------------------\n");
+  }
 }
