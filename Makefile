@@ -10,15 +10,21 @@
 ARCH   = Linux
 #ARCH   = OSF1
 #ARCH   = SunOS
-GSLDIR = /usr/local/lib
-CGRAPHDIR = /usr/local/lib
-BINDIR    = /home/gwyndaf/bin/linux_exe
-INCLUDE   = /usr/local/include
-PGPLOTDIR = /usr/local/pgplot
-X11LIBDIR  = /usr/X11R6/lib
+#GSLDIR = /usr/local/lib
+#CGRAPHDIR = /usr/local/lib
+#BINDIR    = /home/$(USER)/bin/linux_exe
+#INCLUDE   = /usr/local/include
+#PGPLOTDIR = /usr/local/pgplot
+#X11LIBDIR  = /usr/X11R6/lib
 #GSLDIR = /users/opd14/Gwyndaf/lib
 #BINDIR    = /users/opd14/Gwyndaf/bin
 #INCLUDE   = /users/opd14/Gwyndaf/include
+GSLDIR = /home/sci/software/lib
+CGRAPHDIR = /home/sci/software/lib
+BINDIR    = /home/ge73/bin/linux_exe
+INCLUDE   = /home/sci/software/include
+PGPLOTDIR = /home/sci/software/misc/pgplot
+X11LIBDIR  = /usr/X11R6/lib
 ######################################
 #
 CGRAPH = -lcgraph
@@ -48,7 +54,7 @@ chooch : clean ${OBJECTS} Makefile
 	$(CC) -v $(CFLAGS) -o ${EXE} ${OBJECTS} $(LDFLAGS)
 
 chooch-pg : clean
-	make chooch-with-pgplot "CFLAGS = -DPGPLOT"
+	make chooch-with-pgplot "CFLAGS = $(CFLAGS) -DPGPLOT"
 
 chooch-with-pgplot : ${OBJECTS} Makefile
 	$(FC) -v $(CFLAGS) -o ${EXEPG} ${OBJECTS} $(LDFLAGS)
