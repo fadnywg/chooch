@@ -46,7 +46,7 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   gsl_spline_init(spline, fXraw, fYfpp, nDataPoints);
 
   dE=(fXraw[nDataPoints-1]-fXraw[0])/(nDataPoints-1);
-  printf("Energy interval = %f", dE);
+  printf("Energy interval = %f\n", dE);
   for (i=0, E0=fXraw[1]; E0<fXraw[nDataPoints-1]; E0+=dE, i++)
     {
       //      printf("\n\n=====\nPoint No. i=%d     x=%f   y=%f\n", i, E0, fYfpp[i]);
@@ -61,7 +61,6 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, fXraw[0], E0-dE);
       //      printf("tmp  %f    Sum of fp so far  = %f \n", tmp, fYfp[i]);
       //      printf("Integration 4  E0=%f     a=%f   b=%f \n", E0, fXraw[i+1], fXraw[nDataPoints-1]);
-
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, E0+dE, fXraw[nDataPoints-1]);
       //      printf("tmp  %f    Sum of fp so far  = %f \n", tmp,fYfp[i]);
       //      printf("Singularity\n");
@@ -72,31 +71,6 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
     }
   *nPoints=i-1;
   /*
-  for (i=1; i<(nDataPoints-1); i++)
-    {
-      printf("\n\n=====\nPoint No. i=%d     x=%f   y=%f\n", i, fXraw[i], fYfpp[i]);
-      fYfp[i]=0.0;
-      printf("Integration 1  E0=%f     a=%f   b=%f \n", fXraw[i], fElo, fXraw[i-1]);
-      tmp=IntegrateExtrap(nDataPoints, fXraw[i], fElo, fXraw[0], error);
-      fYfp[i]+=tmp;
-      printf("tmp  %f    Sum of fp so far  = %f \n", tmp, fYfp[i]);
-      printf("Integration 2  E0=%f     a=%f   b=%f \n", fXraw[i], fXraw[nDataPoints-1], fEhi);
-      tmp=IntegrateExtrap(nDataPoints, fXraw[i], fXraw[nDataPoints-1], fEhi, error);
-      fYfp[i]+=tmp;
-      printf("tmp  %f    Sum of fp so far  = %f \n", tmp, fYfp[i]);
-      printf("Integration 3  E0=%f     a=%f   b=%f \n", fXraw[i], fXraw[0], fXraw[nDataPoints-1]);
-      tmp=IntegrateCurve(nDataPoints, fXraw[i], fXraw[0], fXraw[i-1]);
-      fYfp[i]+=tmp;
-      printf("tmp  %f    Sum of fp so far  = %f \n", tmp, fYfp[i]);
-      printf("Integration 4  E0=%f     a=%f   b=%f \n", fXraw[i], fXraw[i+1], fXraw[nDataPoints-1]);
-      tmp=IntegrateCurve(nDataPoints, fXraw[i], fXraw[i+1], fXraw[nDataPoints-1]);
-      fYfp[i]+=tmp;
-      printf("tmp  %f    Sum of fp so far  = %f \n", tmp,fYfp[i]);
-      printf("Singularity\n");
-      tmp=Singularity(fXraw[i], fXraw[i-1], fXraw[i+1], fYfpp[i], fYfpp[i-1], fYfpp[i+1], fD1[i], fD2[i], fD3[i]);
-      fYfp[i]+=tmp;
-      printf("tmp  %f    Final SUM of fp so far  = %f \n", tmp, fYfp[i]);
-    }
   */
   gsl_spline_free (spline);
   gsl_interp_accel_free(acc);
@@ -105,11 +79,16 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
 double f(double E, void * params) {
   double ratio, answer;
   double E0 = *(double *) params;
-  //  printf("E=%f  E0=%f\n", x, E0);
-  //  ratio = E0 / E;
-  //  printf("fpp = %f", get_fpp(sElement, x/1000.0));
   answer = E*get_fpp(sElement, E/1000.0)/(E0*E0-E*E);
-  //  printf("func = %f\n", answer);
+  return answer;
+}
+
+double fc(double E, void * params) {
+  extern gsl_spline *spline;
+  double ratio, answer,fdp;
+  double E0 = *(double *) params;
+  fdp = gsl_spline_eval(spline, E, acc);
+  answer = E*fdp/(E0*E0-E*E);
   return answer;
 }
 
@@ -122,12 +101,14 @@ double fcp(double E, void * params) {
   return answer;
 }
 
-double ft (double x, void * params) {
-  double alpha = *(double *) params;
-  double f = log(alpha*x) / sqrt(x);
-  return f;
+double fs(double E, void * params) {
+  extern gsl_spline *spline;
+  double ratio, answer,fdp;
+  double E0 = *(double *) params;
+  fdp = gsl_spline_eval(spline, E, acc);
+  answer = -1.0*fdp/(E0+E);
+  return answer;
 }
-
 
 double IntegrateExtrap(int N, double E0, double a, double b, double error)
 {
@@ -164,16 +145,6 @@ double CauchyCurve(int N, double E0, double a, double b){
   return result;
 }
 
-double fc(double E, void * params) {
-  extern gsl_spline *spline;
-  double ratio, answer,fdp;
-  double E0 = *(double *) params;
-  fdp = gsl_spline_eval(spline, E, acc);
-  //  printf("In fc:  %f   %f \n", E, fdp);
-  answer = E*fdp/(E0*E0-E*E);
-  return answer;
-}
-
 double IntegrateCurve(int N, double E0, double a, double b){
   double result, error;
   gsl_integration_workspace * w 
@@ -191,29 +162,15 @@ double IntegrateCurve(int N, double E0, double a, double b){
   return 2.0*result/PI;
 }
 
-double fs(double E, void * params) {
-  extern gsl_spline *spline;
-  double ratio, answer,fdp;
-  double E0 = *(double *) params;
-  fdp = gsl_spline_eval(spline, E, acc);
-  answer = -1.0*fdp/(E0+E);
-  return answer;
-}
-
-double Singularity(double E0, double a, double b, double fppE0, double fppa, double fppb, double fD1, double fD2, double fD3){
+double Singularity(double E0, double a, double b, 
+                   double fppE0, double fppa, double fppb, 
+                   double fD1, double fD2, double fD3){
   double result, error;
   gsl_integration_workspace * w 
     = gsl_integration_workspace_alloc(50);
-  double fun5, fun6, fun7, dx, d1, d2;
+  double d1, d2;
   double term1, term2, term3, term4, term5;
   gsl_function F;
-  /*
-  dx=(b-a)/2.0;
-  fun5 = -fppa / (E0+a);
-  fun6 = -fppE0 / (E0+E0);
-  fun7 = -fppb / (E0+b);
-  term1 = dx * ( fun5 + 4.0 * fun6 + fun7 ) / 3.0;
-  */
   F.function = &fs;
   F.params = &E0;
   gsl_integration_qag (&F, a, b, 0.0, 1e-6, 50, 6, w, &term1, &error); 
