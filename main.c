@@ -1,10 +1,10 @@
-/***************************************************************************
-                          main.c  -  chooch main source file
-                             -------------------
-    begin                : Sat Mar  9 09:51:02 GMT 2002
-    copyright            : (C) 2002 by Gwyndaf Evans
-    email                : gwyndaf@gwyndafevans.co.uk
- ***************************************************************************/
+/***************************************************************************\
+ *                        main.c  -  chooch main source file               *
+ *                           -------------------                           *
+ *  begin                : Sat Mar  9 09:51:02 GMT 2002                    *
+ *  copyright            : (C) 2002 by Gwyndaf Evans                       *
+ *  email                : gwyndaf@gwyndafevans.co.uk                      *
+\***************************************************************************/
 
 /***************************************************************************
  *                                                                         *
@@ -66,6 +66,10 @@ int main(int argc, char *argv[])
   FILE *ff;
   //
   verbose=silent=0;
+
+  /******************************
+   * Parse command-line switches
+   ******************************/
   optarg = NULL;
   while((opt = getopt(argc, argv, "she:a:r:xo:p:v:1:2:3:4:dwcl")) != (char)(-1))
      switch( opt ) {
@@ -157,18 +161,20 @@ int main(int argc, char *argv[])
      cpgslct(id1);
   }
 #endif
+
   //printbanner();
-  /*
+  /********************************
    * Read in raw spectrum and plot
-   */
+   ********************************/
   fluread(sFilename, fXraw, fYraw, &nDataPoints);
   err=checks(nDataPoints, fXraw, fYraw, &dE);
   fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
   sEdge=get_Edge(sElement, fMid, &fEdge);
   if(!silent)printf("\nSpectrum over %s %s edge at theoretical energy of %8.2f eV\n", sElement, sEdge, fEdge);
-  /*
-   * Smooth with Savitzky-Golay filter
-   */ 
+
+  /**********************************
+   * Determine Savitzky-Golay window
+   **********************************/ 
   fMonoRes = fEres * fEdge;
   nSavWin = 2 * (int) fMonoRes / dE;
   if(nSavWin > 29){ 
@@ -179,34 +185,31 @@ int main(int argc, char *argv[])
   }
   if(verbose>0)printf("dE = %f Resol = %f\n", dE, fMonoRes);
   if(verbose>0)printf("Savitsky-Golay window value = %d\n", nSavWin);
-  /*
-  err = smooth(nDataPoints, fYraw, fYsmooth, nSavWin, nSavWin, 4, 0);
-  */
+
 #if defined(PGPLOT)
   if(plotX){
      toplot(nDataPoints, fXraw, fYraw, "Raw and smoothed data", YELLOW);
-     /*
-       addline(nDataPoints, fXraw, fYsmooth, BLUE);
-     */
   }
 #endif
-  /*
+  /******************
    * Normalise data
-   */
+   ******************/
   err=normalize(nDataPoints, fEdge, fXraw, fYraw, fYnorm, plotX, fYfita, fYfitb);
 #if defined(PGPLOT)
   if(plotX)spacebar();
 #endif
-  /*
+
+  /**************************************************
    * Impose on theoretical spectrum of f'' to obtain 
    * experimental equivalent
-   */
+   **************************************************/
   if(verbose>0)printf(" Converting spectrum to f''\n");
   err=impose(nDataPoints, fEdge, fXraw, fYnorm, fYfpp);
-  /*
-   * Determine first and second derivatives of smoothed data
+
+  /*************************************************************************
+   * Determine zeroth, first, second and third derivatives of smoothed data
    * and plot them on top of one another.
-   */
+   *************************************************************************/
   err = smooth(nDataPoints, fYfpp, fYfpps, nSavWin, nSavWin, 4, 0);
 #if defined(PGPLOT)
   if(plotX)
@@ -225,6 +228,7 @@ int main(int argc, char *argv[])
   }
 #endif
   err = smooth(nDataPoints, fYfpp, fYDeriv3, nSavWin, nSavWin, 4, 3);
+
 #if defined(PGPLOT)
   if(plotX){
      cpgsci(BLUE);
@@ -232,9 +236,10 @@ int main(int argc, char *argv[])
      spacebar();
   }
 #endif
-  /*
+
+  /**********************************
    * Perform Kramer-Kronig transform
-   */
+   **********************************/
   Integrate(nDataPoints, &nPoints, fEdge, fXraw, fXfpp, fYspline, fYfpps, fYDeriv1, fYDeriv2, fYDeriv3, fYfp);
   err=selwavel(nPoints, fXfpp, fYspline, fYfp);
 
@@ -244,23 +249,30 @@ int main(int argc, char *argv[])
      spacebar();
   }
 #endif
-  /*
-   * Plot resulting f' and f'' spectra
-   */
+
+  /*************************************
+   * OUTPUT RESULTS (f' and f'' spectra)
+   *************************************/
+
+  /* To ascii file */
   err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
+
+  /* To X-windows via PGPLOT if requested */
 #if defined(PGPLOT)
   if(plotX) {
      efsplot(nPoints, fXfpp, fYspline, fYfp, 0, NULL);
      spacebar();
   }
 #endif
+
+  /* To PostScript file if requested */
   if(psplot){
-     /*     efsplot(nPoints, fXfpp, fYspline, fYfp, 1, psfile);*/
      psplt(nPoints, fXfpp, fYspline, fYfp, psfile);
   }
-  /*
-   *
-   */
+
+  /***************************************
+   * Stuff for Python GUI when it arrives
+   ***************************************/
   if(display){
      if ((ff = fopen(".pooch", "w")) == NULL) {
 	printf("Cannot open .pooch for write\n");
@@ -271,6 +283,10 @@ int main(int argc, char *argv[])
      }
      fclose(ff);
   }
+
+  /******************************
+   * Print text table of results
+   ******************************/
   if(!silent){
      printf("\n Table of results\n");
      printf("------------------------------------\n");
@@ -279,4 +295,5 @@ int main(int argc, char *argv[])
      printf("| infl | %8.2f |  %5.2f | %5.2f |\n", EInfl, fppInfl, fpInfl);
      printf("------------------------------------\n");
   }
+  return(0);
 }

@@ -375,13 +375,12 @@ int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
   }
   index+=ld*(i+i+1); // Choose coefficients for correct derivative
 
-  printf("nl=%d nr=%d ld=%d m=%d\n", nl, nr, ld, m);
   nc=nl+nr+1;
   for(i=0;i<nc;++i,++index){
      cn[i]=cdata[index];
-     printf(" %5.2f ",cn[i]);
+     if(verbose>1)printf(" %5.2f",cn[i]);
   }
-  printf("\n");
+  if(verbose>1)printf("\n");
   apply_coeffs(fpad, g, cn, nl, nr, np);
   if(verbose>0)printf("Done smoothing\n");
   return 0;
