@@ -6,19 +6,22 @@
 # b)  the directory where Cgraph (PS plotting library) is kept
 # c)  and the directory where you would like you executables to go (BINDIR).
 #
-GSLDIR = /home/gwyndaf/chooch/alpha/lib
-CGRAPHDIR = /home/gwyndaf/chooch/alpha/lib
+GSLDIR = /usr/local/lib
+CGRAPHDIR = /usr/local/lib
 BINDIR    = /home/gwyndaf/bin/linux_exe
-INCLUDE   = /home/gwyndaf/chooch/alpha/include
+INCLUDE   = /usr/local/include
+PGPLOTDIR = /usr/local/pgplot
+X11LIBDIR  = /usr/X11R6/lib
 #GSLDIR = /users/opd14/Gwyndaf/lib
 #BINDIR    = /users/opd14/Gwyndaf/bin
 #INCLUDE   = /users/opd14/Gwyndaf/include
 ######################################
 #
 CGRAPH = -lcgraph
-LIBS = -lgsl -lgslcblas 
-#-lX11
-EXE    = chooch
+LIBS = -lgsl -lgslcblas -lX11
+PGLIBS =  -lcpgplot -lpgplot
+EXE    = chooch-1.0.2
+EXEPG    = chooch-1.0.2-pg
 #
 # How to compile and link
 #
@@ -28,7 +31,6 @@ include Makefile.Linux
 #
 # Basic definitions
 #
-SHELL = /bin/sh
 RM    = /bin/rm
 MV    = /bin/mv
 CP    = /bin/cp
@@ -37,22 +39,30 @@ CP    = /bin/cp
 OBJECTS = main.o fluread.o printbanner.o minmax.o spline.o \
         mucal-C/mucal.o fdprime.o savgol.o lubksb.o ludcmp.o nrutil.o\
         smooth.o fits.o normalize.o checks.o usage.o integrate.o \
-	psplot.o selwavel.o copyright.o
-#toplot.o
+	psplot.o selwavel.o copyright.o toplot.o
 #
 #
-chooch : ${OBJECTS} Makefile
+chooch : clean ${OBJECTS} Makefile
 	$(CC) -v $(CFLAGS) -o ${EXE} ${OBJECTS} $(LDFLAGS)
+
+chooch-pg : clean
+	make chooch-with-pgplot "CFLAGS = -DPGPLOT"
+
+chooch-with-pgplot : ${OBJECTS} Makefile
+	$(FC) -v $(CFLAGS) -o ${EXEPG} ${OBJECTS} $(LDFLAGS)
+#
+all: chooch chooch-pg
 #
 mucal-C/mucal.o : mucal-C/mucal.c
-	$(CC) $(CFLAGS) -c -o $@ $?
-	$(MV) mucal.o $@
+	$(CC) $(CFLAGS)   -c -o $@ $?
+#	$(MV) mucal.o $@
 #
 install :
-	$(MV) $(EXE) $(BINDIR)
+	$(MV) $(EXE)   $(BINDIR)
+	$(MV) $(EXEPG) $(BINDIR)
 #
 clean :
-	${RM} *.o mucal-C/*.o
+	${RM} -f *.o mucal-C/*.o
 #
 # End
 #

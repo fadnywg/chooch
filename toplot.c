@@ -24,6 +24,7 @@
 #include <string.h>
 #include "chooch.h"
 
+#if defined(PGPLOT)
 void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
 {
   int i;
@@ -132,3 +133,4 @@ void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2, int psplot, 
   if(psplot)cpgpage();
   if(id1 != 0)cpgslct(id1);
 }
+#endif

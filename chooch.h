@@ -70,9 +70,11 @@ typedef struct {real x; real y;} point;
 /*
  *
  */
-/*
+
+#if defined(PGPLOT)
 #include "/usr/local/pgplot/cpgplot.h"
-*/
+#endif
+
 #include "mucal-C/mucal.h"
 
 void printbanner();
@@ -121,11 +123,12 @@ void pad(int , int , int , real *, float *);
 /*
  * toplot
  */
+#if defined(PGPLOT)
 void toplot(int , real *, real *, char *, int);
 void spacebar();
 void addline(int, real *, real *, int);
 void efsplot(int, double *, double *, double *, int, char *);
-
+#endif
 /*
  * usage
  */
