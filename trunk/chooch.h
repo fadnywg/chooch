@@ -1,5 +1,5 @@
 /***************************************************************************
-                          chooch.h  -  description
+                          chooch.h  - main header file for chooch
                              -------------------
     begin                : Sat Mar  9 09:51:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans
@@ -80,10 +80,12 @@ int  fluread(char *, real *, real *, int *);
 int  efswrite(char *, real *, real *, real *, int);
 void normfit(int, float *, float *);
 int DoSpline(int, real *, real *, real *, real *);
-int dofft(int , real *, real *, int);
-int prep_gaussian(int, real, real *);
-int mirror(int, real *, real *);
-int fermifilter(int, int, real *);
+/*
+ * int dofft(int , real *, real *, int);
+ * int prep_gaussian(int, real, real *);
+ * int mirror(int, real *, real *);
+ * int fermifilter(int, int, real *);
+*/
 /*
  *
  */
