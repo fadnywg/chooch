@@ -55,7 +55,7 @@ int linear_fit(int n, double *x, double *y, double *c, double *m)
   return 0;
 }
 
-int quad (int n, double *fX, double *fY, double *fCoef)
+int quadfit (int n, double *fX, double *fY, double *fCoef)
 {
   extern int verbose;
   int i;
