@@ -34,7 +34,7 @@ These anomalous scattering factors vary most rapidly near
 characteristic absorption edges of atoms where the energy of the
 incident X-rays is similar to the binding energy of the absorbing
 electrons. Thought of classically anomalous scattering is analogous
-to any resonance effect such as an electrical LC circuit. 
+to any resonance effect such as an electrical LC circuit.
 
 The optical theorem~\cite{james69:_optic_princ_diffr_x} says that the imaginary term
 $f^{\prime\prime}$ is directly related to the atomic absorption
@@ -214,15 +214,16 @@ requested by the user with the `{\tt -p <psfile>}' option.
 \end{itemize}
 \end{enumerate}
 
-\subsubsection*{Input files}
+\subsection*{Input files}
 
 \begin{description}
 %\labelsep=0.5cm
 %\itemindent=-0.0cm
 %\listparindent=0.0cm
 %\leftmargin=4.0cm
-\item[{\tt <name>.raw}] The raw input fluorescence data file. The
-first line should contain a title (upto 80 characters) which will be
+\item[Input fluorescence data] The old version of Chooch required and input
+filename with a {\tt .raw} extension but nowadays you can use any filename.
+The first line should contain a title (upto 80 characters) which will be
 used for the output data and PostScript plot. The second line contains
 the number of data points (integer). Each subsequent line should
 contain two values referring to one data point - the X-ray energy {\bf
@@ -241,12 +242,12 @@ etc
 \end{verbatim}
 \end{description}
 
-\subsubsection*{Output files}
+\subsection*{Output files}
 
 \begin{description}
-\item[{\tt <name>.efs}] [default = output.efs] Output ascii file containing calculated
+\item[Result file Ascii] [default = output.efs] Output ascii file containing calculated
 anomalous scattering factors.
-\item[{\tt <name>.ps}] (optional) [no default] PostScript output with a plot of
+\item[Result PS plot file] (optional) [no default] PostScript output with a plot of
 anomalous scattering factors.
 \end{description}
 
