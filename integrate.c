@@ -50,7 +50,7 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   /*  
    *dE=(fXraw[nDataPoints-1]-fXraw[0])/(nDataPoints-1); 
    */
-  dE=fEres*fXraw[0]/3.0;
+  dE=fEres*fXraw[0]/5.0;
   if(verbose>0)printf("Energy interval = %f\n", dE);
   for (i=0, E0=fXraw[0]+dE; E0<=fXraw[nDataPoints-1]-dE; E0+=dE, i++)
     {
