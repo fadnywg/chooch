@@ -14,16 +14,16 @@ ARCH   = Linux
 #CGRAPHDIR = /usr/local/lib
 #BINDIR    = /home/$(USER)/bin/linux_exe
 #INCLUDE   = /usr/local/include
-#PGPLOTDIR = /usr/local/pgplot
+PGPLOTDIR  = /usr/local/pgplot
 #X11LIBDIR  = /usr/X11R6/lib
 #GSLDIR = /users/opd14/Gwyndaf/lib
 #BINDIR    = /users/opd14/Gwyndaf/bin
 #INCLUDE   = /users/opd14/Gwyndaf/include
-GSLDIR = /home/sci/software/lib
-CGRAPHDIR = /home/sci/software/lib
+GSLDIR = /usr/local/lib
+CGRAPHDIR = /usr/local/lib
 BINDIR    = /home/ge73/bin/linux_exe
-INCLUDE   = /home/sci/software/include
-PGPLOTDIR = /home/sci/software/misc/pgplot
+INCLUDE   = /usr/local/pgplot
+#PGPLOTDIR = /home/sci/software/misc/pgplot
 X11LIBDIR  = /usr/X11R6/lib
 ######################################
 #
