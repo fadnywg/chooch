@@ -51,7 +51,7 @@ OBJECTS = main.o      fluread.o printbanner.o minmax.o  spline.o \
 #
 #
 chooch : clean ${OBJECTS} Makefile
-	$(CC) -v $(CFLAGS) -o ${EXE} ${OBJECTS} $(LDFLAGS)
+	$(CC) -o ${EXE} ${OBJECTS} $(LDFLAGS)
 
 chooch-pg : clean
 	make chooch-with-pgplot "CFLAGS = $(CFLAGS) -DPGPLOT"
