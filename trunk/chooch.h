@@ -75,7 +75,7 @@ typedef struct {real x; real y;} point;
 #include "/usr/local/pgplot/cpgplot.h"
 #endif
 
-#include "mucal-C/mucal.h"
+#include "mucal.h"
 
 void printbanner();
 int  fluread(char *, real *, real *, int *);
