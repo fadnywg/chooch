@@ -25,18 +25,21 @@
 
 int checks (int nDataPoints, real *fXraw, real *fYraw, real *dStep)
 {
-  int i, j, err=0;
+  int i, err=0;
   real Steps[MAXREG];
   real tmp, conv=1.0;
 
   *dStep=100000;
-  j = 0;
-  if(fXraw[0] < 1000.0) {
+  /*
+   * If input energy looks like it is in keV then convert to eV and
+   * print a warning message
+   */
+  if(fXraw[0] < 300.0) {
      conv=1000.0;
      printf("Warning: Input data automatically converted from keV to eV\n");
   }
   for (i = 0; i < nDataPoints; i++) {
-     fXraw[i] *= conv; // Convert from KeV to eV if required
+     fXraw[i] *= conv; // Convert from KeV to eV if conv != 1.0
      if(i != 0) {
 	tmp = fXraw[i] - fXraw[i-1];
 	if (tmp < 0.0) {
