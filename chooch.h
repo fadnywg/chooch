@@ -132,6 +132,11 @@ void efsplot(int, double *, double *, double *, int, char *);
 void usage();
 
 /*
+ * copyright
+ */
+void copyright();
+
+/*
  * integrate
  */
 void Integrate(int, int *, double, double *, double *, double *, double *, double *, double *, double *, double *);
