@@ -23,6 +23,7 @@ void usage()
   (void)fprintf( stderr, "Usage:\n" );
   (void)fprintf( stderr, " chooch -e <element> [-a <edge>] [-r <resol>] [-1 <e1>] [-2 <e2>] [-3 <e3>] [-4 <e4>] [-x] [-p] [-o <efs filename>] [-v <verbose level>] datafile\n\n");
   (void)fprintf( stderr, "-h                    print this message\n");
+  (void)fprintf( stderr, "-s                    run silently\n");
   (void)fprintf( stderr, "-e <element>          element symbol (default Se)\n");
   (void)fprintf( stderr, "-a <edge>             absorption edge (K, L1, L2, L3, M) (default is auto detect)\n");
   (void)fprintf( stderr, "-r <resol>            energy resolution (dE/E) (default is Si(111) 1.4x10-4)\n");
