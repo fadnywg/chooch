@@ -23,6 +23,7 @@
 #include <stdlib.h>
 #include "chooch.h"
 extern char *sElement;
+extern double fE1, fE2, fE3, fE4;
 int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, double *fYnorm, int plotX)
 {
   extern int verbose;
@@ -32,15 +33,22 @@ int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doubl
   double fC, fM;
   char label[10];
   if(verbose>0)printf(" Plot switch:   %d\n", plotX);
-  i = 0;
-  if((fEdge-fXraw[i]) > 30.0) {
+  if(fE1==0.0)fE1=fXraw[0];
+  if(fE2==0.0)fE2=fEdge-20.0;
+  if(fE3==0.0)fE3=fEdge+25.0;
+  if(fE4==0.0)fE4=fXraw[nDataPoints-1];
+  j = 0;
+  if((fEdge-fE1) > 30.0) {
      if(verbose>1)printf("Using linear fit to below edge region\n");
-     while (fXraw[i] < fEdge-20) {
-	fXtemp[i] = fXraw[i];
-	fYtemp[i] = fYraw[i];
-	i++;
+     for (i = 0; i < nDataPoints; i++) {
+	if(fXraw[i] > fE1 && fXraw[i] < fE2) {
+	   fXtemp[j] = fXraw[i];
+	   fYtemp[j] = fYraw[i];
+	   j++;
+	}
      }
-     nFit = i-2;
+     nFit = j-2;
+     if(verbose>1)printf("Fitting ....\n");
      err = linear_fit(nFit, fXtemp, fYtemp, &fC, &fM);
      for (i = 0; i < nDataPoints; i++) {
 	fYfitb[i] = fC + fM * fXraw[i];
@@ -55,10 +63,10 @@ int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doubl
      }
   }
   j = 0;
-  if((fXraw[nDataPoints-1]-fEdge) > 30.0) {
+  if((fE4-fEdge) > 30.0) {
      if(verbose>1)printf("Using linear fit to above edge region\n");
      for (i = 0; i < nDataPoints; i++) {
-	if (fXraw[i] > fEdge+25) {
+	if (fXraw[i] > fE3 && fXraw[i] < fE4) {
 	   fXtemp[j] = fXraw[i];
 	   fYtemp[j] = fYraw[i];
 	   j++;
