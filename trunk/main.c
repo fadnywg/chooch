@@ -213,7 +213,8 @@ int main(int argc, char *argv[])
   err = smooth(nDataPoints, fYfpp, fYfpps, nSavWin, nSavWin, 4, 0);
 #if defined(PGPLOT)
   if(plotX)
-     toplot(nDataPoints, fXraw, fYfpps, "f'' and derivatives", RED);
+     toplot(nDataPoints, fXraw, fYfpp, "f'' and derivatives", RED);
+     addline(nDataPoints, fXraw, fYfpps, YELLOW);
 #endif
   err = smooth(nDataPoints, fYfpp, fYDeriv1, nSavWin, nSavWin, 4, 1);
 #if defined(PGPLOT)
