@@ -1,0 +1,3 @@
+LDFLAGS = -Bstatic -L$(X11LIBDIR) -L$(GSLDIR) -L$(CGRAPHDIR) $(CGRAPH) $(LIBS) -Bdynamic -ldl -lm
+CFLAGS  = -xCC -Xt -I$(INCLUDE)
+CC      = cc
