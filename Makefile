@@ -2,10 +2,14 @@
 # Created on Oct 30 1999 by Gwyndaf Evans
 #
 # Edit the three first directory definitions to specify
-# a)  the directory where GSL (Gnu Scientific Library) is kept
-# b)  the directory where Cgraph (PS plotting library) is kept
-# c)  and the directory where you would like you executables to go (BINDIR).
+# a) Edit the host type
+# b)  the directory where GSL (Gnu Scientific Library) is kept
+# c)  the directory where Cgraph (PS plotting library) is kept
+# d)  and the directory where you would like you executables to go (BINDIR).
 #
+ARCH   = Linux
+#ARCH   = OSF1
+#ARCH   = SunOS
 GSLDIR = /usr/local/lib
 CGRAPHDIR = /usr/local/lib
 BINDIR    = /home/gwyndaf/bin/linux_exe
@@ -20,14 +24,12 @@ X11LIBDIR  = /usr/X11R6/lib
 CGRAPH = -lcgraph
 LIBS = -lgsl -lgslcblas -lX11
 PGLIBS =  -lcpgplot -lpgplot
-EXE    = chooch-1.0.4
-EXEPG    = chooch-1.0.4-pg
+EXE    = chooch-1.0.4.$(ARCH)
+EXEPG    = chooch-1.0.4-pg.$(ARCH)
 #
 # How to compile and link
 #
-#include Makefile.SunOS
-include Makefile.Linux
-#include Makefile.OSF1
+include Makefile.$(ARCH)
 #
 # Basic definitions
 #
@@ -37,7 +39,7 @@ CP    = /bin/cp
 #
 #
 OBJECTS = main.o fluread.o printbanner.o minmax.o spline.o \
-        mucal-C/mucal.o fdprime.o smooth.o fits.o normalize.o \
+        mucal.o fdprime.o smooth.o fits.o normalize.o \
         checks.o usage.o integrate.o psplot.o selwavel.o \
         copyright.o toplot.o license.c
 #
@@ -53,16 +55,12 @@ chooch-with-pgplot : ${OBJECTS} Makefile
 #
 all: chooch chooch-pg
 #
-mucal-C/mucal.o : mucal-C/mucal.c
-	$(CC) $(CFLAGS)   -c -o $@ $?
-#	$(MV) mucal.o $@
-#
 install :
 	$(MV) $(EXE)   $(BINDIR)
 	$(MV) $(EXEPG) $(BINDIR)
 #
 clean :
-	${RM} -f *.o mucal-C/*.o
+	${RM} -f *.o
 #
 # End
 #
