@@ -35,6 +35,7 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
                double *fD3, double *fYfp)
 {
   extern int verbose;
+  extern double fEres;
   int i;
   double fp, error, E0, dE;
   double fElo, fEhi;
@@ -46,7 +47,10 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   spline=gsl_spline_alloc(gsl_interp_akima, nDataPoints);
   gsl_spline_init(spline, fXraw, fYfpp, nDataPoints);
 
-  dE=(fXraw[nDataPoints-1]-fXraw[0])/(nDataPoints-1);
+  /*  
+   *dE=(fXraw[nDataPoints-1]-fXraw[0])/(nDataPoints-1); 
+   */
+  dE=fEres*fXraw[0]/3.0;
   if(verbose>0)printf("Energy interval = %f\n", dE);
   for (i=0, E0=fXraw[1]; E0<fXraw[nDataPoints-1]; E0+=dE, i++)
     {
