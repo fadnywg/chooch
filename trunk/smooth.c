@@ -410,6 +410,9 @@ int apply_coeffs(float *fpad, double *g, float *cn, int nl, int nr, int np) {
     for (n = 0; n < (nl+nr+1); n++) {
       g[i] += (double) (cn[n] * fpad[i+n]);
     }
+    if(verbose>1){
+      printf("%d  %10.4f\n",i,g[i]);
+    }
   }
   return 0;
 }
