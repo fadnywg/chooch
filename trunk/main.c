@@ -133,13 +133,16 @@ int main(int argc, char *argv[])
     printf("Try chooch -h to show all options\n");
     exit(EXIT_FAILURE);
   }
-  /*
-   */
-  if(!silent)copyright();
-  /*
-   */
+  copyright();
   sFilename = argv[optind];
   if(!silent)printf("Fluorescence scan filename: %s\n", sFilename);
+  /*
+  if(plotX){
+     id1=cpgopen("/xw");
+     if(id1 < 0)exit (EXIT_FAILURE);
+     cpgslct(id1);
+  }
+  /*
   /*
    * Read in raw spectrum and plot
    */
@@ -152,14 +155,23 @@ int main(int argc, char *argv[])
    * Smooth with Savitzky-Golay filter
    */ 
   fMonoRes = fEres * fEdge;
-  nSavWin = (int) fMonoRes / dE;
-  if(verbose>1)printf("dE = %f Resol = %f\n", dE, fMonoRes);
-  if(verbose>1)printf("Savitsky-Golay window value = %d\n", nSavWin);
-  err = smooth(nDataPoints, fYraw, fYsmooth, nSavWin, nSavWin, 4, 0);
+  nSavWin = 2 * (int) fMonoRes / dE;
+  if(verbose>0)printf("dE = %f Resol = %f\n", dE, fMonoRes);
+  if(verbose>0)printf("Savitsky-Golay window value = %d\n", nSavWin);
+
+  //  err = smooth(nDataPoints, fYraw, fYsmooth, nSavWin, nSavWin, 4, 0);
+
+  /*
+    if(plotX){
+      toplot(nDataPoints, fXraw, fYraw, "Raw and smoothed data", YELLOW);
+      addline(nDataPoints, fXraw, fYsmooth, BLUE);
+    }
+  */
   /*
    * Normalise data
    */
   err=normalize(nDataPoints, fEdge, fXraw, fYraw, fYnorm, plotX, fYfita, fYfitb);
+  /*  if(plotX)spacebar();*/
   /*
    * Impose on theoretical spectrum of f'' to obtain 
    * experimental equivalent
@@ -170,10 +182,25 @@ int main(int argc, char *argv[])
    * Determine first and second derivatives of smoothed data
    * and plot them on top of one another.
    */
-  err = smooth(nDataPoints, fYfpp, fYfpps, 8, 8, 4, 0); 
-  err = smooth(nDataPoints, fYfpp, fYDeriv1, 8, 8, 4, 1);
-  err = smooth(nDataPoints, fYfpp, fYDeriv2, 8, 8, 4, 2);
-  err = smooth(nDataPoints, fYfpp, fYDeriv3, 8, 8, 4, 2);
+  err = smooth(nDataPoints, fYfpp, fYfpps, nSavWin, nSavWin, 4, 0);
+  //  if(plotX)
+  //   toplot(nDataPoints, fXraw, fYfpps, "f'' and derivatives", RED);
+  err = smooth(nDataPoints, fYfpp, fYDeriv1, nSavWin, nSavWin, 4, 1);
+  //if(plotX)
+  //   addline(nDataPoints, fXraw, fYDeriv1, YELLOW);
+  err = smooth(nDataPoints, fYfpp, fYDeriv2, nSavWin, nSavWin, 4, 2);
+  //if(plotX){
+  //   cpgsci(BLUE);
+  //   addline(nDataPoints, fXraw, fYDeriv2, BLUE);
+  // }
+  err = smooth(nDataPoints, fYfpp, fYDeriv3, nSavWin, nSavWin, 4, 2);
+  /*  
+  if(plotX){
+     cpgsci(BLUE);
+     addline(nDataPoints, fXraw, fYDeriv3, BLUE);
+     spacebar();
+  }
+  */
   /*
    * Perform Kramer-Kronig transform
    */
@@ -181,9 +208,19 @@ int main(int argc, char *argv[])
   err=selwavel(nDataPoints, fXfpp, fYspline, fYfp);
 
   /*
+  if(plotX)
+     addline(nPoints, fXfpp, fYspline, BLUE);
+  */
+  /*
    * Plot resulting f' and f'' spectra
    */
   err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
+  /*
+  if(plotX){
+     efsplot(nPoints, fXfpp, fYspline, fYfp, 0, NULL);
+     spacebar();
+  }
+  */
   if(psplot){
      /*     efsplot(nPoints, fXfpp, fYspline, fYfp, 1, psfile);*/
      psplt(nPoints, fXfpp, fYspline, fYfp, psfile);
@@ -200,13 +237,5 @@ int main(int argc, char *argv[])
 	fprintf(ff,"%10.3f %7.2f %7.2f %7.2f %7.3f %7.3f %7.3f %7.3f\n", fXraw[i], fYraw[i], fYsmooth[i], fYfita[i], fYfitb[i], fYDeriv1[i], fYDeriv2[i], fYDeriv3[i]);
      }
      fclose(ff);
-  }
-  if(!silent){
-     printf("\n Table of results\n");
-     printf("------------------------------------\n");
-     printf("|      |  energy  |    f\'\' |   f\'  |\n");
-     printf("| peak | %8.2f |  %5.2f | %5.2f |\n", EPeak, fppPeak, fpPeak);
-     printf("| infl | %8.2f |  %5.2f | %5.2f |\n", EInfl, fppInfl, fpInfl);
-     printf("------------------------------------\n");
   }
 }
