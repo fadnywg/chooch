@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 
 #if defined(PGPLOT)
   if(plotX){
-     toplot(nDataPoints, fXraw, fYraw, "Raw and smoothed data", YELLOW);
+     toplot(nDataPoints, fXraw, fYraw, "Raw and smoothed data", BLUE);
   }
 #endif
   /******************
@@ -212,14 +212,16 @@ int main(int argc, char *argv[])
    *************************************************************************/
   err = smooth(nDataPoints, fYfpp, fYfpps, nSavWin, nSavWin, 4, 0);
 #if defined(PGPLOT)
-  if(plotX)
+  if(plotX){
      toplot(nDataPoints, fXraw, fYfpp, "f'' and derivatives", RED);
      addline(nDataPoints, fXraw, fYfpps, YELLOW);
+  }
 #endif
   err = smooth(nDataPoints, fYfpp, fYDeriv1, nSavWin, nSavWin, 4, 1);
 #if defined(PGPLOT)
-  if(plotX)
+  if(plotX){
      addline(nDataPoints, fXraw, fYDeriv1, YELLOW);
+  }
 #endif
   err = smooth(nDataPoints, fYfpp, fYDeriv2, nSavWin, nSavWin, 4, 2);
 #if defined(PGPLOT)
@@ -243,8 +245,13 @@ int main(int argc, char *argv[])
    **********************************/
   Integrate(nDataPoints, &nPoints, fEdge, fXraw, fXfpp, fYspline, fYfpps, fYDeriv1, fYDeriv2, fYDeriv3, fYfp);
   err=selwavel(nPoints, fXfpp, fYspline, fYfp);
-
+  
 #if defined(PGPLOT)
+  if(verbose>0){
+    for(i=0;i<nPoints;i++){
+      printf("i fXfpp fYspline  %d %10.5f  %10.5f \n", i, fXfpp[i], fYspline[i]);
+    }
+  }
   if(plotX) {
      addline(nPoints, fXfpp, fYspline, GREEN);
      spacebar();
