@@ -23,15 +23,14 @@
 #include <stdlib.h>
 #include "chooch.h"
 extern char *sElement;
-
-int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, double *fYnorm)
+int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, double *fYnorm, int plotX)
 {
   int i, j, nFit, err;
   double fXtemp[MAXSIZE], fYtemp[MAXSIZE];
   double fYfita[MAXSIZE], fYfitb[MAXSIZE];
   double fC, fM;
   char label[10];
-
+  printf(" Plot switch:   %d\n", plotX);
   i = 0;
   if((fEdge-fXraw[i]) > 30.0) {
      printf("Using linear fit to below edge region\n");
@@ -45,7 +44,8 @@ int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doubl
      for (i = 0; i < nDataPoints; i++) {
 	fYfitb[i] = fC + fM * fXraw[i];
      }
-     addline(nDataPoints, fXraw, fYfitb, BLUE);
+     if(plotX)
+	addline(nDataPoints, fXraw, fYfitb, BLUE);
   } else {
      fC=fYraw[0];
      printf("Assuming below edge constant value of %f in normalisation\n", fC);
@@ -66,7 +66,9 @@ int normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doubl
   for (i = 0; i < nDataPoints; i++) {
     fYfita[i] = fC + fM * fXraw[i];
   }
-  addline(nDataPoints, fXraw, fYfita, BLUE);
+  if(plotX){
+     addline(nDataPoints, fXraw, fYfita, BLUE);
+  }
   for (i = 0; i < nDataPoints; i++) {
     fYnorm[i] = (fYraw[i] - fYfitb[i]) / (fYfita[i] - fYfitb[i]);
   }
