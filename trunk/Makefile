@@ -30,8 +30,8 @@ X11LIBDIR  = /usr/X11R6/lib
 CGRAPH = -lcgraph
 LIBS = -lgsl -lgslcblas -lX11
 PGLIBS =  -lcpgplot -lpgplot
-EXE    = chooch-1.0.4.$(ARCH)
-EXEPG    = chooch-1.0.4-pg.$(ARCH)
+EXE    = chooch-5.0.$(ARCH)
+EXEPG    = chooch-5.0-pg.$(ARCH)
 #
 # How to compile and link
 #
