@@ -70,7 +70,9 @@ typedef struct {real x; real y;} point;
 /*
  *
  */
+/*
 #include "/usr/local/pgplot/cpgplot.h"
+*/
 #include "mucal-C/mucal.h"
 
 void printbanner();
