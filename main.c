@@ -88,10 +88,12 @@ int main(int argc, char *argv[])
 	fEres = atof(optarg);
 	if(!silent)printf("-r: Energy resolution = %f\n", fEres);
 	break;	
+#if defined(PGPLOT)
      case 'x' :	
 	plotX = 1;
 	if(!silent)printf("-x: with X plotting \n");
 	break;
+#endif
      case 'o' :	
 	outfile = optarg;
 	if(!silent)printf("-o: Output file name = %s\n", outfile);

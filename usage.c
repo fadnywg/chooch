@@ -33,7 +33,9 @@ void usage()
   (void)fprintf( stderr, "-4 <e4>               Above edge fit upper energy limit (eV)\n");
   (void)fprintf( stderr, "-p <PS file>          output to PostScript file\n");
   (void)fprintf( stderr, "-o <efs file>         filename for efs output (default output.efs\n");
+#if defined(PGPLOT)
   (void)fprintf( stderr, "-x                    plot to Xwindows\n");
+#endif
   (void)fprintf( stderr, "-d                    dump intermediate data for use with pUI\n");
   (void)fprintf( stderr, "-v <level>            verbosity level (0 -- 3) (default 0)\n");
   exit( EXIT_FAILURE );
