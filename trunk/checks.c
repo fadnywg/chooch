@@ -1,5 +1,5 @@
 /***************************************************************************
-                            checks.c  -  description
+                            checks.c  - do checks on input data
                              -------------------
     begin                : Sat July  6 12:01:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans

@@ -1,5 +1,5 @@
 /***************************************************************************
-                          minmax.c  -  description
+                          minmax.c  -  get min and max
                              -------------------
     begin                : Sat Mar  9 09:51:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans

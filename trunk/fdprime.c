@@ -1,5 +1,5 @@
 /***************************************************************************
-                            get_fpp.c  -  description
+                            get_fpp.c  - Use mucal to et f'' values
                              -------------------
     begin                : Sat July  6 12:01:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans

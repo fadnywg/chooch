@@ -1,5 +1,5 @@
 /***************************************************************************
-                          spline.c  -  description
+                          spline.c  -  Do a spline fit using GSL
                              -------------------
     begin                : Sat Mar  9 09:51:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans

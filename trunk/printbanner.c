@@ -1,5 +1,5 @@
 /***************************************************************************
-                          printbanner.c  -  description
+                          printbanner.c  -  just like it sounds
                              -------------------
     begin                : Sun Mar  10 16:14:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans

@@ -1,5 +1,5 @@
 /***************************************************************************
-                            integrate.c  -  description
+                            integrate.c  -  do Kramers-Kronig integration
                              -------------------
     begin                : Sat July  6 12:01:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans

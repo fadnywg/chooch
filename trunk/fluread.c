@@ -1,7 +1,6 @@
 /***************************************************************************
-                          fluread.c  -  description
-                             -------------------
-    begin                : Sat Mar  9 09:51:02 GMT 2002
+                          fluread.c  -  read and write data files
+                : Sat Mar  9 09:51:02 GMT 2002
     copyright            : (C) 2002 by Gwyndaf Evans
     email                : gwyndaf@gwyndafevans.co.uk
  ***************************************************************************/
