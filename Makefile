@@ -44,10 +44,10 @@ MV    = /bin/mv
 CP    = /bin/cp
 #
 #
-OBJECTS = main.o fluread.o printbanner.o minmax.o spline.o \
-        mucal.o fdprime.o smooth.o fits.o normalize.o \
-        checks.o usage.o integrate.o psplot.o selwavel.o \
-        copyright.o toplot.o license.c
+OBJECTS = main.o      fluread.o printbanner.o minmax.o  spline.o \
+          mucal.o     fdprime.o smooth.o      fits.o    normalize.o \
+          checks.o    usage.o   integrate.o   psplot.o  selwavel.o \
+          copyright.o toplot.o  license.c
 #
 #
 chooch : clean ${OBJECTS} Makefile
