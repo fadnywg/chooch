@@ -18,16 +18,13 @@ char *comment= "% chooch PS file [ Gwyndaf Evans]\n\
 #include <cgraph.h>
 #include "chooch.h"
 
-#define PI	3.141592654
-
-
 void psplt(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename) {
    extern double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
    extern char cScanTitle[];
    float fMinX, fMaxX, fMinY, fMaxY, fLenX, fLenY, fDum;
-   float fXplot[nDataPoints], fY1plot[nDataPoints], fY2plot[nDataPoints];
+   float fXplot[MAXSIZE], fY1plot[MAXSIZE], fY2plot[MAXSIZE];
    int i;
-   int numoff;
+   int numoff, ticsep;
    int ninside, rot, expand;
    int marktype;
    int ntotal;
@@ -78,12 +75,16 @@ void psplt(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    /*
     *
     */
-   numoff = (((int)fMinY)%2 == 0) ? 0 : 1;
+
    cg_linax_style(3, numoff, 5, 3, 8);
-   /*   cg_linax_style(4, 0, 5, 3, 8);*/
-   cg_xaxis( 6.5, fMinX, fMaxX, 0.0, fLenX/5, 1);
+
+   /* X-AXIS */
+   cg_xaxis(6.5, fMinX, fMaxX, 0.0, fLenX/5, 1);
    cg_xlabel("X-ray energy (eV)");
-   cg_yaxis( 5.0, fMinY, fMaxY, 0.0, 1, 2);
+   /* Y-AXIS */ 
+   numoff = (((int)fMinY)%2 == 0) ? 0 : 1;
+   ticsep=((int)fLenY)/10;
+   cg_yaxis(5.0, fMinY, fMaxY, 0.0, ticsep, 2);
    cg_ylabel("f\' and f\'\' (e)");
    /*
     *
