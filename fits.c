@@ -27,6 +27,7 @@
 
 int linear_fit(int n, double *x, double *y, double *c, double *m)
 {
+  extern int verbose;
   int i;
   double w[MAXSIZE];
   double c0, c1, cov00, cov01, cov11, chisq;
@@ -40,12 +41,12 @@ int linear_fit(int n, double *x, double *y, double *c, double *m)
                    &chisq);
   *c = c0;
   *m = c1; 
-  printf("# best fit: Y = %g + %g X\n", c0, c1);
-  printf("# covariance matrix:\n");
-  printf("# [ %g, %g\n#   %g, %g]\n", 
-         cov00, cov01, cov01, cov11);
-  printf("# chisq = %g\n", chisq);
-
+  if(verbose>1){
+     printf("# best fit: Y = %g + %g X\n", c0, c1);
+     printf("# covariance matrix:\n");
+     printf("# [ %g, %g\n#   %g, %g]\n", cov00, cov01, cov01, cov11);
+     printf("# chisq = %g\n", chisq);
+  }
 /*    for (i = 0; i < n; i++) */
 /*      printf("data: %g %g %g\n",  */
 /*                    x[i], y[i], 1/sqrt(w[i])); */
@@ -56,6 +57,7 @@ int linear_fit(int n, double *x, double *y, double *c, double *m)
 
 int quad (int n, double *fX, double *fY, double *fCoef)
 {
+  extern int verbose;
   int i;
   double xi, yi, ei, chisq;
   gsl_matrix *X, *cov;
@@ -102,6 +104,7 @@ int quad (int n, double *fX, double *fY, double *fCoef)
     fCoef[2] = C(2);
   }
 
+  if(verbose>1)
   {
     printf("# best fit: Y = %g + %g X + %g X^2\n", 
            C(0), C(1), C(2));

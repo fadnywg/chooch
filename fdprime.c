@@ -59,6 +59,7 @@ char *get_Edge(char *sElement, double fMidE, double *fE)
    /*
     * Given the mid point of recorded spectrum and element, guess the edge energy
     */
+  extern int verbose;
   double dEnergy[9], dXsec[11], dFluo[4];
   double diff, mindiff=1e10, E;
   int    i, iE, iZZ = 0, iPflag=0;
@@ -68,8 +69,8 @@ char *get_Edge(char *sElement, double fMidE, double *fE)
   if((err=mucal(sElement, iZZ, 0.0, sUnit, iPflag, dEnergy, dXsec, dFluo, &sErrmsg[0])) != 0) {
     printf("WARNING: Problem  getting edge energy from mucal");
   }
-  printf(" Mid point of spectrum = %f\n", fMidE);
-  printf(" E edge      E diff\n");
+  if(verbose>0)printf(" Mid point of spectrum = %f\n", fMidE);
+  if(verbose>0)printf(" E edge      E diff\n");
   for(i=0; i<5; i++){
      diff=fabs(fMidE-dEnergy[i]);
      if(diff < mindiff){
@@ -77,7 +78,7 @@ char *get_Edge(char *sElement, double fMidE, double *fE)
 	iE=i;
 	*fE=dEnergy[i]*1000.0;
      }
-     printf(" %8.4f       %8.4f\n", dEnergy[i], diff);
+     if(verbose>0)printf(" %8.4f       %8.4f\n", dEnergy[i], diff);
   }
   return edge_name(iE);
 }

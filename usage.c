@@ -5,10 +5,13 @@
 void usage()
 {
   (void)fprintf( stderr, "Usage:\n" );
-  (void)fprintf( stderr, "  chooch [options]\n\n");
-  (void)fprintf( stderr, "-help                          print this message\n");
-  (void)fprintf( stderr, "-d <debug_flag>                1 = debug on, 0 = debug off (default = 0) \n");
-  (void)fprintf( stderr, "-a <element>                   element symbol\n");
-  (void)fprintf( stderr, "-e <edge>                      absorption edge (K, L1, L2, L3, M)\n");
+  (void)fprintf( stderr, " chooch -e <element> [-a <edge>] [-x] [-p] [-o <efs filename>] [-v <verbose level>]\n\n");
+  (void)fprintf( stderr, "-h                    print this message\n");
+  (void)fprintf( stderr, "-e <element>          element symbol\n");
+  (void)fprintf( stderr, "-a <edge>             absorption edge (K, L1, L2, L3, M) (default is auto detect)\n");
+  (void)fprintf( stderr, "-p <PS file>          output to PostScript file\n");
+  (void)fprintf( stderr, "-o <efs file>         filename for efs output (default output.efs\n");
+  (void)fprintf( stderr, "-x                    plot to Xwindows\n");
+  (void)fprintf( stderr, "-v <level>            verbosity level (0 -- 3) (default 0)\n");
   exit( EXIT_FAILURE );
 }

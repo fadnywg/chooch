@@ -41,8 +41,6 @@ int prep_gaussian(int N, double sigma, double *y)
     y[i] = exp(term1/term2) / (sqrt(2*PI)*sigma);
     printf("%f %f %f %f\n",term1, term2, x[i], y[i]);
   }
-  //  strcpy(label,"Gaussian");
-  //  toplot(N, x, y, label);
 }
 
 
