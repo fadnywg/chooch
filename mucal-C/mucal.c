@@ -133,6 +133,9 @@
  *c     correct AK(1,57) coefficient (for La)                            |
  *c----------------------------------------------------------------------+
  *c     $Log: not supported by cvs2svn $
+ *c     Revision 1.1.1.1  2003/01/16 21:02:25  gwyndaf
+ *c     Imported sources
+ *c
  *c Revision 1.9  7/7/95  14:48:38  pat
  *
  *
@@ -167,7 +170,7 @@ static char *element[NELEM] = {
   "Rh", "Pd", "Ag", "Cd", "In", "Sn", "Sb", "Te", "I" , "Xe", "Cs",
   "Ba", "La", "Ce", "Pr", "Nd", "Pm", "Sm", "Eu", "Gd", "Tb", "Dy",
   "Ho", "Er", "Tm", "Yb", "Lu", "Hf", "Ta", "W" , "Re", "Os", "Ir",
-  "Pt", "Au", "Hd", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra",
+  "Pt", "Au", "Hg", "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra",
   "Ac", "Th", "Pa", "U" , "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es",
   "Fm", "Md", "No", "Lw"
 };
