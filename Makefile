@@ -21,7 +21,7 @@ PGPLOTDIR  = /usr/local/pgplot
 #INCLUDE   = /users/opd14/Gwyndaf/include
 GSLDIR = /usr/local/lib
 CGRAPHDIR = /usr/local/lib
-BINDIR    = /home/ge73/bin/linux_exe
+BINDIR    = /home/ge73/bin
 INCLUDE   = /usr/local/pgplot
 #PGPLOTDIR = /home/sci/software/misc/pgplot
 X11LIBDIR  = /usr/X11R6/lib
@@ -30,8 +30,8 @@ X11LIBDIR  = /usr/X11R6/lib
 CGRAPH = -lcgraph
 LIBS = -lgsl -lgslcblas -lX11
 PGLIBS =  -lcpgplot -lpgplot
-EXE    = chooch-5.0.$(ARCH)
-EXEPG    = chooch-5.0-pg.$(ARCH)
+EXE    = chooch-5.0.1.$(ARCH)
+EXEPG    = chooch-5.0.1-pg.$(ARCH)
 #
 # How to compile and link
 #
@@ -53,10 +53,10 @@ OBJECTS = main.o      fluread.o printbanner.o minmax.o  spline.o \
 chooch : clean ${OBJECTS} Makefile
 	$(CC) -o ${EXE} ${OBJECTS} $(LDFLAGS)
 
-chooch-pg : clean
+chooch-pg : 
 	make chooch-with-pgplot "CFLAGS = $(CFLAGS) -DPGPLOT"
 
-chooch-with-pgplot : ${OBJECTS} Makefile
+chooch-with-pgplot : clean ${OBJECTS} Makefile
 	$(FC) -v $(CFLAGS) -o ${EXEPG} ${OBJECTS} $(LDFLAGS)
 #
 all: chooch chooch-pg
