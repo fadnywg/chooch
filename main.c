@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
   float fXref, fYref, fXcur, fYcur;
   char *sFilename;
   char label[10];
-  char *psfile;
+  char *psfile, *outfile="output.efs";
   char  ch[1];
   char  *sEdge="K";           // Letter symbol for absorption edge K, L1, L2, L3, M
   char opt;
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
   double fC, fM;
   //
   optarg = NULL;
-  while( ( opt = getopt( argc, argv, "he:a:xp:l:v:" ) ) != (char)(-1) )
+  while( ( opt = getopt( argc, argv, "he:a:xo:p:l:v:" ) ) != (char)(-1) )
      switch( opt ) {
      case 'h' :
 	(void)usage();
@@ -81,6 +81,10 @@ int main(int argc, char *argv[])
 	printf("-p: PostScript output requested\n");
 	psplot = 1;
 	psfile = optarg;
+	break;
+     case 'o' :	
+	printf("-o: output file name\n");
+	outfile = optarg;
 	break;
      case 'l' :
 	fE1 = atof(optarg);
@@ -167,7 +171,7 @@ int main(int argc, char *argv[])
   /*
    * Plot resulting f' and f'' spectra
    */
-  err=efswrite("out.efs", fXfpp, fYspline, fYfp, nPoints);
+  err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
   if(plotX){
      efsplot(nPoints, fXfpp, fYspline, fYfp, 0, NULL);
      spacebar();
