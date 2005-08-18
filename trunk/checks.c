@@ -25,9 +25,11 @@
 
 int checks (int nDataPoints, real *fXraw, real *fYraw, real *dStep)
 {
+  extern int verbose;
   int i, err=0;
   real Steps[MAXREG];
-  real tmp, conv=1.0;
+  real runtot, avstep, conv=1.0;
+  real tmp[MAXSIZE];
 
   *dStep=100000;
   /*
@@ -41,14 +43,24 @@ int checks (int nDataPoints, real *fXraw, real *fYraw, real *dStep)
   for (i = 0; i < nDataPoints; i++) {
      fXraw[i] *= conv; // Convert from KeV to eV if conv != 1.0
      if(i != 0) {
-	tmp = fXraw[i] - fXraw[i-1];
-	if (tmp < 0.0) {
-	   err = 1;
-	   printf("Error in input data: energy does not increase monotonically");
-	   exit(0);
-	}
-	*dStep = (tmp < *dStep) ? tmp : *dStep;
+	tmp[i-1] = fXraw[i] - fXraw[i-1];
+        if(verbose>1)printf("points %d and %d : Energy step  %8.4f\n", i-1, i, tmp[i-1]);
      }
+  }
+  for(i = 1; i < nDataPoints; i++) { 
+    if (tmp[i-1] < 0.0) {
+      err = 1;
+      printf("Error in input data: energy does not increase monotonically");
+      exit(0);
+    }
+    /* Now calculate a 5 point moving average to get minimum average step size */
+    runtot+=tmp[i-1];
+    if(i > 3){
+      avstep=runtot/5.0;
+      if(verbose>1)printf("average no. %d : avstep  %8.4f\n", i, avstep);
+      *dStep = (avstep < *dStep) ? avstep : *dStep;
+      runtot-=tmp[i-4];
+    }
   }
   return err;
 }

@@ -32,7 +32,7 @@ int fluread(char *filename, double *x, double *y, int *nDataPoints)
   int    i,n;
   int    len;
   float  fXread[MAXSIZE], fYread[MAXSIZE];
-  char   line[TITLE];
+  char   line[TITLE], cLine[TITLE];
   FILE   *ff;
   //
   if ((ff = fopen(filename, "r")) == NULL) {
@@ -52,16 +52,26 @@ int fluread(char *filename, double *x, double *y, int *nDataPoints)
 	/* Read header lines if present
 	 * Will always try and read two lines if the first is a title
 	 */
-     } else if (sscanf(line, "%80c", cScanTitle) > 0) {
+     } else if (sscanf(line, "%80c", cLine) > 0) {
+
+       /* The next check gives a warning and not an error because it
+	  was unneccesary I thought. The analysis will still work if
+	  you put a blank line in the file somewhere. As long as the
+	  data is OK then who cares if there are inserted lines
+	  between the points.
+       */
 	if(i != 0){
-	   printf("ERROR in input format: Title is not on first line\n");
-	   exit(EXIT_FAILURE);
+	  printf("WARNING: Inserted lines of text in data file\n");
+	  printf("         (maybe blank lines at end of file)\n\n");
 	}
-	if(!silent)printf("Input file title: %s\n", cScanTitle);
-	if(fgets(line, sizeof(line), ff) != NULL){
-	   if ((n=sscanf(line, "%d", nDataPoints)) == 1) {
+	if(i == 0){
+	  strcpy(cScanTitle,cLine);
+	  if(!silent)printf("Input file title: %s\n", cScanTitle);
+	  if(fgets(line, sizeof(line), ff) != NULL){
+	    if ((n=sscanf(line, "%d", nDataPoints)) == 1) {
 	      if(!silent)printf("Number of data points expected = %d\n", *nDataPoints);
-	   }
+	    }
+	  }
 	}
      }
   }
