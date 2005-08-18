@@ -171,12 +171,12 @@ int main(int argc, char *argv[])
   fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
   sEdge=get_Edge(sElement, fMid, &fEdge);
   if(!silent)printf("\nSpectrum over %s %s edge at theoretical energy of %8.2f eV\n", sElement, sEdge, fEdge);
-
+  
   /**********************************
    * Determine Savitzky-Golay window
    **********************************/ 
   fMonoRes = fEres * fEdge;
-  nSavWin = 2 * (int) fMonoRes / dE;
+  nSavWin = (int) (fMonoRes / dE);
   if(nSavWin > 29){ 
      nSavWin=29;
   }
