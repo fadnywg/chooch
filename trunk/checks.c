@@ -53,6 +53,7 @@ int checks (int nDataPoints, real *fXraw, real *fYraw, real *dStep)
       printf("Error in input data: energy does not increase monotonically");
       exit(0);
     }
+
     /* Now calculate a 5 point moving average to get minimum average step size */
     runtot+=tmp[i-1];
     if(i > 3){
