@@ -239,6 +239,11 @@ int main(int argc, char *argv[])
      spacebar();
   }
 #endif
+  if(verbose>2){
+    for(i=0; i<nDataPoints; i++){
+      printf("%f  %f  %f  %f \n", fYfpp[i], fYDeriv1[i], fYDeriv2[i], fYDeriv3[i]);
+    }
+  }
 
   /**********************************
    * Perform Kramer-Kronig transform
