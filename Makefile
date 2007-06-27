@@ -10,28 +10,20 @@
 ARCH   = Linux
 #ARCH   = OSF1
 #ARCH   = SunOS
-#GSLDIR = /usr/local/lib
-#CGRAPHDIR = /usr/local/lib
-#BINDIR    = /home/$(USER)/bin/linux_exe
-#INCLUDE   = /usr/local/include
-PGPLOTDIR  = /usr/local/pgplot
-#X11LIBDIR  = /usr/X11R6/lib
-#GSLDIR = /users/opd14/Gwyndaf/lib
-#BINDIR    = /users/opd14/Gwyndaf/bin
-#INCLUDE   = /users/opd14/Gwyndaf/include
+#
+PGPLOTDIR  = /data/software/pgplot-linux
 GSLDIR = /usr/local/lib
 CGRAPHDIR = /usr/local/lib
-BINDIR    = /home/ge73/bin
-INCLUDE   = /usr/local/pgplot
-#PGPLOTDIR = /home/sci/software/misc/pgplot
+BINDIR    = /home/gwyndaf/bin
+INCLUDE   = /data/software/pgplot-linux
 X11LIBDIR  = /usr/X11R6/lib
 ######################################
 #
 CGRAPH = -lcgraph
 LIBS = -lgsl -lgslcblas -lX11
 PGLIBS =  -lcpgplot -lpgplot
-EXE    = chooch-5.0.3.$(ARCH)
-EXEPG    = chooch-5.0.3-pg.$(ARCH)
+EXE    = chooch-5.0.4.$(ARCH)
+EXEPG    = chooch-5.0.4-pg.$(ARCH)
 #
 # How to compile and link
 #
@@ -54,7 +46,7 @@ chooch : clean ${OBJECTS} Makefile
 	$(CC) -o ${EXE} ${OBJECTS} $(LDFLAGS)
 
 chooch-pg : 
-	make chooch-with-pgplot "CFLAGS = $(CFLAGS) -DPGPLOT"
+	make chooch-with-pgplot "CFLAGS = -I$(INCLUDE) $(CFLAGS) -DPGPLOT"
 
 chooch-with-pgplot : clean ${OBJECTS} Makefile
 	$(FC) -v $(CFLAGS) -o ${EXEPG} ${OBJECTS} $(LDFLAGS)

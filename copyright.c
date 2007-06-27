@@ -19,7 +19,7 @@
 void copyright()
 {
   (void)fprintf( stderr, "==================================================\n" );
-  (void)fprintf( stderr, "                     chooch-5.0.3                 \n");
+  (void)fprintf( stderr, "                     chooch-5.0.4                 \n");
   (void)fprintf( stderr, "      by Gwyndaf Evans Copyright (C) 1994--2005   \n" );
   (void)fprintf( stderr, "             gwyndaf@gwyndafevans.co.uk\n\n" );
   (void)fprintf( stderr, "        G. Evans & R. F. Pettifer (2001)\n");
