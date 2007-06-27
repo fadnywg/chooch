@@ -1,0 +1,47 @@
+CHOOCH
+======
+
+Installation Instructions
+=========================
+
+Requirements
+------------
+
+Ensure that you have all the required libraries installed:
+
+a) Gnu Scientific Library version 1.1 or later
+   Available from http://www.gnu.org/software/gsl/gsl.html
+
+
+b) Cgraph version 2.04 PostScript plotting library in C
+   Available from http://neurovision.berkeley.edu/software/A_Cgraph.html
+
+Optionally
+c) PGPLOT graphics library
+   Available from http://www.astro.caltech.edu/~tjp/pgplot
+
+Building the binary
+-------------------
+
+1) Download source distribution chooch.tar.gz
+
+2) Unpack the file in a directory of your choice e.g. /usr/local/src
+   using tar xzvf chooch.tar.gz for example.
+
+3) Edit the top of the Makefile to select the correct machine
+   architecture, point to the correct libraries and choose 
+   installation directories for binaries.
+
+4) Type 'gmake' for a version without PGPLOT capability or 'gmake chooch-pg'
+   for a version with PGPLOT linked. N.B. Both versions allow the generation
+   of PostScipt output.
+
+5) Type 'gmake install'
+
+
+Need Help?
+----------
+
+If you encounter difficulties with the installation then please contact
+the author at chooch@gwyndafevans.co.uk
+
