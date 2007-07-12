@@ -35,7 +35,7 @@ int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
 char cScanTitle[TITLE]="";
 int id1=0, id2=0;
-int verbose, silent;
+int verbose, silent, kev;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
 double fE1=0.0, fE2=0.0, fE3=0.0, fE4=0.0;
 double fEres=0.00014;
@@ -46,12 +46,12 @@ int main(int argc, char *argv[])
   int i, j, err;
   float fXref, fYref, fXcur, fYcur;
   char *sFilename;
-  char *psfile, *outfile="output.efs";
+  char *psfile, *pngfile, *outfile="output.efs";
   char  ch[1];
   char  *sEdge="K";           // Letter symbol for absorption edge K, L1, L2, L3, M
   char opt;
   //
-  int nDataPoints, nFit, nPoints, plotX=0, psplot=0, display=0;
+  int nDataPoints, nFit, nPoints, plotX=0, psplot=0, pngplot=0, display=0;
   int nSavWin;
   double dE, tmp, fEdge, fMonoRes;
   double fXraw[MAXSIZE], fYraw[MAXSIZE];
@@ -65,13 +65,18 @@ int main(int argc, char *argv[])
   double fC, fM;
   FILE *ff;
   //
-  verbose=silent=0;
+  verbose=silent=kev=0;
+  /***************************************************
+   * Output author, copyright and license information
+   ***************************************************/
+  copyright();
+  license();
 
   /******************************
    * Parse command-line switches
    ******************************/
   optarg = NULL;
-  while((opt = getopt(argc, argv, "she:a:r:xo:p:v:1:2:3:4:dwcl")) != (char)(-1))
+  while((opt = getopt(argc, argv, "she:a:r:xo:p:g:v:1:2:3:4:dwcl")) != (char)(-1))
      switch( opt ) {
      case 's' :
 	silent = 1;
@@ -91,7 +96,11 @@ int main(int argc, char *argv[])
      case 'r' :
 	fEres = atof(optarg);
 	if(!silent)printf("-r: Energy resolution = %f\n", fEres);
-	break;	
+	break;
+     case 'k' :
+        kev = 1;
+	if(!silent)printf("-k: Input data will be converted from keV to eV\n");
+        break;
 #if defined(PGPLOT)
      case 'x' :	
 	plotX = 1;
@@ -106,6 +115,11 @@ int main(int argc, char *argv[])
 	psplot = 1;
 	psfile = optarg;
 	if(!silent)printf("-p: PS output file = %s\n", psfile);
+	break;
+     case 'g' :	
+	pngplot = 1;
+	pngfile = optarg;
+	if(!silent)printf("-g: PNG output file = %s\n", pngfile);
 	break;
      case 'v' :
 	verbose = atoi(optarg);
@@ -149,11 +163,18 @@ int main(int argc, char *argv[])
     printf("Try chooch -h to show all options\n");
     exit(EXIT_FAILURE);
   }
-  copyright();
-  license();
+
   sFilename = argv[optind];
   if(!silent)printf("Fluorescence scan filename: %s\n", sFilename);
-  //
+
+  /********************************
+   * Start output and calculations
+   ********************************/
+
+ (void)fprintf( stderr, "Chooch output\n");
+ (void)fprintf( stderr, "-------------\n");
+
+  /* If PGPLOT compiled then initialise xwin output */
 #if defined(PGPLOT)
   if(plotX){
      id1=cpgopen("/xw");
@@ -167,7 +188,11 @@ int main(int argc, char *argv[])
    * Read in raw spectrum and plot
    ********************************/
   fluread(sFilename, fXraw, fYraw, &nDataPoints);
+  /*
+   * Check input data for common errors
+   */
   err=checks(nDataPoints, fXraw, fYraw, &dE);
+
   fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
   sEdge=get_Edge(sElement, fMid, &fEdge);
   if(!silent)printf("\nSpectrum over %s %s edge at theoretical energy of %8.2f eV\n", sElement, sEdge, fEdge);
@@ -175,16 +200,8 @@ int main(int argc, char *argv[])
   /**********************************
    * Determine Savitzky-Golay window
    **********************************/ 
-  fMonoRes = fEres * fEdge;
-  nSavWin = (int) (fMonoRes / dE);
-  if(nSavWin > 29){ 
-     nSavWin=29;
-  }
-  if(nSavWin < 2){ 
-     nSavWin=2;
-  }
-  if(verbose>0)printf("dE = %f Resol = %f\n", dE, fMonoRes);
-  if(verbose>0)printf("Savitsky-Golay window value = %d\n", nSavWin);
+
+  savwin(fEres, fEdge, dE, &nSavWin);
 
 #if defined(PGPLOT)
   if(plotX){
@@ -281,6 +298,9 @@ int main(int argc, char *argv[])
   /* To PostScript file if requested */
   if(psplot){
      psplt(nPoints, fXfpp, fYspline, fYfp, psfile);
+  }
+  if(pngplot){
+     pngplt(nPoints, fXfpp, fYspline, fYfp, pngfile);
   }
 
   /***************************************
