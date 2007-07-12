@@ -16,8 +16,11 @@ a) Gnu Scientific Library version 1.1 or later
 b) Cgraph version 2.04 PostScript plotting library in C
    Available from http://neurovision.berkeley.edu/software/A_Cgraph.html
 
+c) DISLIN Library for PNG file handling
+   Available from http://www.mps.mpg.de/dislin
+
 Optionally
-c) PGPLOT graphics library
+d) PGPLOT graphics library
    Available from http://www.astro.caltech.edu/~tjp/pgplot
 
 Building the binary
@@ -32,11 +35,11 @@ Building the binary
    architecture, point to the correct libraries and choose 
    installation directories for binaries.
 
-4) Type 'gmake' for a version without PGPLOT capability or 'gmake chooch-pg'
+4) Type 'make' for a version without PGPLOT capability or 'gmake chooch-pg'
    for a version with PGPLOT linked. N.B. Both versions allow the generation
    of PostScipt output.
 
-5) Type 'gmake install'
+5) Type 'make install'
 
 
 Need Help?
