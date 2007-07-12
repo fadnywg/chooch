@@ -1,0 +1,5 @@
+FOPTIM = -O2
+FFLAGS = $(FOPTIM)
+LDFLAGS = -non_shared -L$(GSLDIR) -L$(CGRAPHDIR) $(CGRAPH) $(LIBS) -lm 
+CFLAGS = -I$(INCLUDE)
+CC     = cc
