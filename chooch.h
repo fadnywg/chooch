@@ -66,7 +66,7 @@
 #define HEADER 1
 
 typedef double real; // could be double.
-typedef struct {real x; real y;} point;
+/*typedef struct {real x; real y;} point;*/
 /*
  *
  */
@@ -91,7 +91,8 @@ int DoSpline(int, real *, real *, real *, real *);
 /*
  *
  */
-int checks (int , real *, real *, real *);
+int checks(int , real *, real *, real *);
+void savwin(double, double, double, int *);
 /*
  * fdprime
  */
@@ -117,6 +118,13 @@ int impose(int, double, real *, real *, real *);
 int smooth(int , real *, real *, int, int, int, int);
 int apply_coeffs(float *, double *, float *, int , int , int );
 void pad(int , int , int , real *, float *);
+
+/*
+ * Dumping PS and PNG plots
+ */
+
+void psplt(int, double *, double *, double *, char *);
+void pngplt(int, double *, double *, double *, char *);
 
 /*
  * toplot

@@ -1,7 +1,7 @@
 FOPTIM = -O2
 FFLAGS = $(FOPTIM)
 LDFLAGS = -static -L$(PGPLOTDIR) $(PGLIBS) -L$(X11LIBDIR) -L$(GSLDIR) \
-	-L$(CGRAPHDIR) $(CGRAPH) $(LIBS) -lm -ldl -lpthread
+	-L$(CGRAPHDIR) -L$(DISLIN) $(DISLINLIBS) $(CGRAPH) $(LIBS) -lm -ldl -lpthread
 CFLAGS = -static
 FC     = g77
 CC     = gcc

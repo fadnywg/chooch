@@ -30,6 +30,7 @@ void usage()
   (void)fprintf( stderr, "-3 <e3>               Above edge fit lower energy limit (eV)\n");
   (void)fprintf( stderr, "-4 <e4>               Above edge fit upper energy limit (eV)\n");
   (void)fprintf( stderr, "-p <PS file>          output to PostScript file\n");
+  (void)fprintf( stderr, "-g <PNG file>         output to Portable Network Graphics (PNG) file\n");
   (void)fprintf( stderr, "-o <efs file>         filename for efs output (default output.efs\n");
 #if defined(PGPLOT)
   (void)fprintf( stderr, "-x                    plot to Xwindows\n");

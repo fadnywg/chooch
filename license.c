@@ -17,11 +17,12 @@
 #include <stdio.h>
 void license()
 {
-   (void)fprintf( stderr, "\n");
+   (void)fprintf( stderr, "License information\n");
+   (void)fprintf( stderr, "-------------------\n");
    (void)fprintf( stderr, "Chooch comes with ABSOLUTELY NO WARRANTY; for details\n");
-   (void)fprintf( stderr, "type `chooch -w'.  This is free software, and you are welcome\n");
-   (void)fprintf( stderr, "to redistribute it under certain conditions; type `chooch -c' \n");
-   (void)fprintf( stderr, "for details.\n\n");
+   (void)fprintf( stderr, "type `chooch -w'.  This is free software, and you are\n");
+   (void)fprintf( stderr, "welcome to redistribute it under certain conditions; \n");
+   (void)fprintf( stderr, "type `chooch -c' for details.\n\n");
    (void)fprintf( stderr, "You should have received a copy of the GNU General Public License\n");
    (void)fprintf( stderr, "along with this program; if not, write to the Free Software\n");
    (void)fprintf( stderr, "Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.\n\n");

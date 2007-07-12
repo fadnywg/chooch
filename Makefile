@@ -11,19 +11,22 @@ ARCH   = Linux
 #ARCH   = OSF1
 #ARCH   = SunOS
 #
-PGPLOTDIR  = /data/software/pgplot-linux
+PGPLOTDIR  = /usr/local/pgplot
+DISLIN = /usr/local/dislin
 GSLDIR = /usr/local/lib
 CGRAPHDIR = /usr/local/lib
 BINDIR    = /home/gwyndaf/bin
-INCLUDE   = /data/software/pgplot-linux
+INCLUDE   = /usr/local/pgplot
 X11LIBDIR  = /usr/X11R6/lib
 ######################################
 #
+VERSION = 5.0.6
 CGRAPH = -lcgraph
 LIBS = -lgsl -lgslcblas -lX11
 PGLIBS =  -lcpgplot -lpgplot
-EXE    = chooch-5.0.4.$(ARCH)
-EXEPG    = chooch-5.0.4-pg.$(ARCH)
+DISLINLIBS= -ldislnc
+EXE    = chooch-$(VERSION).$(ARCH)
+EXEPG    = chooch-$(VERSION)-pg.$(ARCH)
 #
 # How to compile and link
 #
@@ -39,7 +42,7 @@ CP    = /bin/cp
 OBJECTS = main.o      fluread.o printbanner.o minmax.o  spline.o \
           mucal.o     fdprime.o smooth.o      fits.o    normalize.o \
           checks.o    usage.o   integrate.o   psplot.o  selwavel.o \
-          copyright.o toplot.o  license.c
+          copyright.o toplot.o  license.c     pngplt.o  savwin.o
 #
 #
 chooch : clean ${OBJECTS} Makefile
