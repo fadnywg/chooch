@@ -20,7 +20,7 @@ INCLUDE   = /usr/local/pgplot
 X11LIBDIR  = /usr/X11R6/lib
 ######################################
 #
-VERSION = 5.0.6
+VERSION = 5.0.7
 CGRAPH = -lcgraph
 LIBS = -lgsl -lgslcblas -lX11
 PGLIBS =  -lcpgplot -lpgplot
