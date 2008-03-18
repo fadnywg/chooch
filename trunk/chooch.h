@@ -81,7 +81,6 @@ void printbanner();
 int  fluread(char *, real *, real *, int *);
 int  efswrite(char *, real *, real *, real *, int);
 void normfit(int, float *, float *);
-int DoSpline(int, real *, real *, real *, real *);
 /*
  * int dofft(int , real *, real *, int);
  * int prep_gaussian(int, real, real *);
