@@ -39,7 +39,7 @@ MV    = /bin/mv
 CP    = /bin/cp
 #
 #
-OBJECTS = main.o      fluread.o printbanner.o minmax.o  spline.o \
+OBJECTS = main.o      fluread.o printbanner.o minmax.o \
           mucal.o     fdprime.o smooth.o      fits.o    normalize.o \
           checks.o    usage.o   integrate.o   psplot.o  selwavel.o \
           copyright.o toplot.o  license.c     pngplt.o  savwin.o
