@@ -29,13 +29,14 @@
 #include <string.h>
 #include <ctype.h>
 #include <math.h>
+#include <gsl/gsl_errno.h>
 //
 #include "chooch.h"
 int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
 char cScanTitle[TITLE]="";
 int id1=0, id2=0;
-int verbose, silent, kev;
+int verbose, status, silent, kev;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
 double fE1=0.0, fE2=0.0, fE3=0.0, fE4=0.0;
 double fEres=0.00014;
@@ -65,6 +66,8 @@ int main(int argc, char *argv[])
   double fC, fM;
   FILE *ff;
   //
+  gsl_set_error_handler_off();
+
   verbose=silent=kev=0;
   /***************************************************
    * Output author, copyright and license information
