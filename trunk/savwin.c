@@ -37,5 +37,5 @@ void savwin(double fEres, double fEdge, double dE, int *nSavWin) {
      *nSavWin=2;
   }
   if(verbose>0)printf("dE = %f Resol = %f\n", dE, fMonoRes);
-  if(verbose>0)printf("Savitsky-Golay window value = %d\n", nSavWin);
+  if(verbose>0)printf("Savitsky-Golay window value = %d\n", *nSavWin);
 }
