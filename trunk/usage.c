@@ -19,12 +19,13 @@
 void usage()
 {
   (void)fprintf( stderr, "Usage:\n" );
-  (void)fprintf( stderr, " chooch -e <element> [-a <edge>] [-r <resol>] [-1 <e1>] [-2 <e2>] [-3 <e3>] [-4 <e4>] [-x] [-p] [-o <efs filename>] [-v <verbose level>] [FILE]\n\n");
+  (void)fprintf( stderr, " chooch -e <element> [-h] [-s] [-a <edge>] [-r <resol>] [-k] [-1 <e1>] [-2 <e2>] [-3 <e3>] [-4 <e4>] [-x] [-p ps filename] [-g png filename] [-o <efs filename>] [-v <verbose level>] [-w] [-c] [-l] [FILE]\n\n");
   (void)fprintf( stderr, "-h                    print this message\n");
   (void)fprintf( stderr, "-s                    run silently\n");
   (void)fprintf( stderr, "-e <element>          element symbol (default Se)\n");
   (void)fprintf( stderr, "-a <edge>             absorption edge (K, L1, L2, L3, M) (default is auto detect)\n");
   (void)fprintf( stderr, "-r <resol>            energy resolution (dE/E) (default is Si(111) 1.4x10-4)\n");
+  (void)fprintf( stderr, "-k                    Input data will be converted from keV to eV\n");
   (void)fprintf( stderr, "-1 <e1>               Below edge fit lower energy limit (eV)\n");
   (void)fprintf( stderr, "-2 <e2>               Below edge fit upper energy limit (eV)\n");
   (void)fprintf( stderr, "-3 <e3>               Above edge fit lower energy limit (eV)\n");
