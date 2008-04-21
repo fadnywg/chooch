@@ -51,7 +51,8 @@ int checks (int nDataPoints, double *fXraw, double *fYraw, double *dStep)
   for(i = 1; i < nDataPoints; i++) { 
     if (tmp[i-1] < 0.0) {
       err = 1;
-      printf("Error in input data: energy does not increase monotonically");
+      printf("Error in input data: energy does not increase monotonically\n");
+      printf("\n** Energy value of point %d is bigger than value of point %d **\n", i, i+1);
       exit(0);
     }
     
