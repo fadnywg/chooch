@@ -49,7 +49,8 @@ int main(int argc, char *argv[])
   char *sFilename;
   char *psfile, *pngfile, *outfile="output.efs";
   char  ch[1];
-  char  *sEdge="K";           // Letter symbol for absorption edge K, L1, L2, L3, M
+  // Initialise sEdge as "X" so we know nothing has been set by user
+  char  *sEdge="X";           // Letter symbol for absorption edge K, L1, L2, L3, M
   char opt;
   //
   int nDataPoints, nFit, nPoints, plotX=0, psplot=0, pngplot=0, display=0;
@@ -187,17 +188,28 @@ int main(int argc, char *argv[])
 #endif
 
   //printbanner();
+
   /********************************
    * Read in raw spectrum and plot
    ********************************/
+
   fluread(sFilename, fXraw, fYraw, &nDataPoints);
+
   /*
    * Check input data for common errors
    */
+
   err=checks(nDataPoints, fXraw, fYraw, &dE);
 
-  fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
-  sEdge=get_Edge(sElement, fMid, &fEdge);
+  /* 
+   * Auto-detect edge
+   */
+
+  if(*sEdge=="X"){
+    printf("No edge specified so working it out automatically ... \n");
+    fMid=(fXraw[nDataPoints-1]+fXraw[0])/2.0;
+    sEdge=get_Edge(sElement, fMid, &fEdge);
+  }
   if(!silent)printf("\nSpectrum over %s %s edge at theoretical energy of %8.2f eV\n", sElement, sEdge, fEdge);
   
   /**********************************
