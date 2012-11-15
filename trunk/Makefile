@@ -14,7 +14,7 @@ ARCH   = osx
 #
 PGPLOTDIR  = /usr/local/pgplot
 INCLUDE   = /usr/local/pgplot
-PLPLOTLIBDIR = /usr/local/lib
+PLPLOTLIBDIR = /opt/local/lib
 GSLDIR = /usr/local/lib
 X11LIBDIR  = /usr/X11R6/lib
 #BINDIR    = /home/gwyndaf/bin
