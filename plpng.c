@@ -19,7 +19,7 @@
 #include <math.h>
 #include <string.h>
 #include "chooch.h"
-#include "plplot.h"
+#include <plplot.h>
        
 void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename, char *device, int orien) {
    extern double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;

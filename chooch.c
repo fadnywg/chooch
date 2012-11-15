@@ -36,7 +36,7 @@ int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
 char cScanTitle[TITLE]="";
 int id1=0, id2=0;
-int verbose, status, silent, kev, raddose, getefs;
+int verbose, status, silent, kev, aqt, raddose, getefs;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
 double fE1=0.0, fE2=0.0, fE3=0.0, fE4=0.0;
 double fEres=0.00014;
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
   //
   gsl_set_error_handler_off();
 
-  verbose=silent=kev=raddose=getefs=0;
+  verbose=silent=kev=aqt=raddose=getefs=0;
   /***************************************************
    * Output author, copyright and license information
    ***************************************************/
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
    * Parse command-line switches
    ******************************/
   optarg = NULL;
-  while((opt = getopt(argc, argv, "she:a:r:kxo:p:g:v:1:2:3:4:dwclzf:")) != (char)(-1))
+  while((opt = getopt(argc, argv, "she:a:r:kxo:p:g:v:1:2:3:4:idwclzf:")) != (char)(-1))
      switch( opt ) {
      case 's' :
 	silent = 1;
@@ -114,6 +114,10 @@ int main(int argc, char *argv[])
      case 'o' :	
 	outfile = optarg;
 	if(!silent)printf("-o: Output file name = %s\n", outfile);
+	break;
+     case 'i' :	
+	aqt = 1;
+	if(!silent)printf("-i: plot in window\n", outfile);
 	break;
      case 'p' :	
 	psplot = 1;
@@ -323,11 +327,13 @@ int main(int argc, char *argv[])
 
   /* To PostScript file if requested */
   if(psplot){
-    /*   psplt(nPoints, fXfpp, fYspline, fYfp, psfile);*/
     plpng(nPoints, fXfpp, fYspline, fYfp, psfile, "ps", 1);
   }
   if(pngplot){
     plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "png", 0);
+  }
+  if(aqt){
+    plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "aqt", 0);
   }
 
   /***************************************
