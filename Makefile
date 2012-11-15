@@ -7,30 +7,29 @@
 # c)  the directory where Cgraph (PS plotting library) is kept
 # d)  and the directory where you would like you executables to go (BINDIR).
 #
-ARCH   = Linux
+#ARCH   = Linux
 #ARCH   = OSF1
 #ARCH   = SunOS
+ARCH   = osx
 #
 PGPLOTDIR  = /usr/local/pgplot
-DISLIN = /usr/local/dislin
-GSLDIR = /usr/local/lib
-CGRAPHDIR = /usr/local/lib
-BINDIR    = /home/gwyndaf/bin
 INCLUDE   = /usr/local/pgplot
+PLPLOTLIBDIR = /usr/local/lib
+GSLDIR = /usr/local/lib
 X11LIBDIR  = /usr/X11R6/lib
+#BINDIR    = /home/gwyndaf/bin
 ######################################
 #
-VERSION = 5.0.7
-CGRAPH = -lcgraph
+VERSION = 5.0.9
 LIBS = -lgsl -lgslcblas -lX11
 PGLIBS =  -lcpgplot -lpgplot
-DISLINLIBS= -ldislnc
+PLLIBS= -lplplotd
 EXE    = chooch-$(VERSION).$(ARCH)
 EXEPG    = chooch-$(VERSION)-pg.$(ARCH)
 #
 # How to compile and link
 #
-include Makefile.$(ARCH)
+include Makefile.osx
 #
 # Basic definitions
 #
@@ -39,10 +38,11 @@ MV    = /bin/mv
 CP    = /bin/cp
 #
 #
-OBJECTS = main.o      fluread.o printbanner.o minmax.o \
-          mucal.o     fdprime.o smooth.o      fits.o    normalize.o \
-          checks.o    usage.o   integrate.o   psplot.o  selwavel.o \
-          copyright.o toplot.o  license.c     pngplt.o  savwin.o
+OBJECTS = chooch.o checks.o       copyright.o  fdprime.o    fits.o     \
+          fluread.o      integrate.o  license.o        \
+          minmax.o       mucal.o      normalize.o  plpng.o   \
+          printbanner.o  savwin.o     selwavel.o \
+          smooth.o       toplot.o     usage.o
 #
 #
 chooch : clean ${OBJECTS} Makefile

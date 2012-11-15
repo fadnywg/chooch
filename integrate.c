@@ -81,7 +81,7 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
       fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fElo, fXraw[0], error);
       if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
 
-      /* From first data point up to singularity E0 */
+      /* From first data point up to singularity E0-dE */
       if(verbose>2)printf("\n**************\nIntegration 2  E0=%f     a=%f   b=%f \n**************\n", E0, fXraw[0], E0-dE);
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, fXraw[0], E0-dE);
       if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
@@ -91,7 +91,7 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
       fYfp[i]+=Singularity(E0, E0-dE, E0+dE, fYfpp[i], fYfpp[i-1], fYfpp[i+1], fD1[i], fD2[i], fD3[i]);
       if(verbose>2)printf(" Final SUM of fp so far  = %f \n", fYfp[i]);
 
-      /* From singularity E0 up to last data point */
+      /* From singularity E0+dE up to last data point */
       if(verbose>2)printf("\n**************\nIntegration 3  E0=%f     a=%f   b=%f \n**************\n", E0, E0+dE, fXraw[nDataPoints-1]);
       fYfp[i]+=IntegrateCurve(nDataPoints, E0, E0+dE, fXraw[nDataPoints-1]);
       if(verbose>2)printf(" Sum of fp so far  = %f \n",fYfp[i]);
@@ -181,10 +181,10 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
 
 
   /*********************************
-   * Now calculate for first point
+   * Now calculate for last point
    *********************************/
   if(verbose>2)printf(" *******************************\n");
-  if(verbose>2)printf(" * Now calculate for first point\n");
+  if(verbose>2)printf(" * Now calculate for last point\n");
   if(verbose>2)printf(" *******************************\n");
   i=nDataPoints-1;
   fYfp[i]=0.0;
@@ -244,7 +244,7 @@ double IntegrateExtrap(int N, double E0, double a, double b, double error)
   if(verbose>2){
      printf("result          = % .18f\n", result);
      printf("estimated error = % .18f\n", error);
-     printf("intervals =  %d\n", w->size);
+     printf("intervals =  %lu\n", w->size);
   }
   gsl_integration_workspace_free(w);
   return result;
@@ -271,7 +271,7 @@ double IntegrateCurve(int N, double E0, double a, double b){
   if(verbose>2){
      printf("result          = % .18f\n", result);
      printf("estimated error = % .18f\n", error);
-     printf("intervals =  %d\n", w->size);
+     printf("intervals are = %lu \n", w->size);
   }
   gsl_integration_workspace_free(w);
   return result;

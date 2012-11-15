@@ -2,7 +2,7 @@
                              copyright.c  -  prints copyright
                              -------------------
     begin                : Sat July  6 12:01:02 GMT 2002
-    copyright            : (C) 1994--2010 by Gwyndaf Evans
+    copyright            : (C) 1994--2012 by Gwyndaf Evans
     email                : gwyndaf@gwyndafevans.co.uk
  ***************************************************************************/
 
@@ -18,11 +18,11 @@
 #include "chooch.h"
 void copyright()
 {
-  (void)fprintf( stderr, "==================================================\n" );
-  (void)fprintf( stderr, "                     chooch-5.0.8                 \n");
-  (void)fprintf( stderr, "      by Gwyndaf Evans Copyright (C) 1994--2011   \n" );
+  (void)fprintf( stderr, "==================================================\n");
+  (void)fprintf( stderr, "                     chooch-5.0.9                 \n");
+  (void)fprintf( stderr, "      by Gwyndaf Evans Copyright (C) 1994--2012   \n");
   (void)fprintf( stderr, "             gwyndaf@gwyndafevans.co.uk\n\n" );
   (void)fprintf( stderr, "        G. Evans & R. F. Pettifer (2001)\n");
   (void)fprintf( stderr, "           J. Appl. Cryst. 34, 82-86.\n");
-  (void)fprintf( stderr, "==================================================\n\n" );
+  (void)fprintf( stderr, "==================================================\n\n");
 }

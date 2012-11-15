@@ -124,7 +124,7 @@ void pad(int , int , int , real *, float *);
  */
 
 void psplt(int, double *, double *, double *, char *);
-void pngplt(int, double *, double *, double *, char *);
+void plpng(int, double *, double *, double *, char *, char *, int);
 
 /*
  * toplot
