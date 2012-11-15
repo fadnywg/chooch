@@ -37,7 +37,8 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   extern int verbose;
   extern double fEres;
   int i;
-  double fp, error=0.0, E0, dE;
+/*  double fp, error=0.0, E0, dE; changed for next line for v5.0.8*/
+  double error=0.0, E0, dE;
   double fElo, fEhi;
 
   fElo=fEdge/1000.0;
@@ -182,9 +183,9 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   /*********************************
    * Now calculate for first point
    *********************************/
-  printf(" *********************************\n");
-  printf(" * Now calculate for first point  \n");
-  printf(" *********************************\n");
+  if(verbose>2)printf(" *******************************\n");
+  if(verbose>2)printf(" * Now calculate for first point\n");
+  if(verbose>2)printf(" *******************************\n");
   i=nDataPoints-1;
   fYfp[i]=0.0;
   E0=fXraw[i];
@@ -317,7 +318,7 @@ double Singularity(double E0, double a, double b,
  */
 
 double f(double E, void * params) {
-  double ratio, answer;
+  double answer;
   double E0 = *(double *) params;
   answer = E*get_fpp(sElement, E/1000.0)/(E0*E0-E*E);
   return answer;
@@ -326,7 +327,7 @@ double f(double E, void * params) {
 double fc(double E, void * params) {
   extern gsl_spline *spline;
   extern gsl_interp_accel *acc;
-  double ratio, answer,fdp;
+  double answer,fdp;
   double E0 = *(double *) params;
   fdp = gsl_spline_eval(spline, E, acc);
   answer = E*fdp/(E0*E0-E*E);
@@ -336,7 +337,7 @@ double fc(double E, void * params) {
 double fs(double E, void * params) {
   extern gsl_spline *spline;
   extern gsl_interp_accel *acc;
-  double ratio, answer,fdp;
+  double answer,fdp;
   double E0 = *(double *) params;
   fdp = gsl_spline_eval(spline, E, acc);
   answer = -1.0*fdp/(E0+E);
