@@ -30,7 +30,7 @@ int fluread(char *filename, double *x, double *y, int *nDataPoints)
   extern int verbose, silent;
   extern char cScanTitle[TITLE];
   int    i,n;
-  int    len;
+/*  int    len; removed for v5.0.8*/
   float  fXread[MAXSIZE], fYread[MAXSIZE];
   char   line[TITLE], cLine[TITLE];
   FILE   *ff;
@@ -96,7 +96,6 @@ int efswrite(char *filename, double *x, double *y1, double *y2, int n)
   extern int verbose, silent;
   extern char cScanTitle[TITLE];
   int    i;
-  int    len;
   FILE   *ff;
   //
   if ((ff = fopen(filename, "w")) == NULL) {

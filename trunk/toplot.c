@@ -29,9 +29,9 @@ void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
 {
   int i;
   float fXplot[nDataPoints], fYplot[nDataPoints];
-  float fXref, fYref, fXcur, fYcur;
+/*  float fXref, fYref, fXcur, fYcur; */
   float fMinX, fMaxX, fMinY, fMaxY;
-  char  ch[1];
+/*  char  ch[1]; */
   char  label[10];
   //
   for (i = 0 ; i < nDataPoints; i++)
@@ -64,7 +64,7 @@ void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
 }
 
 void spacebar(){
-  float fXref, fYref, fXcur, fYcur;
+  float fXref=0, fYref=0, fXcur, fYcur;
   char  ch[1];
   printf("Press <SPACE> to continue\n");
   cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
@@ -73,9 +73,9 @@ void spacebar(){
 void addline(int nDataPoints, double *dX, double *dY, int nColor)
 {
   int i;
-  float fXref, fYref, fXcur, fYcur;
+/*  float fXref, fYref, fXcur, fYcur; */
   float fXplot[nDataPoints], fYplot[nDataPoints];
-  char  ch[1];
+/*  char  ch[1]; */
   for (i = 0 ; i < nDataPoints; i++)
     {
       fXplot[i] = (float) dX[i];
@@ -91,10 +91,10 @@ void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2, int psplot, 
   int i;
   extern int id1, id2;
   float fXplot[nDataPoints], fY1plot[nDataPoints], fY2plot[nDataPoints];
-  float fXref, fYref, fXcur, fYcur;
+/*  float fXref, fYref, fXcur, fYcur; */
   float fMinX, fMaxX, fMinY, fMaxY, fDum;
-  char  ch[1];
-  char  label[10];
+/*  char  ch[1]; */
+/*  char  label[10];*/
   char  *psinit;
   //
   for (i = 0 ; i < nDataPoints; i++)
