@@ -97,6 +97,7 @@ void savwin(double, double, double, int *);
  */
 real get_CrossSection(char *, real);
 real get_fpp (char *, real);
+real get_splinor (char *, real);
 char *edge_name(int);
 char *get_Edge(char *, double, double *);
 /*
@@ -145,6 +146,13 @@ void usage();
 void copyright();
 
 /*
+ * license
+ */
+void license();
+void nowarranty();
+void distribution();
+
+/*
  * integrate
  */
 void Integrate(int, int *, double, double *, double *, double *, double *, double *, double *, double *, double *);
@@ -156,8 +164,10 @@ double IntegrateExtrap(int, double, double, double, double);
 double CauchyCurve(int, double, double, double);
 double IntegrateCurve(int, double, double, double);
 double Singularity(double, double, double, double, double, double, double, double, double);
-
-
+/*
+ * minmax
+ */
+int minmax(int, float *, float *, float *);
 /*
  *
  */
