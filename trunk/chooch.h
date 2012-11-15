@@ -37,22 +37,22 @@
  * Colours for PGPLOT
  */
 
-#define WHITE    0
-#define BLACK    1
-#define RED      2
-#define GREEN    3
-#define BLUE     4
-#define CYAN     5
-#define MAGENTA  6
-#define YELLOW   7
-#define ORANGE   8
-#define LIME     9
-#define LIGHTGREEN 10
-#define LIGHTBLUE  11
-#define PURPLE     12
-#define PINK       13
-#define DARKGREY   14
-#define LIGHTGREY  15
+#define BLACK       0
+#define RED         1
+#define YELLOW      2
+#define GREEN       3
+#define AQUAMARINE  4
+#define PINK        5
+#define WHEAT       6
+#define GREY        7
+#define BROWN       8
+#define BLUE        9
+#define VIOLET     10
+#define CYAN       11
+#define TURQUOISE  12
+#define MAGENTA    13
+#define SALMON     14
+#define WHITE      15
 
 /*
  * FFT directions

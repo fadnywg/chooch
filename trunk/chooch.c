@@ -30,6 +30,7 @@
 #include <ctype.h>
 #include <math.h>
 #include <gsl/gsl_errno.h>
+#include <plplot.h>
 //
 #include "chooch.h"
 int c;
@@ -88,7 +89,7 @@ int main(int argc, char *argv[])
      case 'h' :
 	(void)usage();
 	exit(EXIT_SUCCESS);
-	break;
+break;
      case 'e' :
 	sElement = optarg;
 	if(!silent)printf("-e: Atomic element = %s\n", sElement);
@@ -105,12 +106,10 @@ int main(int argc, char *argv[])
         kev = 1;
 	if(!silent)printf("-k: Input data will be converted from keV to eV\n");
         break;
-#if defined(PGPLOT)
      case 'x' :	
 	plotX = 1;
 	if(!silent)printf("-x: with X plotting \n");
 	break;
-#endif
      case 'o' :	
 	outfile = optarg;
 	if(!silent)printf("-o: Output file name = %s\n", outfile);
@@ -166,11 +165,11 @@ int main(int argc, char *argv[])
 	exit(EXIT_SUCCESS);
 	break;
      case 'z' :
-    raddose=1;
+        raddose=1;
 	if(!silent)printf("-z: Output splinor file for raddose\n");
 	break;
      case 'f' :
-    getefs=1;
+        getefs=1;
 	RemE = atof(optarg);
 	if(!silent)printf("-f: return anom. scattering factors for %f\n", RemE);
 	break;
@@ -192,13 +191,14 @@ int main(int argc, char *argv[])
  (void)fprintf( stderr, "-------------\n");
 
   /* If PGPLOT compiled then initialise xwin output */
-#if defined(PGPLOT)
   if(plotX){
-     id1=cpgopen("/gw");
-     if(id1 < 0)exit (EXIT_FAILURE);
-     cpgslct(id1);
+    plsdev("aqt");
+    plscol0(0, 255,255,255); // Set background color to White
+    plscol0(1, 0, 0, 0); // Set foreground color to Black
+    plinit();
+    plfont(1); // Simple=1; Roman=2; Italic=3; Script=4
+    pladv(0); // Increment subpage number
   }
-#endif
 
   //printbanner();
 
@@ -233,18 +233,16 @@ int main(int argc, char *argv[])
 
   savwin(fEres, fEdge, dE, &nSavWin);
 
-#if defined(PGPLOT)
   if(plotX){
-     toplot(nDataPoints, fXraw, fYraw, "Raw data", BLUE);
+    toplot(nDataPoints, fXraw, fYraw, "Raw data", RED); //actually BLACK
   }
-#endif
+
+
   /******************
    * Normalise data
    ******************/
   err=normalize(nDataPoints, fEdge, fXraw, fYraw, fYnorm, plotX, fYfita, fYfitb);
-#if defined(PGPLOT)
   if(plotX)spacebar();
-#endif
 
   /**************************************************
    * Impose on theoretical spectrum of f'' to obtain 
@@ -258,34 +256,27 @@ int main(int argc, char *argv[])
    * and plot them on top of one another.
    *************************************************************************/
   err = smooth(nDataPoints, fYfpp, fYfpps, nSavWin, nSavWin, 4, 0);
-#if defined(PGPLOT)
   if(plotX){
-     toplot(nDataPoints, fXraw, fYfpp, "f'' and derivatives", RED);
-     addline(nDataPoints, fXraw, fYfpps, YELLOW);
+    toplot(nDataPoints, fXraw, fYfpp, "f\'\' and derivatives", BLUE);
+    addline(nDataPoints, fXraw, fYfpps, BROWN);
   }
-#endif
   err = smooth(nDataPoints, fYfpp, fYDeriv1, nSavWin, nSavWin, 4, 1);
-#if defined(PGPLOT)
+
   if(plotX){
      addline(nDataPoints, fXraw, fYDeriv1, YELLOW);
   }
-#endif
   err = smooth(nDataPoints, fYfpp, fYDeriv2, nSavWin, nSavWin, 4, 2);
-#if defined(PGPLOT)
+
   if(plotX){
-     cpgsci(BLUE);
-     addline(nDataPoints, fXraw, fYDeriv2, BLUE);
+    addline(nDataPoints, fXraw, fYDeriv2, MAGENTA);
   }
-#endif
   err = smooth(nDataPoints, fYfpp, fYDeriv3, nSavWin, nSavWin, 4, 3);
 
-#if defined(PGPLOT)
   if(plotX){
-     cpgsci(BLUE);
-     addline(nDataPoints, fXraw, fYDeriv3, BLUE);
-     spacebar();
+    addline(nDataPoints, fXraw, fYDeriv3, BLUE);
+    spacebar();
   }
-#endif
+
   if(verbose>2){
     for(i=0; i<nDataPoints; i++){
       printf("%f  %f  %f  %f \n", fYfpp[i], fYDeriv1[i], fYDeriv2[i], fYDeriv3[i]);
@@ -298,17 +289,16 @@ int main(int argc, char *argv[])
   Integrate(nDataPoints, &nPoints, fEdge, fXraw, fXfpp, fYspline, fYfpps, fYDeriv1, fYDeriv2, fYDeriv3, fYfp);
   err=selwavel(nPoints, fXfpp, fYspline, fYfp);
   
-#if defined(PGPLOT)
   if(verbose>0){
     for(i=0;i<nPoints;i++){
       printf("i fXfpp fYspline  %d %10.5f  %10.5f \n", i, fXfpp[i], fYspline[i]);
     }
   }
   if(plotX) {
-     addline(nPoints, fXfpp, fYspline, GREEN);
+     addline(nPoints, fXfpp, fYspline, RED);
      spacebar();
+     plend();
   }
-#endif
 
   /*************************************
    * OUTPUT RESULTS (f' and f'' spectra)
@@ -318,12 +308,9 @@ int main(int argc, char *argv[])
   err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
 
   /* To X-windows via PGPLOT if requested */
-#if defined(PGPLOT)
   if(plotX) {
-     efsplot(nPoints, fXfpp, fYspline, fYfp, 0, NULL);
-     spacebar();
+    plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "aqt", 0);
   }
-#endif
 
   /* To PostScript file if requested */
   if(psplot){
