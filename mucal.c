@@ -132,7 +132,10 @@
  *c     using l-edge coefficianets instead of m-edge ones.____3/15/95 pat|
  *c     correct AK(1,57) coefficient (for La)                            |
  *c----------------------------------------------------------------------+
- *c     $Log: not supported by cvs2svn $
+ *c     $Log: mucal.c,v $
+ *c     Revision 1.3  2003/12/09 16:39:13  gwyndaf
+ *c     Moved back up to here
+ *c
  *c     Revision 1.2  2003/06/07 12:46:49  gwyndaf
  *c     Spelling error for Hg
  *c
