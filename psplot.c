@@ -25,11 +25,11 @@ void psplt(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    float fXplot[MAXSIZE], fY1plot[MAXSIZE], fY2plot[MAXSIZE];
    int i;
    int numoff, ticsep;
-   int ninside, rot, expand;
+   int rot, expand;
    int marktype;
-   int ntotal;
+/*   int ntotal; */
    float scale;
-   float markersize = 8.0;
+/*   float markersize = 8.0; */
    char cfpInfl[30], cfppPeak[30], tablehead[40];
 
    for (i = 0 ; i < nDataPoints; i++) {

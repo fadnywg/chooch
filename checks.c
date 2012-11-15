@@ -12,7 +12,7 @@
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
-*                                                                         *
+ *                                                                         *
  ***************************************************************************/
 
 #ifdef HAVE_CONFIG_H
@@ -27,15 +27,15 @@ int checks (int nDataPoints, double *fXraw, double *fYraw, double *dStep)
 {
   extern int verbose, kev;
   int i, err=0;
-  double Steps[MAXREG];
-  double runtot, avstep, conv=1.0;
+ /* double Steps[MAXREG];*/
+  double runtot=0.0, avstep, conv=1.0;
   double tmp[MAXSIZE];
 
   *dStep=100000;
   /*
    * If -k option used then input data is converted from keV to eV
    */
-  if(kev==1) {
+  if(kev) {
     conv=1000.0;
   }
   for (i = 0; i < nDataPoints; i++) {

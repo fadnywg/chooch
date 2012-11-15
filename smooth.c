@@ -29,7 +29,7 @@
 int smooth(int np, double *f, double *g, int nl, int nr, int m, int ld) {
   // 
   extern int verbose;
-  int i, n, err, nc, index;
+  int i, nc, index;
   float fpad[MAXSIZE];
   float cn[MAXCOEF];
   // Required by savgol
