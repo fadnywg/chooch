@@ -1,8 +1,8 @@
 /***************************************************************************\
- *                        chooch.c  -  chooch main source file               *
+ *                        chooch.c  -  chooch main source file             *
  *                           -------------------                           *
  *  begin                : Sat Mar  9 09:51:02 GMT 2002                    *
- *  copyright            : (C) 2002 by Gwyndaf Evans                       *
+ *  copyright            : (C) 1994 - 2012 by Gwyndaf Evans                *
  *  email                : gwyndaf@gwyndafevans.co.uk                      *
 \***************************************************************************/
 
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
 	if(!silent)printf("-f: return anom. scattering factors for %f\n", RemE);
 	break;
      }  
-  if(argc < 2){
+  if(argc < 3){
     printf("Usage: chooch -e <element> -a <edge>\n");
     printf("Try chooch -h to show all options\n");
     exit(EXIT_FAILURE);
@@ -323,10 +323,11 @@ int main(int argc, char *argv[])
 
   /* To PostScript file if requested */
   if(psplot){
-     psplt(nPoints, fXfpp, fYspline, fYfp, psfile);
+    /*   psplt(nPoints, fXfpp, fYspline, fYfp, psfile);*/
+    plpng(nPoints, fXfpp, fYspline, fYfp, psfile, "ps", 1);
   }
   if(pngplot){
-     pngplt(nPoints, fXfpp, fYspline, fYfp, pngfile);
+    plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "png", 0);
   }
 
   /***************************************

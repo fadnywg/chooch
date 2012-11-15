@@ -2,7 +2,7 @@
                              usage.c  -  prints usage opions
                              -------------------
     begin                : Sat July  6 12:01:02 GMT 2002
-    copyright            : (C) 2002 by Gwyndaf Evans
+    copyright            : (C) 1994 - 2012 by Gwyndaf Evans
     email                : gwyndaf@gwyndafevans.co.uk
  ***************************************************************************/
 
