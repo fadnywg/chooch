@@ -23,7 +23,7 @@ void usage()
   (void)fprintf( stderr, " chooch -e <element> [-h] [-s] [-r <resol>] [-k] [-1 <e1>] [-2 <e2>] [-3 <e3>] [-4 <e4>] [-x] [-p ps filename] [-g png filename] [-o <efs filename>] [-z] [-v <verbose level>] [-w] [-c] [-l] [<inputfile>]\n\n");
   (void)fprintf( stderr, "-h                    print this message\n");
   (void)fprintf( stderr, "-s                    run silently\n");
-  (void)fprintf( stderr, "-e <element>          element symbol (default Se)\n");
+  (void)fprintf( stderr, "-e <element>          element symbol (compulsory input!)\n");
   (void)fprintf( stderr, "-a <edge>             absorption edge (K, L1, L2, L3, M) (this is automatically determined for you)\n");
   (void)fprintf( stderr, "-r <resol>            energy resolution (dE/E) (default is Si(111) 1.4x10-4)\n");
   (void)fprintf( stderr, "-k                    Input data will be converted from keV to eV\n");
@@ -33,7 +33,7 @@ void usage()
   (void)fprintf( stderr, "-4 <e4>               Above edge fit upper energy limit (eV)\n");
   (void)fprintf( stderr, "-p <PS file>          output to PostScript file\n");
   (void)fprintf( stderr, "-g <PNG file>         output to Portable Network Graphics (PNG) file\n");
-  (void)fprintf( stderr, "-o <efs file>         filename for efs output (default output.efs\n");
+  (void)fprintf( stderr, "-o <efs file>         filename for efs output (default output.efs)\n");
 #if defined(PGPLOT)
   (void)fprintf( stderr, "-x                    plot to Xwindows\n");
 #endif
