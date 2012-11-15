@@ -23,114 +23,76 @@
 #include <stdlib.h>
 #include <string.h>
 #include "chooch.h"
+#include <plplot.h>
+#include <plevent.h>
 
-#if defined(PGPLOT)
+
 void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
 {
   int i;
   float fXplot[nDataPoints], fYplot[nDataPoints];
-/*  float fXref, fYref, fXcur, fYcur; */
   float fMinX, fMaxX, fMinY, fMaxY;
-/*  char  ch[1]; */
-  char  label[10];
+  char  label[30];
+  PLFLT Xmin, Xmax, Ymin, Ymax;
+  PLFLT fX[MAXSIZE], fY[MAXSIZE];
+  PLINT plNpoints;
   //
+  plNpoints = (PLINT) nDataPoints;
   for (i = 0 ; i < nDataPoints; i++)
     {
       fXplot[i] = (float) dX[i];
       fYplot[i] = (float) dY[i];
-      //      printf("%10.3f   %10.3f \n",fXplot[i], fYplot[i]);
     }
   strcpy(label,sLab);
   minmax(nDataPoints, fXplot, &fMinX, &fMaxX);
   minmax(nDataPoints, fYplot, &fMinY, &fMaxY);
   fMinY = (fMinY >= 0.0)? (fMinY - fMaxY * 0.1) : (fMinY * 1.15);
   fMaxY = (fMaxY >= 0.0)? (fMaxY * 1.15) : (fMaxY - fMinY * 0.1);
-  printf("Plotting!\n");
-  cpgpage();
-  cpgpap(9.0,0.7);
-  cpgask(0);
-  cpgscf(2);
-  cpgslw(2);
-  cpgsch(1.6);
-  cpgsci(BLACK);
-  cpgsvp(0.2,0.90,0.15,0.9);
-  cpgswin(fMinX,fMaxX,fMinY,fMaxY);
-  cpgbox("bncts1",0.0,0,"bncts",0.0,0);
-  cpgsci(BLACK);
-  cpgmtxt("b",2.5,0.5,0.5,"X-ray Energy (eV)");
-  cpgmtxt("l",4.0,0.5,0.5,label);
-  cpgsci(nColor);
-  cpgline(nDataPoints, fXplot, fYplot);
-}
 
-void spacebar(){
-  float fXref=0, fYref=0, fXcur, fYcur;
-  char  ch[1];
-  printf("Press <SPACE> to continue\n");
-  cpgband(0, 0, fXref, fYref, &fXcur, &fYcur, ch);
+  for (i = 0 ; i < nDataPoints; i++) {
+    fX[i] = (PLFLT) fXplot[i];
+    fY[i] = (PLFLT) fYplot[i];
+  }  
+
+  Xmin = (PLFLT) fMinX;
+  Xmax = (PLFLT) fMaxX;
+  Ymin = (PLFLT) fMinY;
+  Ymax = (PLFLT) fMaxY;
+
+  /*
+   *
+   */
+  
+  plcol0(1);
+  plclear();
+  plvpor(0.15,0.80,0.15,0.8); // Define viewport as fraction of whole page
+  plwind(Xmin, Xmax, Ymin, Ymax); // Define world or plot range within viewport
+  plbox("bcnstf", 0.0, 0, "bcnstvf", 0.0, 0); // Define axes and graph label options
+  pllab("X-ray energy (eV)", label, "Title");
+  plcol0(nColor);
+  plline(plNpoints, fX, fY);
 }
 
 void addline(int nDataPoints, double *dX, double *dY, int nColor)
 {
   int i;
-/*  float fXref, fYref, fXcur, fYcur; */
-  float fXplot[nDataPoints], fYplot[nDataPoints];
-/*  char  ch[1]; */
+  PLFLT fX[nDataPoints], fY[nDataPoints];
+  PLINT plNpoints;
+  plNpoints = (PLINT) nDataPoints;
   for (i = 0 ; i < nDataPoints; i++)
     {
-      fXplot[i] = (float) dX[i];
-      fYplot[i] = (float) dY[i];
+      fX[i] = (PLFLT) dX[i];
+      fY[i] = (PLFLT) dY[i];
     }
-
-  cpgsci(nColor);
-  cpgline(nDataPoints, fXplot, fYplot);
+  plcol0(nColor);
+  plline(plNpoints, fX, fY);
 }
 
-void efsplot(int nDataPoints, double *dX, double *dY1, double *dY2, int psplot, char *psfile)
-{
-  int i;
-  extern int id1, id2;
-  float fXplot[nDataPoints], fY1plot[nDataPoints], fY2plot[nDataPoints];
-/*  float fXref, fYref, fXcur, fYcur; */
-  float fMinX, fMaxX, fMinY, fMaxY, fDum;
-/*  char  ch[1]; */
-/*  char  label[10];*/
-  char  *psinit;
-  //
-  for (i = 0 ; i < nDataPoints; i++)
-    {
-      fXplot[i] = (float) dX[i];
-      fY1plot[i] = (float) dY1[i];
-      fY2plot[i] = (float) dY2[i];
-    }
-  minmax(nDataPoints, fXplot, &fMinX, &fMaxX);
-  minmax(nDataPoints, fY1plot, &fDum, &fMaxY);
-  minmax(nDataPoints, fY2plot, &fMinY, &fDum);
-  fMinY = (fMinY >= 0.0)? (fMinY - fMaxY * 0.1) : (fMinY * 1.15);
-  fMaxY = (fMaxY >= 0.0)? (fMaxY * 1.15) : (fMaxY - fMinY * 0.1);
-  if(psplot){
-     psinit=strcat(psfile,"/cps");
-     id2=cpgopen(psinit);
-     if(id2 < 0) exit (EXIT_FAILURE);
-     cpgslct(id2);
-  }
-  cpgpage();
-  cpgpap(9.0,0.7);
-  cpgask(0);
-  cpgscf(2);
-  cpgslw(2);
-  cpgsch(1.6);
-  cpgsci(BLACK);
-  cpgsvp(0.2,0.90,0.15,0.9);
-  cpgswin(fMinX,fMaxX,fMinY,fMaxY);
-  cpgbox("bncts1",0.0,0,"bncts",0.0,0);
-  cpgsci(BLACK);
-  cpgmtxt("b",2.5,0.5,0.5,"X-ray Energy (eV)");
-  cpgmtxt("l",4.0,0.5,0.5,"f' and f'' (e)");
-  cpgsci(RED);
-  cpgline(nDataPoints, fXplot, fY1plot);
-  cpgline(nDataPoints, fXplot, fY2plot);
-  if(psplot)cpgpage();
-  if(id1 != 0)cpgslct(id1);
+void spacebar(){
+  float fXref=0, fYref=0, fXcur, fYcur;
+  int iok;
+  static PLGraphicsIn gin;
+  printf("Click on graph to continue\n");
+  iok = plGetCursor( &gin);
 }
-#endif
+

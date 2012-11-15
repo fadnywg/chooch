@@ -31,12 +31,6 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    PLFLT fX[MAXSIZE], fY1[MAXSIZE], fY2[MAXSIZE];
    PLINT plNpoints, ori;
 
-/*   int numoff, ticsep;
-   int ninside, rot, expand;
-   int marktype;
-   int ntotal;
-   float scale;
-   float markersize = 8.0; */
    char cfpInfl[40], cfppPeak[40], tablehead[40];
 
    plNpoints = (PLINT) nDataPoints;
@@ -51,9 +45,9 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    minmax(nDataPoints, fY1plot, &fDum, &fMaxY);
    minmax(nDataPoints, fY2plot, &fMinY, &fDum);
    fMinY = (fMinY >= 0.0)? (fMinY - fMaxY * 0.05) : (fMinY * 1.05);
-   fMinY = (PLFLT) ((int) fMinY) - 1; 
+   fMinY = (float) ((int) fMinY) - 1; 
    fMaxY = (fMaxY >= 0.0)? (fMaxY * 1.15) : (fMaxY - fMinY * 0.1);
-   fMaxY = (PLFLT) ((int) fMaxY) + 1;
+   fMaxY = (float) ((int) fMaxY) + 1;
    fLenX=fMaxX-fMinX;
    fLenY=fMaxY-fMinY;
    fStepX=2;
@@ -71,10 +65,10 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
      fY2[i] = (PLFLT) fY2plot[i];
    }
 
-   Xmin = fMinX;
-   Xmax = fMaxX;
-   Ymin = fMinY;
-   Ymax = fMaxY;
+   Xmin = (PLFLT) fMinX;
+   Xmax = (PLFLT) fMaxX;
+   Ymin = (PLFLT) fMinY;
+   Ymax = (PLFLT) fMaxY;
 
 
    /*
@@ -84,7 +78,6 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    sprintf(tablehead,"       energy      f\'\'    f\'");
    sprintf(cfppPeak, "peak  %8.2f   %5.2f  %5.2f", EPeak, fppPeak, fpPeak);
    sprintf(cfpInfl,  "infl  %8.2f   %5.2f  %5.2f", EInfl, fppInfl, fpInfl);
-   printf("infl  %8.2f   %5.2f  %5.2f", EInfl, fppInfl, fpInfl);
    
    plsdev(device);
    plsdiori(ori);
@@ -103,7 +96,7 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    plbox("bcnstf", 0.0, 0, "bcnstvf", 0.0, 0); // Define axes and graph label options
    plline(plNpoints, fX, fY1);
    plline(plNpoints, fX, fY2);
-   //   pllab("X-ray energy (eV)", "f\' and f\'\' (e)", "Title");
+   pllab("X-ray energy (eV)", "f\' and f\'\' (e)", "");
    plmtex("t", 7.0, 0.5, 0.5, cScanTitle);
    plmtex("t", 5.5, 0.5, 0.5, tablehead);
    plmtex("t", 3.5, 0.5, 0.5, cfppPeak);
@@ -111,7 +104,6 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    plend();
 }
 
- 
 
 
  
