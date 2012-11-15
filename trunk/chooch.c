@@ -190,7 +190,7 @@ break;
  (void)fprintf( stderr, "Chooch output\n");
  (void)fprintf( stderr, "-------------\n");
 
-  /* If PGPLOT compiled then initialise xwin output */
+  /* If -x option used then initialise xwin output */
   if(plotX){
     plsdev("aqt");
     plscol0(0, 255,255,255); // Set background color to White
@@ -307,7 +307,6 @@ break;
   /* To ascii file */
   err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
 
-  /* To X-windows via PGPLOT if requested */
   if(plotX) {
     plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "aqt", 0);
   }

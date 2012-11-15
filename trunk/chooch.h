@@ -34,7 +34,7 @@
 #define MAXREG  20
 #define TITLE   80
 /*
- * Colours for PGPLOT
+ * Colours for PLPLOT
  */
 
 #define BLACK       0
@@ -70,10 +70,6 @@ typedef double real; // could be double.
 /*
  *
  */
-
-#if defined(PGPLOT)
-#include <cpgplot.h>
-#endif
 
 #include "mucal.h"
 
@@ -129,12 +125,9 @@ void plpng(int, double *, double *, double *, char *, char *, int);
 /*
  * toplot
  */
-#if defined(PGPLOT)
 void toplot(int , real *, real *, char *, int);
 void spacebar();
 void addline(int, real *, real *, int);
-void efsplot(int, double *, double *, double *, int, char *);
-#endif
 /*
  * usage
  */
