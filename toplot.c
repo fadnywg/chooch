@@ -36,6 +36,7 @@ void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
   PLFLT Xmin, Xmax, Ymin, Ymax;
   PLFLT fX[MAXSIZE], fY[MAXSIZE];
   PLINT plNpoints;
+  extern char cScanTitle[TITLE];
   //
   plNpoints = (PLINT) nDataPoints;
   for (i = 0 ; i < nDataPoints; i++)
@@ -68,7 +69,7 @@ void toplot(int nDataPoints, double *dX, double *dY, char *sLab, int nColor)
   plvpor(0.15,0.80,0.15,0.8); // Define viewport as fraction of whole page
   plwind(Xmin, Xmax, Ymin, Ymax); // Define world or plot range within viewport
   plbox("bcnstf", 0.0, 0, "bcnstvf", 0.0, 0); // Define axes and graph label options
-  pllab("X-ray energy (eV)", label, "Title");
+  pllab("X-ray energy (eV)", label, cScanTitle);
   plcol0(nColor);
   plline(plNpoints, fX, fY);
 }
