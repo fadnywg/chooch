@@ -13,12 +13,12 @@ void pngplt(int nDataPoints, double *dX, double *dY1, double *dY2, char *filenam
    float fMinX, fMaxX, fMinY, fMaxY, fLenX, fLenY, fStepX, fStepY, fDum;
    float fXplot[MAXSIZE], fY1plot[MAXSIZE], fY2plot[MAXSIZE];
    int i;
-   int numoff, ticsep;
+/*   int numoff, ticsep;
    int ninside, rot, expand;
    int marktype;
    int ntotal;
    float scale;
-   float markersize = 8.0;
+   float markersize = 8.0; */
    char cfpInfl[30], cfppPeak[30], tablehead[40];
 
    

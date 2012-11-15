@@ -61,8 +61,9 @@ char *get_Edge(char *sElement, double fMidE, double *fE)
     */
   extern int verbose;
   double dEnergy[9], dXsec[11], dFluo[4];
-  double diff, mindiff=1e10, E;
-  int    i, iE, iZZ = 0, iPflag=0;
+ /* double diff, mindiff=1e10, E;  changed for next line on 7/3/2010 for v5.0.8*/
+  double diff, mindiff=1e10;
+  int    i, iE=0, iZZ = 0, iPflag=0;
   int    err;
   char   sUnit='a', sErrmsg[80];
   fMidE/=1000.0;
@@ -90,6 +91,12 @@ double get_fpp (char *sElement, double dEnergyKeV)
   return dFdprime;
 }
 
+double get_splinor (char *sElement, double dEnergyKeV)
+{
+  double dCrossSection;
+  dCrossSection = get_CrossSection(sElement, dEnergyKeV);
+  return dCrossSection;
+}
 
 
 
