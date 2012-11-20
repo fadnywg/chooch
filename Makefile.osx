@@ -1,6 +1,12 @@
+# CHOOCH Makefile include for Mac OSX
+#
 FOPTIM  = -O2
 FFLAGS  = $(FOPTIM)
 LDFLAGS = -Bstatic -L$(GSLDIR) -L$(PLPLOTLIBDIR) $(PLLIBS) -L$(X11LIBDIR) $(LIBS) -lm -ldl -lpthread
 CFLAGS  = -Bstatic -I/opt/local/include/plplot
 FC      = g77
 CC      = gcc
+#
+#
+#
+#
