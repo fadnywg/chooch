@@ -35,7 +35,7 @@ void usage()
   (void)fprintf( stderr, "-g <PNG file>         output to Portable Network Graphics (PNG) file\n");
   (void)fprintf( stderr, "-o <efs file>         filename for efs output (default output.efs)\n");
 #if defined(PGPLOT)
-  (void)fprintf( stderr, "-x                    plot to Xwindows\n");
+  (void)fprintf( stderr, "-x                    display graphics window\n");
 #endif
   (void)fprintf( stderr, "-d                    dump intermediate data for use with pUI\n");
   (void)fprintf( stderr, "-z                    output splinor file for RADDOSE\n");

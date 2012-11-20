@@ -108,7 +108,7 @@ break;
         break;
      case 'x' :	
 	plotX = 1;
-	if(!silent)printf("-x: with X plotting \n");
+	if(!silent)printf("-x: display graphics window \n");
 	break;
      case 'o' :	
 	outfile = optarg;
