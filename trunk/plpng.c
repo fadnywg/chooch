@@ -75,9 +75,9 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
     * Start PLPlot calls
     */
 
-   sprintf(tablehead,"       energy      f\'\'    f\'");
-   sprintf(cfppPeak, "peak  %8.2f   %5.2f  %5.2f", EPeak, fppPeak, fpPeak);
-   sprintf(cfpInfl,  "infl  %8.2f   %5.2f  %5.2f", EInfl, fppInfl, fpInfl);
+   sprintf(tablehead,"     energy    f\'\'     f\'  ");
+   sprintf(cfppPeak, "peak %8.2f   %5.2f  %5.2f", EPeak, fppPeak, fpPeak);
+   sprintf(cfpInfl,  "infl %8.2f   %5.2f  %5.2f", EInfl, fppInfl, fpInfl);
    
    plsdev(device);
    plsdiori(ori);
@@ -98,9 +98,9 @@ void plpng(int nDataPoints, double *dX, double *dY1, double *dY2, char *filename
    plline(plNpoints, fX, fY2);
    pllab("X-ray energy (eV)", "f\' and f\'\' (e)", "");
    plmtex("t", 7.0, 0.5, 0.5, cScanTitle);
-   plmtex("t", 5.5, 0.5, 0.5, tablehead);
-   plmtex("t", 3.5, 0.5, 0.5, cfppPeak);
-   plmtex("t", 1.5, 0.5, 0.5, cfpInfl);
+   plmtex("t", 5.5, 0.3, 0.0, tablehead);
+   plmtex("t", 3.5, 0.3, 0.0, cfppPeak);
+   plmtex("t", 1.5, 0.3, 0.0, cfpInfl);
    plend();
 }
 
