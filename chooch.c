@@ -35,7 +35,7 @@
 #include "chooch.h"
 int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
-char cScanTitle[TITLE]="";
+char cScanTitle[TITLE]="", device[6]="xwin";
 int id1=0, id2=0;
 int verbose, status, silent, kev, aqt, raddose, getefs;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
@@ -192,7 +192,12 @@ break;
 
   /* If -x option used then initialise xwin output */
   if(plotX){
-    plsdev("aqt");
+#if defined(i386)
+    device="xwin";
+#elif defined(x86_64)
+    device="aqt";
+#endif
+    plsdev(device);
     plscol0(0, 255,255,255); // Set background color to White
     plscol0(1, 0, 0, 0); // Set foreground color to Black
     plinit();
@@ -308,7 +313,7 @@ break;
   err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
 
   if(plotX) {
-    plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "aqt", 0);
+    plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, device, 0);
   }
 
   /* To PostScript file if requested */
