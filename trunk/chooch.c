@@ -193,9 +193,11 @@ break;
   /* If -x option used then initialise xwin output */
   if(plotX){
 #if defined(i386)
-    device="xwin";
+    sprintf(device, "xwin");
+    printf("PLplot device is %s\n", device);
 #elif defined(x86_64)
-    device="aqt";
+    sprintf(device, "aqt");
+    printf("PLplot device is %s\n", device);
 #endif
     plsdev(device);
     plscol0(0, 255,255,255); // Set background color to White
