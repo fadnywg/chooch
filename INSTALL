@@ -1,4 +1,4 @@
-CHOOCH
+CHOOCH 5.0.9
 ======
 
 Installation Instructions
@@ -9,35 +9,33 @@ Requirements
 
 Ensure that you have all the required libraries installed:
 
-a) Gnu Scientific Library version 1.1 or later
+a) Gnu Scientific Library version 1.1 - 1.9
    Available from http://www.gnu.org/software/gsl/gsl.html
 
-
-b) Cgraph version 2.04 PostScript plotting library in C
-   Available from http://neurovision.berkeley.edu/software/A_Cgraph.html
-
-c) DISLIN Library for PNG file handling
-   Available from http://www.mps.mpg.de/dislin
+b) PLplot plotting library
+   Enables PNG and PostScript output of chooch result as well as interactive plotting
+   Available from http://plplot.sourceforge.net/
 
 Optionally
-d) PGPLOT graphics library
-   Available from http://www.astro.caltech.edu/~tjp/pgplot
+----------
+
+c) On Mac OSX Aquaterm is supported for the interactive plotting (-x) option otherwise 
+   X11 via Xquartz can beused
 
 Building the binary
 -------------------
 
-1) Download source distribution chooch.tar.gz
+1) Download source distribution chooch-5.0.9.tar.gz
 
 2) Unpack the file in a directory of your choice e.g. /usr/local/src
    using tar xzvf chooch.tar.gz for example.
 
-3) Edit the top of the Makefile to select the correct machine
-   architecture, point to the correct libraries and choose 
-   installation directories for binaries.
+3) Create the file 'Makefile' by copying a suitable makefile for your architecture,
+   e.g cp Makefile.x86_64 Makefile
 
-4) Type 'make' for a version without PGPLOT capability or 'gmake chooch-pg'
-   for a version with PGPLOT linked. N.B. Both versions allow the generation
-   of PostScipt output.
+4) Edit Makefile so that the correct libraries and installation directories are selected.
+
+4) Type 'make'
 
 5) Type 'make install'
 
@@ -46,5 +44,5 @@ Need Help?
 ----------
 
 If you encounter difficulties with the installation then please contact
-the author at chooch@gwyndafevans.co.uk
+the author at gwyndaf@gwyndafevans.co.uk
 
