@@ -15,7 +15,7 @@ X11LIBDIR  = /usr/X11R6/lib
 #BINDIR    = /home/gwyndaf/bin
 ######################################
 #
-VERSION = 5.0.9
+VERSION = 5.1.0
 LIBS = -lgsl -lgslcblas -lX11
 PLLIBS= -lplplotd
 EXE    = chooch-$(VERSION).$(ARCH)

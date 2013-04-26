@@ -15,7 +15,7 @@ X11LIBDIR  = /usr/lib64
 #BINDIR    = /home/gwyndaf/bin
 ######################################
 #
-VERSION = 5.0.9
+VERSION = 5.1.0
 LIBS = -lgsl -lgslcblas -lX11
 PLLIBS= -lplplotd
 PLINCLUDE=/home/ge73/software/include/plplot
