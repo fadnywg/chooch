@@ -53,7 +53,7 @@ int checks (int nDataPoints, double *fXraw, double *fYraw, double *dStep)
       err = 1;
       printf("Error in input data: energy does not increase monotonically\n");
       printf("\n** Energy value of point %d is bigger than value of point %d **\n", i, i+1);
-      exit(0);
+      exit(EXIT_FAILURE);
     }
     
     /* Now calculate a 5 point moving average to get minimum average step size */
