@@ -15,6 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 #include <stdio.h>
+#include "chooch.h"
 void license()
 {
    (void)fprintf( stderr, "License information\n");
