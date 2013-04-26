@@ -36,11 +36,10 @@ MV    = /bin/mv
 CP    = /bin/cp
 #
 #
-OBJECTS = chooch.o checks.o       copyright.o  fdprime.o    fits.o     \
-          fluread.o      integrate.o  license.o        \
-          minmax.o       mucal.o      normalize.o  plpng.o   \
-          printbanner.o  savwin.o     selwavel.o \
-          smooth.o       toplot.o     usage.o
+OBJECTS = checks.o	fits.o		minmax.o	plpng.o		smooth.o \
+	chooch.o	fluread.o	mucal.o		printbanner.o	toplot.o \
+	copyright.o	integrate.o	normalize.o	savwin.o	usage.o \
+	fdprime.o	license.o	parse.o		selwavel.o
 #
 #
 chooch : clean ${OBJECTS} Makefile
