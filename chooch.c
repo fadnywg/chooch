@@ -35,12 +35,17 @@
 #include "chooch.h"
 int c;
 char  *sElement="Se";           // Letter symbol for element name e.g. Au, Se, I
+// Initialise sEdge as "X" so we know nothing has been set by user
+char  *sEdge="X";           // Letter symbol for absorption edge K, L1, L2, L3, M
 char cScanTitle[TITLE]="", device[6]="xwin";
+char *psfile="", *pngfile="", *outfile="output.efs";
 int id1=0, id2=0;
 int verbose, status, silent, kev, aqt, raddose, getefs;
+int plotX=0, psplot=0, pngplot=0, display=0;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
 double fE1=0.0, fE2=0.0, fE3=0.0, fE4=0.0;
 double fEres=0.00014;
+double RemE;
 /*
  */
 int main(int argc, char *argv[])
@@ -48,15 +53,10 @@ int main(int argc, char *argv[])
   int i, err;
 /*  float fXref, fYref, fXcur, fYcur; removed for v5.0.8*/
   char *sFilename;
-  char *psfile="", *pngfile="", *outfile="output.efs";
 /*  char  ch[1]; removed for v5.0.8*/
-  // Initialise sEdge as "X" so we know nothing has been set by user
-  char  *sEdge="X";           // Letter symbol for absorption edge K, L1, L2, L3, M
-  char opt;
   //
-  int nDataPoints, nPoints, plotX=0, psplot=0, pngplot=0, display=0;
+  int nDataPoints, nPoints;
   int nSavWin;
-  double RemE;
   double dE, fEdge; /* fMonoRes removed for v5.0.8 */
   double fXraw[MAXSIZE], fYraw[MAXSIZE]; // Input data
   double fYfita[MAXSIZE], fYfitb[MAXSIZE]; // Output
@@ -74,112 +74,15 @@ int main(int argc, char *argv[])
   /***************************************************
    * Output author, copyright and license information
    ***************************************************/
-  copyright();
-  license();
+  if(!silent)copyright();
+  if(!silent)license();
 
   /******************************
    * Parse command-line switches
    ******************************/
-  optarg = NULL;
-  while((opt = getopt(argc, argv, "she:a:r:kxo:p:g:v:1:2:3:4:idwclzf:")) != (char)(-1))
-     switch( opt ) {
-     case 's' :
-	silent = 1;
-	break;
-     case 'h' :
-	(void)usage();
-	exit(EXIT_SUCCESS);
-break;
-     case 'e' :
-	sElement = optarg;
-	if(!silent)printf("-e: Atomic element = %s\n", sElement);
-	break;
-     case 'a' :
-        sEdge = optarg;
-        if(!silent)printf("-a: Absorption edge entered but will be auto-determined anyway\n");
-        break;
-     case 'r' :
-	fEres = atof(optarg);
-	if(!silent)printf("-r: Energy resolution = %f\n", fEres);
-	break;
-     case 'k' :
-        kev = 1;
-	if(!silent)printf("-k: Input data will be converted from keV to eV\n");
-        break;
-     case 'x' :	
-	plotX = 1;
-	if(!silent)printf("-x: display graphics window \n");
-	break;
-     case 'o' :	
-	outfile = optarg;
-	if(!silent)printf("-o: Output file name = %s\n", outfile);
-	break;
-     case 'i' :	
-	aqt = 1;
-	if(!silent)printf("-i: plot in window\n", outfile);
-	break;
-     case 'p' :	
-	psplot = 1;
-	psfile = optarg;
-	if(!silent)printf("-p: PS output file = %s\n", psfile);
-	break;
-     case 'g' :	
-	pngplot = 1;
-	pngfile = optarg;
-	if(!silent)printf("-g: PNG output file = %s\n", pngfile);
-	break;
-     case 'v' :
-	verbose = atoi(optarg);
-	if(!silent)printf("-v: Verbosity level %d", verbose);
-	break;
-     case '1' :
-	fE1 = atof(optarg);
-	if(!silent)printf("-1: Below edge fit lower limit = %f\n", fE1);
-	break;
-     case '2' :
-	fE2 = atof(optarg);
-	if(!silent)printf("-2: Below edge fit upper limit = %f\n", fE2);
-	break;
-     case '3' :
-	fE3 = atof(optarg);
-	if(!silent)printf("-3: Above edge fit lower limit = %f\n", fE3);
-	break;
-     case '4' :
-	fE4 = atof(optarg);
-	if(!silent)printf("-4: Above edge fit upper limit = %f\n", fE4);
-	break;
-     case 'd' :
-	display = 1;
-	if(!silent)printf("-d: Dump data file for pooch\n");
-	break;
-     case 'w' :
-	(void)nowarranty();
-	exit(EXIT_SUCCESS);
-	break;
-     case 'c' :
-	(void)distribution();
-	exit(EXIT_SUCCESS);
-	break;
-     case 'l' :
-	(void)license();
-	exit(EXIT_SUCCESS);
-	break;
-     case 'z' :
-        raddose=1;
-	if(!silent)printf("-z: Output splinor file for raddose\n");
-	break;
-     case 'f' :
-        getefs=1;
-	RemE = atof(optarg);
-	if(!silent)printf("-f: return anom. scattering factors for %f\n", RemE);
-	break;
-     }  
-  if(argc < 3){
-    printf("Usage: chooch -e <element> -a <edge>\n");
-    printf("Try chooch -h to show all options\n");
-    exit(EXIT_FAILURE);
-  }
-
+  
+  parse(argc, argv);
+  
   sFilename = argv[optind];
   if(!silent)printf("Fluorescence scan filename: %s\n", sFilename);
 
@@ -190,13 +93,20 @@ break;
  (void)fprintf( stderr, "Chooch output\n");
  (void)fprintf( stderr, "-------------\n");
 
-  /* If -x option used then initialise xwin output */
+  /* 
+   *
+   * If -x option used 
+   * Initialise PLplot xwin output for linux and OSX
+   * It happens that they are the same but there is also a
+   * possibility to use Aquaterm for OSX - option "aqt" 
+   *
+   */
   if(plotX){
 #if defined(i386)
     sprintf(device, "xwin");
     printf("PLplot device is %s\n", device);
 #elif defined(x86_64)
-    sprintf(device, "aqt");
+    sprintf(device, "xwin");
     printf("PLplot device is %s\n", device);
 #endif
     plsdev(device);
