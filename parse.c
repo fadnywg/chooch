@@ -35,7 +35,7 @@ void parse(int argc, char *argv[])
 {
   extern int verbose, status, silent, kev, aqt, raddose, getefs;
   extern int plotX, psplot, pngplot, display;
-  extern char *sElement, sEdge;
+  extern char *sElement, *sEdge;
   extern char *psfile, *pngfile, *outfile;
   extern double fE1, fE2, fE3, fE4;
   extern double fEres;
@@ -57,8 +57,7 @@ break;
 	if(!silent)printf("-e: Atomic element = %s\n", sElement);
 	break;
      case 'a' :
-        sEdge = optarg
-;
+        sEdge = optarg;
         if(!silent)printf("-a: Absorption edge entered but will be auto-determined anyway\n");
         break;
      case 'r' :
