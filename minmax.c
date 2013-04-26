@@ -21,6 +21,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "chooch.h"
 
 int minmax(int n, float *fArray, float *fMin, float *fMax)
 {
