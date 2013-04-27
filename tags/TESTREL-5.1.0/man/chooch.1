@@ -1,0 +1,77 @@
+.TH "CHOOCH" 1
+.SH NAME
+chooch \- determined anomalous scattering factors f' and f'' from X-ray fluorescence spectra
+.SH SYNOPSIS
+.B chooch 
+[\fIOPTION\fR]... [\fIFILE\fR]...
+.SH DESCRIPTION
+.\"<detailed description of what the program does>
+.PP
+Determine anomalous scattering factor spectra f' and f'' from experimental X-ray fluorescence
+data.
+.SH OPTIONS
+.TP
+.B \-h
+print help
+.TP
+.B \-e <element>
+atomic element symbol - compulsory input
+.TP
+.B \-a <edge>
+absorption edge <edge> (e.g. K, L1, L2, L3, M) over which fluorescence scan is measured (default is Se)
+.TP
+.B \-s
+run silently with no output
+.TP
+.B \-r <bandwidth>
+monochromator energy resolution <bandwidth> (dE/E) (default is for Si(111) of 1.4x10-4)
+.TP
+.B \-1 <num>
+lower energy <num> for fitting below edge regime (eV)
+.TP
+.B \-2 <num>
+upper energy <num> for fitting below edge regime (eV)
+.TP
+.B \-3 <num>
+lower energy <num> for fitting above edge regime (eV)
+.TP
+.B \-4 <num>
+upper energy <num> for fitting above edge regime (eV)
+.TP
+.B \-p <PS filename>
+generate a PostScript output file <name> with f' f'' spectra
+.TP
+.B \-g <PNG filename>
+generate a Portable Network Graphics (PNG) output file <name> with f' f'' spectra
+.TP
+.B \-o <efs filename>
+write output f' and f'' values to ascii file <name>
+.TP
+.B \-x
+plot intermediate and final output to X windows (choochpg only)
+.TP
+.B \-d
+dump intermediate data for use with pooch pUI (not implemented)
+.TP
+.B \-z
+output splinor file for RADDOSE
+.TP
+.B \-v <level>
+verbosity level <level> [0 ... 3] (default 0)
+.TP
+.B \-w
+show warranty information
+.TP
+.B \-c
+show redistribution information
+.TP
+.B \-l
+show license information
+.SH "SEE ALSO"
+choochpg
+.SH BUGS
+Please email all bug reports to chooch@gwyndafevans.co.uk
+.SH NOTES
+PostScript is a  registered  trademark  of  Adobe  Systems Incorporated.
+.SH AUTHOR
+Gwyndaf Evans <gwyndaf@gwyndafevans.co.uk>
