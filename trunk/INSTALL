@@ -20,7 +20,7 @@ Optionally
 ----------
 
 c) On Mac OSX Aquaterm is supported for the interactive plotting (-x) option otherwise 
-   X11 via Xquartz can beused
+   X11 via Xquartz can be used
 
 Building the binary
 -------------------
