@@ -23,7 +23,7 @@ EXE    = chooch-$(VERSION).$(ARCH)
 FOPTIM  = -O2
 FFLAGS  = $(FOPTIM)
 LDFLAGS = -Bstatic -L$(GSLDIR) -L$(PLPLOTLIBDIR) $(PLLIBS) -L$(X11LIBDIR) $(LIBS) -lm -ldl -lpthread
-CFLAGS  = -Bstatic -I/opt/local/include/plplot -D$(ARCH)
+CFLAGS  = -Bstatic -I/opt/local/include/plplot -I/usr/local/include -D$(ARCH)
 CC      = gcc
 #
 # Basic definitions
