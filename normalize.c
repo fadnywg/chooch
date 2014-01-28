@@ -38,12 +38,15 @@ int  normalize(int nDataPoints, double fEdge, double *fXraw, double *fYraw, doub
   char label[10]; */
   if(verbose>0)printf(" Plot switch:   %d\n", plotX);
   if(fE1==0.0)fE1=fXraw[0];
-  if(fE2==0.0)fE2=fEdge-20.0;
-  if(fE3==0.0)fE3=fEdge+25.0;
+  /*  if(fE2==0.0)fE2=fEdge-20.0;*/
+  if(fE2==0.0)fE2=fEdge-(fEdge*0.004);
+  if(fE3==0.0)fE3=fEdge+(fEdge*0.004);
   if(fE4==0.0)fE4=fXraw[nDataPoints-1];
   /* BELOW EDGE */
-  if((fEdge-fE1) > 30.0) {
+  /*  if((fEdge-fE1) > 30.0) {*/
+  if((fEdge-fE1) > (fEdge*0.003)) {
      if(verbose>1)printf("Using linear fit to below edge region\n");
+     printf("Fit regions: %f to %f and %f to %f \n", fE1, fE2, fE3, fE4);
      if(DoFit(nDataPoints, fXraw, fYraw, fYfitb, fE1, fE2) == 1){
 	SetConst(nDataPoints, fYraw[0], fYfitb);
      }
