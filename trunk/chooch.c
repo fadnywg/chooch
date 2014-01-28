@@ -225,18 +225,24 @@ int main(int argc, char *argv[])
   err=efswrite(outfile, fXfpp, fYspline, fYfp, nPoints);
 
   if(plotX) {
-    plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, device, 0);
+    plpng(nPoints, fXfpp, fYspline, fYfp, "", device, 0);
   }
 
   /* To PostScript file if requested */
   if(psplot){
+    if(!silent)printf("Writing PostScript file %s\n", psfile);
     plpng(nPoints, fXfpp, fYspline, fYfp, psfile, "ps", 1);
   }
+
+  /* To PNG file if requested */
   if(pngplot){
+    if(!silent)printf("Writing PNG file %s\n", pngfile);
     plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "png", 0);
   }
+
+  /* output to AquaTerm window on Mac if -i option is invoked */
   if(aqt){
-    plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "aqt", 0);
+    plpng(nPoints, fXfpp, fYspline, fYfp, "", "aqt", 0);
   }
 
   /***************************************
