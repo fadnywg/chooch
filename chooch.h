@@ -165,7 +165,10 @@ int minmax(int, float *, float *, float *);
  *
  */
 void psplt(int, double *, double *, double *, char *);
-
+/*
+ *
+ */
+void parse(int, char **);
 /*
  *
  */
