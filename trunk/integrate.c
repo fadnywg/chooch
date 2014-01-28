@@ -58,14 +58,16 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
     printf("        Integrate.c         \n");
     printf("****************************\n");
   }
-  dE=fEres*fXraw[0]/5.0;
-  if(verbose>0)printf("Energy interval = %f\n", dE);
+  dE=0.01;
+  //  dE=fEres*fXraw[0]/5.0; // Changed so we define it as a fixed, very small, interval. See below **
+  if(verbose>0)printf("Energy interval used for integrating around singularity = %f\n", dE);
   //  for (i=0, E0=fXraw[0]+dE; E0<=fXraw[nDataPoints-1]-dE; E0+=dE, i++)
 
 
   /******************************************************************
    * First calculate for all points on spectrum except first and last
    ******************************************************************/
+
   if(verbose>2)printf("/******************************************************************\n");
   if(verbose>2)printf(" * First calculate for all points on spectrum except first and last\n");
   if(verbose>2)printf(" ******************************************************************\n");
@@ -104,73 +106,48 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
       fYspline[i]=gsl_spline_eval(spline, E0, acc);
     }
 
-
   /*******************************
    * Now calculate for first point
    *******************************/
-  if(verbose>2)printf(" ******************************************************************\n");
-  if(verbose>2)printf(" * First calculate for all points on spectrum except first and last\n");
-  if(verbose>2)printf(" ******************************************************************\n");
 
-
-  for (i=1; i<nDataPoints-1; i++)
-    {
-      E0=fXraw[i];
-      if(verbose>2)printf("\n\n=====\nPoint No. i=%d     x=%f   y=%f\n", i, E0, fYfpp[i]);
-      fYfp[i]=0.0;
-
-      /* Exrapolate to low energy */
-      if(verbose>2)printf("\n**************\nIntegration 1  E0=%f     a=%f   b=%f \n**************\n", E0, fElo, fXraw[0]);
-      fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fElo, fXraw[0], error);
-      if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
-
-      /* From first data point up to singularity E0 */
-      if(verbose>2)printf("**************\nIntegration 2  E0=%f     a=%f   b=%f \n**************\n", E0, fXraw[0], E0-dE);
-      fYfp[i]+=IntegrateCurve(nDataPoints, E0, fXraw[0], E0-dE);
-      if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
-
-      /* Singularity */
-      if(verbose>2)printf("\n**************\nSingularity\n**************\n");
-      fYfp[i]+=Singularity(E0, E0-dE, E0+dE, fYfpp[i], fYfpp[i-1], fYfpp[i+1], fD1[i], fD2[i], fD3[i]);
-      if(verbose>2)printf(" Final SUM of fp so far  = %f \n", fYfp[i]);
-
-      /* From singularity E0 up to last data point */
-      if(verbose>2)printf("\n**************\nIntegration 3  E0=%f     a=%f   b=%f \n**************\n", E0, E0+dE, fXraw[nDataPoints-1]);
-      fYfp[i]+=IntegrateCurve(nDataPoints, E0, E0+dE, fXraw[nDataPoints-1]);
-      if(verbose>2)printf(" Sum of fp so far  = %f \n",fYfp[i]);
-
-      /* Extrapolate to high energy */
-      if(verbose>2)printf("\n**************\nIntegration 4  E0=%f     a=%f   b=%f \n**************\n", E0, fXraw[nDataPoints-1], fEhi);
-      fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fXraw[nDataPoints-1], fEhi, error);
-      if(verbose>2)printf(" Final value of fp = %f \n", fYfp[i]);
-      fXfpp[i]=E0;
-      fYspline[i]=gsl_spline_eval(spline, E0, acc);
-    }
-
-
-  /*******************************
-   * Now calculate for first point
-   *******************************/
   if(verbose>2)printf(" *******************************\n");
   if(verbose>2)printf(" * Now calculate for first point\n");
   if(verbose>2)printf(" *******************************\n");
 
   i=0;
   fYfp[i]=0.0;
-  E0=fXraw[0];
+  
+  /*  **
+     Because the spline fit used by Singularity routine is only defined within data 
+     range fXraw[0] to fXraw[nDataPoints-1] we must cheat here and define E0 as E0 plus a very small number
+     equal to the integration range either side of the singularity, so that we only call spline values
+     within the total range of our data. dE is this value and we have set it to be 0.01 eV
+  */
+  E0=fXraw[0]+dE; 
+
   /* Exrapolate to low energy */
-  //  if(verbose>2)printf("Integration 1  E0=%f     a=%f   b=%f \n", E0, fElo, fXraw[0]-0.1);
-  fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fElo, fXraw[0]-0.1, error);
-  //  if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
-  /* Singularity */
-  //  if(verbose>2)printf("Singularity\n");
-  fYfp[i]+=Singularity(E0, E0-0.1, E0+0.1, fYfpp[i], fYfpp[i], fYfpp[i], fD1[i], fD2[i], fD3[i]);
-  //  if(verbose>2)printf(" Final SUM of fp so far  = %f \n", fYfp[i]);
+
+  if(verbose>2)printf("Integration 1  E0=%f     a=%f   b=%f \n", E0, fElo, fXraw[0]-dE);
+  fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fElo, fXraw[0]-dE, error);
+  if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
+ 
+ /* Singularity */
+
+  if(verbose>2)printf("Singularity input variables E0=%f %f %f %f %f %f %f %f %f \n",E0, E0-dE, E0+dE, fYfpp[i], fYfpp[i], fYfpp[i], fD1[i], fD2[i], fD3[i] );
+
+  fYfp[i]+=Singularity(E0, E0-dE, E0+dE, fYfpp[i], fYfpp[i], fYfpp[i], fD1[i], fD2[i], fD3[i]);
+
+  if(verbose>2)printf(" Final SUM of fp so far  = %f \n", fYfp[i]);
+
   /* From singularity E0 up to last data point */
-  //  if(verbose>2)printf("Integration 3  E0=%f     a=%f   b=%f \n", E0, E0+dE, fXraw[nDataPoints-1]);
-  fYfp[i]+=IntegrateCurve(nDataPoints, E0, E0+0.1, fXraw[nDataPoints-1]);
+
+  if(verbose>2)printf("Integration 3  E0=%f     a=%f   b=%f \n", E0, E0+dE, fXraw[nDataPoints-1]);
+  fYfp[i]+=IntegrateCurve(nDataPoints, E0, E0+dE, fXraw[nDataPoints-1]);
   //  if(verbose>2)printf(" Sum of fp so far  = %f \n",fYfp[i]);
+
+
     /* Extrapolate to high energy */
+
   //  if(verbose>2)printf("Integration 4  E0=%f     a=%f   b=%f \n", E0, fXraw[nDataPoints-1], fEhi);
   fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fXraw[nDataPoints-1], fEhi, error);
   //  if(verbose>2)printf(" Final value of fp = %f \n", fYfp[i]);
@@ -188,25 +165,28 @@ void Integrate(int nDataPoints, int *nPoints, double fEdge, double *fXraw, doubl
   if(verbose>2)printf(" *******************************\n");
   i=nDataPoints-1;
   fYfp[i]=0.0;
-  E0=fXraw[i];
+
+  /* We used the same trick as above for the last point. Define E0 as a little bit less that max data range. */
+
+  E0=fXraw[i]-dE;
   /* Exrapolate to low energy */
-  if(verbose>2)printf("Integration 1  E0=%f     a=%f   b=%f \n", E0, fElo, fXraw[0]-0.1);
+  if(verbose>2)printf("Integration 1  E0=%f     a=%f   b=%f \n", E0, fElo, fXraw[0]-dE);
   fYfp[i]+=IntegrateExtrap(nDataPoints, E0, fElo, fXraw[0], error);
   if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
   
   /* From first data point up to singularity E0 */
   if(verbose>2)printf("Integration 2  E0=%f     a=%f   b=%f \n", E0, fXraw[0], E0-dE);
-  fYfp[i]+=IntegrateCurve(nDataPoints, E0, fXraw[0], E0-0.1);
+  fYfp[i]+=IntegrateCurve(nDataPoints, E0, fXraw[0], E0-dE);
   if(verbose>2)printf(" Sum of fp so far  = %f \n", fYfp[i]);
 
   /* Singularity */
   if(verbose>2)printf("Singularity\n");
-  fYfp[i]+=Singularity(E0, E0-0.1, E0+0.1, fYfpp[i], fYfpp[i], fYfpp[i], fD1[i], fD2[i], fD3[i]);
+  fYfp[i]+=Singularity(E0, E0-dE, E0+dE, fYfpp[i], fYfpp[i], fYfpp[i], fD1[i], fD2[i], fD3[i]);
   if(verbose>2)printf(" Final SUM of fp so far  = %f \n", fYfp[i]);
 
   /* Extrapolate to high energy */
   if(verbose>2)printf("Integration 4  E0=%f     a=%f   b=%f \n", E0, fXraw[nDataPoints-1], fEhi);
-  fYfp[i]+=IntegrateExtrap(nDataPoints, E0, E0+0.1, fEhi, error);
+  fYfp[i]+=IntegrateExtrap(nDataPoints, E0, E0+dE, fEhi, error);
   if(verbose>2)printf(" Final value of fp = %f \n", fYfp[i]);
   fXfpp[i]=E0;
   fYspline[i]=gsl_spline_eval(spline, E0, acc);
@@ -286,12 +266,13 @@ double Singularity(double E0, double a, double b,
   double result, error;
   gsl_integration_workspace * w 
     = gsl_integration_workspace_alloc(50);
-  double d1, d2;
+  double d1, d2, test;
   double term1, term2, term3, term4, term5;
   gsl_function F;
   F.function = &fs;
   F.params = &E0;
   if(verbose>2)printf("Integrating Singularity\n");
+  //  if(verbose>2)printf("E0=%f a=%f b=%f w=%d\n", E0, a, b, w);
   status=gsl_integration_qag (&F, a, b, 1.0e-3, 1.0e-3, 50, 6, w, &term1, &error); 
 
   if(status != 0){
@@ -341,13 +322,7 @@ double fs(double E, void * params) {
   double E0 = *(double *) params;
   fdp = gsl_spline_eval(spline, E, acc);
   answer = -1.0*fdp/(E0+E);
+  //  if(E<E0)printf("out of range ");
+  // printf("E = %f    E0 = %f fdp = %f    answer = %f \n", E, E0, fdp, answer);
   return answer;
 }
-
-
-
-
-
-
-
-
