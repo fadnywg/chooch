@@ -70,7 +70,7 @@ break;
         break;
      case 'x' :	
 	plotX = 1;
-	if(!silent)printf("-x: display graphics window \n");
+	if(!silent)printf("-x: display graphics window\n");
 	break;
      case 'o' :	
 	outfile = optarg;
@@ -78,7 +78,7 @@ break;
 	break;
      case 'i' :	
 	aqt = 1;
-	if(!silent)printf("-i: plot in window\n", outfile);
+	if(!silent)printf("-i: plot in window\n");
 	break;
      case 'p' :	
 	psplot = 1;
