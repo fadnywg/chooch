@@ -1,0 +1,48 @@
+CHOOCH 5.0.9
+======
+
+Installation Instructions
+=========================
+
+Requirements
+------------
+
+Ensure that you have all the required libraries installed:
+
+a) Gnu Scientific Library version 1.1 - 1.9
+   Available from http://www.gnu.org/software/gsl/gsl.html
+
+b) PLplot plotting library
+   Enables PNG and PostScript output of chooch result as well as interactive plotting
+   Available from http://plplot.sourceforge.net/
+
+Optionally
+----------
+
+c) On Mac OSX Aquaterm is supported for the interactive plotting (-x) option otherwise 
+   X11 via Xquartz can be used
+
+Building the binary
+-------------------
+
+1) Download source distribution chooch-5.0.9.tar.gz
+
+2) Unpack the file in a directory of your choice e.g. /usr/local/src
+   using tar xzvf chooch.tar.gz for example.
+
+3) Create the file 'Makefile' by copying a suitable makefile for your architecture,
+   e.g cp Makefile.x86_64 Makefile
+
+4) Edit Makefile so that the correct libraries and installation directories are selected.
+
+4) Type 'make'
+
+5) Type 'make install'
+
+
+Need Help?
+----------
+
+If you encounter difficulties with the installation then please contact
+the author at gwyndaf@gwyndafevans.co.uk
+

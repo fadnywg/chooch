@@ -1,0 +1,58 @@
+# CHOOCH Makefile
+# Created on Oct 30 1999 by Gwyndaf Evans
+#
+# Edit the three first directory definitions to specify
+# a) Edit the host type
+# b)  the directory where GSL (Gnu Scientific Library) is kept
+# c)  the directory where PLplot plotting library is kept
+# d)  and the directory where you would like you executables to go (BINDIR).
+#
+ARCH   = i386
+#
+PLPLOTLIBDIR = /home/ge73/software/lib
+GSLDIR = /usr/lib64
+X11LIBDIR  = /usr/lib64
+#BINDIR    = /home/gwyndaf/bin
+######################################
+#
+VERSION = 5.0.9
+LIBS = -lgsl -lgslcblas -lX11
+PLLIBS= -lplplotd
+PLINCLUDE=/home/ge73/software/include/plplot
+EXE    = chooch-$(VERSION).$(ARCH)
+#
+#
+FOPTIM  = -O2
+FFLAGS  = $(FOPTIM)
+LDFLAGS = -L$(GSLDIR) -L$(PLPLOTLIBDIR) $(PLLIBS) -L$(X11LIBDIR) $(LIBS) -lm -ldl -lpthread
+CFLAGS  = -I$(PLINCLUDE) -D$(ARCH)
+CC      = gcc
+#
+#
+# Basic definitions
+#
+RM    = /bin/rm
+MV    = /bin/mv
+CP    = /bin/cp
+#
+#
+OBJECTS = checks.o	fits.o		minmax.o	plpng.o		smooth.o \
+	chooch.o	fluread.o	mucal.o		printbanner.o	toplot.o \
+	copyright.o	integrate.o	normalize.o	savwin.o	usage.o \
+	fdprime.o	license.o	parse.o		selwavel.o
+#
+#
+chooch : clean ${OBJECTS} Makefile
+	$(CC) -o ${EXE} ${OBJECTS} $(LDFLAGS)
+#
+all: chooch
+#
+install :
+	$(MV) $(EXE)   $(BINDIR)
+	$(MV) $(EXEPG) $(BINDIR)
+#
+clean :
+	${RM} -f *.o
+#
+# End
+#
