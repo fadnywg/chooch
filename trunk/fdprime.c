@@ -32,7 +32,7 @@ double get_CrossSection(char *sElement, double dEnergyKeV)
   double dXsection;
   int    iZZ = 0, iPflag=0;
   int    err;
-  char   sUnit='a', sErrmsg[80];
+  char   sUnit='a', sErrmsg[256];
   
   //  printf("%s ",sElement);
   if((err=mucal(sElement, iZZ, dEnergyKeV, sUnit, iPflag, dEnergy, dXsec, dFluo, &sErrmsg[0])) != 0) {
@@ -65,7 +65,7 @@ char *get_Edge(char *sElement, double fMidE, double *fE)
   double diff, mindiff=1e10;
   int    i, iE=0, iZZ = 0, iPflag=0;
   int    err;
-  char   sUnit='a', sErrmsg[80];
+  char   sUnit='a', sErrmsg[256];
   fMidE/=1000.0;
   if((err=mucal(sElement, iZZ, 0.0, sUnit, iPflag, dEnergy, dXsec, dFluo, &sErrmsg[0])) != 0) {
     printf("WARNING: Problem  getting edge energy from mucal");
