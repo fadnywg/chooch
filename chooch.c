@@ -41,7 +41,7 @@ char cScanTitle[TITLE]="", device[6]="xwin";
 char *psfile="", *pngfile="", *outfile="output.efs";
 int id1=0, id2=0;
 int verbose, status, silent, kev, aqt, raddose, getefs;
-int plotX=0, psplot=0, pngplot=0, display=0;
+int plotX=0, psplot=0, display=0;
 double fpInfl, fppInfl, fpPeak, fppPeak, EInfl, EPeak;
 double fE1=0.0, fE2=0.0, fE3=0.0, fE4=0.0;
 double fEres=0.00014;
@@ -234,12 +234,12 @@ int main(int argc, char *argv[])
     plpng(nPoints, fXfpp, fYspline, fYfp, psfile, "ps", 1);
   }
 
-  /* To PNG file if requested */
+  /* To PNG file if requested
   if(pngplot){
     if(!silent)printf("Writing PNG file %s\n", pngfile);
     plpng(nPoints, fXfpp, fYspline, fYfp, pngfile, "png", 0);
   }
-
+  */
   /* output to AquaTerm window on Mac if -i option is invoked */
   if(aqt){
     plpng(nPoints, fXfpp, fYspline, fYfp, "", "aqt", 0);

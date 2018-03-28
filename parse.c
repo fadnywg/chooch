@@ -34,7 +34,7 @@
 void parse(int argc, char *argv[])
 {
   extern int verbose, status, silent, kev, aqt, raddose, getefs;
-  extern int plotX, psplot, pngplot, display;
+  extern int plotX, psplot, display;
   extern char *sElement, *sEdge;
   extern char *psfile, *pngfile, *outfile;
   extern double fE1, fE2, fE3, fE4;
@@ -85,11 +85,12 @@ break;
 	psfile = optarg;
 	if(!silent)printf("-p: PS output file = %s\n", psfile);
 	break;
-     case 'g' :	
+	/*     case 'g' :	
 	pngplot = 1;
 	pngfile = optarg;
 	if(!silent)printf("-g: PNG output file = %s\n", pngfile);
 	break;
+	*/
      case 'v' :
 	verbose = atoi(optarg);
 	if(!silent)printf("-v: Verbosity level %d", verbose);
